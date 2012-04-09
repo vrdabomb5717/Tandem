@@ -32,12 +32,28 @@ Iterable:	'You can iterate through me';
 
 fragment
 LoopStatement
-	:	'These are loop statements';
+	:NODE ID '(' Params ')' NEWLINE M NEWLINE END 
+	| BREAK (Expression)? 
+	| CONTINUE 
+	| LoopExpression
+	| ID '=' Expression
+	| RETURN Expression
+	| ASSERT Expression;
+
 
 fragment
 Expression
 	:	'jazz';
 
+fragment
+LoopExpression
+	:	'this is totally like a loop expression man... need those breaks in conds bro';
+ 
+fragment
+BREAK	:	'break';
+
+fragment
+CONTINUE:	'continue'; 
  
 fragment
 FROM
