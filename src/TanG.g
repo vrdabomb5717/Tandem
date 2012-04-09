@@ -1,5 +1,11 @@
 grammar TanG;
 
+options{
+language = Ruby;
+output=AST;
+ASTLabelType=CommonTree;
+}
+
 Start	:	I* M;
 
 fragment
