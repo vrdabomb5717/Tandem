@@ -3,29 +3,29 @@ grammar TanG;
 Start	:	I* M;
 
 fragment
-I	:	'from' (ID '.td') 'import' (ID ('.' ID)* | '*') NEWLINE| 'import' ID '.td' NEWLINE;
+I	:	FROM (ID '.td') IMPORT (ID ('.' ID)* | '*') NEWLINE| IMPORT ID '.td' NEWLINE;
 
 fragment
 M	:	(Statement NEWLINE)*;
 
 fragment
 Statement
-	:	'node' ID '(' Params ')' NEWLINE M NEWLINE 'end'
+	:	NODE ID '(' Params ')' NEWLINE M NEWLINE END
 	|	Expression
 	|	ID '=' Expression
 	|	LoopType
-	|	'return' Expression
-	|	'assert' Expression;
+	|	RETURN Expression
+	|	ASSERT Expression;
 
 fragment
 Params	:	ID (',' ID)*;
 
 fragment
-LoopType:	'for' ID 'in' Iterable NEWLINE (LoopStatement NEWLINE)* 'end'
-	| 'while' Expression NEWLINE (LoopStatement NEWLINE)* 'end'
-	| 'do' NEWLINE (LoopStatement NEWLINE)* 'while' Expression NEWLINE 'end'
-	| 'loop' NEWLINE (LoopStatement NEWLINE)* 'end'
-	| 'until' Expression NEWLINE (LoopStatement NEWLINE)* 'end';
+LoopType:	FOR ID IN Iterable NEWLINE (LoopStatement NEWLINE)* END
+	| WHILE Expression NEWLINE (LoopStatement NEWLINE)* END
+	| DO NEWLINE (LoopStatement NEWLINE)* WHILE Expression NEWLINE END
+	| LOOP NEWLINE (LoopStatement NEWLINE)* END
+	| UNTIL Expression NEWLINE (LoopStatement NEWLINE)* END;
 
 fragment
 Iterable:	'You can iterate through me';
@@ -38,8 +38,55 @@ fragment
 Expression
 	:	'jazz';
 
-
-
+ 
+fragment
+FROM
+	:	'from'
+	;
+fragment
+IMPORT
+	:	'import'
+	;
+fragment
+NODE
+	:	'node'
+	;
+fragment
+END
+	:	'end'
+	;
+fragment
+RETURN
+	:	'return'
+	;
+fragment
+ASSERT
+	:	'assert'
+	;
+fragment
+FOR
+	:	'for'
+	;
+fragment
+IN
+	:	'in'
+	;
+fragment
+WHILE
+	:	'while'
+	;
+fragment
+DO
+	:	'do'
+	;
+fragment
+LOOP
+	:	'loop'
+	;
+fragment
+UNTIL
+	:	'until'
+	;
 
 
 fragment
