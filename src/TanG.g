@@ -6,7 +6,7 @@ output=AST;
 ASTLabelType=CommonTree;
 }
 
-Start	:	I* M;
+TanG	:	I* M;
 
 fragment
 I	:	FROM (ID '.td') IMPORT (ID ('.' ID)* | '*') NEWLINE| IMPORT ID '.td' NEWLINE;
@@ -71,7 +71,7 @@ ModExpr	:	Assignment (MOD Assignment)*;
 
 fragment
 Assignment
-	:	(ID '=')? RangeExpr;
+	:	(RangeExpr '=')* RangeExpr;
 
 fragment
 RangeExpr
@@ -83,14 +83,7 @@ NRangeExpr
 	
 fragment
 BoolAndExpr
-	:	EqTestExpression ('&&' EqTestExpression)*;
-fragment
-EqTestExpression
-	:	MagnitudeCompExpr ( ('=='|'!=') MagnitudeCompExpr)?;
-	
-fragment
-MagnitudeCompExpr
-	:	'yayz';
+	:	'testing';
 
 fragment
 LoopExpression
@@ -249,3 +242,4 @@ fragment
 UNICODE_ESC
     :   '\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
     ;
+
