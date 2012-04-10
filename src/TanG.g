@@ -61,7 +61,17 @@ fragment
 XorExpr	:	AndExpr ('xor' AndExpr)*;
 
 fragment
-AndExpr	:	'asdfasfjeioajfleajfl';
+AndExpr	:	NotExpr ('and' NotExpr);
+
+fragment
+NotExpr	:	'not' MemExpr;
+
+fragment
+MemExpr	:	IDTestExpr (('in'|'not in') IDTestExpr)?;
+
+fragment
+IDTestExpr
+	:	'This is an Identity test';
 
 
 fragment
