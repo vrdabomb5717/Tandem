@@ -94,7 +94,11 @@ MagCompExpr
 	
 fragment
 BitorExpr
-	:	'bitorfools';
+	:	BitXorExpr ('\\/' BitXorExpr)*;
+	
+fragment
+BitXorExpr
+	:	'rabidabi';
 
 fragment
 LoopExpression
