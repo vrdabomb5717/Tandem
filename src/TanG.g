@@ -127,7 +127,11 @@ ExponentiationExpr
 	
 fragment
 PipelineExpr
-	:	'money';
+	:	Indexable  (Indexable)* ('|' Indexable)*;
+	
+fragment
+Indexable
+	:	'indie';
 
 fragment
 LoopExpression
