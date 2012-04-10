@@ -83,7 +83,10 @@ NRangeExpr
 	
 fragment
 BoolAndExpr
-	:	'testing';
+	:	EqTestExpr ('&&' EqTestExpr)*;
+fragment
+EqTestExpr
+	:	'Let us see';
 
 fragment
 LoopExpression
