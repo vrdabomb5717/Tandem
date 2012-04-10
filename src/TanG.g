@@ -42,7 +42,7 @@ LoopStatement
 	| BREAK (Expression)? 
 	| CONTINUE 
 	| LoopExpression
-	| ID '=' Expression
+	| ID ('[' (ID|INT|STRING|FLOAT) ']')* '=' Expression
 	| RETURN Expression
 	| ASSERT Expression;
 
@@ -51,7 +51,7 @@ LoopStatement
 
 
 fragment
-Atom	:	ID|FLOAT|INT|'(' Expression ')'|STRING;
+Atom	:	ID ('[' (ID|INT|STRING|FLOAT) ']')*|FLOAT|INT|'(' Expression ')'|STRING;
 
 
 fragment
