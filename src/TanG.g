@@ -86,7 +86,11 @@ BoolAndExpr
 	:	EqTestExpression ('&&' EqTestExpression)*;
 fragment
 EqTestExpression
-	:	'equality test';
+	:	MagnitudeCompExpr ( ('=='|'!=') MagnitudeCompExpr)?;
+	
+fragment
+MagnitudeCompExpr
+	:	'yayz';
 
 fragment
 LoopExpression
