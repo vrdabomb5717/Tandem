@@ -135,7 +135,9 @@ Indexable
 	
 fragment
 AttributeExpr
-	:	'a';
+	:	Atoms ('.' Atoms)*;
+fragment
+Atoms	:	'a';
 
 fragment
 LoopExpression
