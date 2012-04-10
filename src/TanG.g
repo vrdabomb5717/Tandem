@@ -90,7 +90,11 @@ EqTestExpr
 	
 fragment
 MagCompExpr
-	:	'crossed fingers';
+	:	BitorExpr (('>'|'<'|'>='|'<=') BitorExpr)*;
+	
+fragment
+BitorExpr
+	:	'bitorfools';
 
 fragment
 LoopExpression
