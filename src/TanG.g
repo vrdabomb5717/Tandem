@@ -16,19 +16,18 @@ M	:	(Statement NEWLINE)*;
 
 fragment
 Statement
-	:	NODE ID '(' Params ')' NEWLINE M NEWLINE END
+	:	NODE WS ID WS '(' Params ')' NEWLINE M NEWLINE END
 	|	Expression
-	|	ID ('[' (ID|INT|STRING|FLOAT) ']')* '=' Expression
 	|	LoopType
-	|	RETURN Expression
-	|	ASSERT Expression;
+	|	RETURN WS Expression
+	|	ASSERT WS Expression;
 
 fragment
 Params	:	ID (',' ID)*;
 
 fragment
 LoopType:	FOR ID IN Iterable NEWLINE (LoopStatement NEWLINE)* END
-	| WHILE Expression NEWLINE (LoopStatement NEWLINE)* END
+	| WHILE WS Expression NEWLINE (LoopStatement NEWLINE)* END
 	| DO NEWLINE (LoopStatement NEWLINE)* WHILE Expression NEWLINE END
 	| LOOP NEWLINE (LoopStatement NEWLINE)* END
 	| UNTIL Expression NEWLINE (LoopStatement NEWLINE)* END;
@@ -42,9 +41,8 @@ LoopStatement
 	| BREAK (Expression)? 
 	| CONTINUE 
 	| LoopExpression
-	| ID ('[' (ID|INT|STRING|FLOAT) ']')* '=' Expression
-	| RETURN Expression
-	| ASSERT Expression;
+	| RETURN WS Expression
+	| ASSERT WS Expression;
 
 
 //Expression section
@@ -59,36 +57,40 @@ fragment
 AndExpr	:	NotExpr (AND NotExpr)*;
 
 fragment
-NotExpr	:	(NOT)? MemExpr;
+NotExpr	:	(NOT WS)? MemExpr;
 
 fragment
-MemExpr	:	IDTestExpr ( ( (NOT)? IN) IDTestExpr)?;
+MemExpr	:	IDTestExpr ((NOTIN | IN) IDTestExpr)?;
 
 fragment
 IDTestExpr
-	:	ModExpr ((IS (NOT)?) ModExpr)?;
+	:	ModExpr ((IS|ISNOT) ModExpr)?;
 	
 fragment
-ModExpr	:	RangeExpr (MOD RangeExpr)*;
+ModExpr	:	Assignment (MOD Assignment)*;
+
+fragment
+Assignment
+	:	ID '=' RangeExpr;
 
 fragment
 RangeExpr
-	:	InclRangeExpr ('..' InclRangeExpr)?;
+	:	NRangeExpr ('..' NRangeExpr)?;
 	
 fragment
-InclRangeExpr
-	:	'Inclusive Range Expression';
+NRangeExpr
+	:	'~~~';
 
 fragment
 LoopExpression
-	:	'this is totally like a loop expression man... need those breaks in conds bro';
+	:	'@@@';
  
  fragment
  CondType
- 	:	'This is a conditional statement';
+ 	:	'###';
  
 fragment
-BREAK	:	'break';
+BREAK	:	'$$$';
 
 fragment
 CONTINUE:	'continue'; 
@@ -164,6 +166,10 @@ IS
 	:	'is'
 	;
 fragment
+ISNOT	:	'is not';
+fragment
+NOTIN	:	'not in';
+fragment
 MOD
 	:	'mod'
 	;
@@ -173,7 +179,6 @@ PLUS
 	;
 
 
-fragment
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
 
