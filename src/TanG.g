@@ -80,13 +80,6 @@ InclRangeExpr
 	:	'Inclusive Range Expression';
 
 fragment
-Atom	:	ID ('[' (ID|INT|STRING|FLOAT) ']')*|FLOAT|INT|'(' Expression ')'|STRING;
-
-fragment
-Indexable
-	:	ID ('[' (ID|INT|STRING|FLOAT) ']')* ('.'Indexable)*;
-
-fragment
 LoopExpression
 	:	'this is totally like a loop expression man... need those breaks in conds bro';
  
