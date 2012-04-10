@@ -102,7 +102,10 @@ BitXorExpr
 	
 fragment
 BitAndExpr
-	:	'yayforbitand';
+	:	BitShiftExpr (('<<'|'>>') BitShiftExpr)*;
+fragment
+BitShiftExpr
+	:	'bitshiftftw';
 
 fragment
 LoopExpression
