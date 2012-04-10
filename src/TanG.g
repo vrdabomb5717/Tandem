@@ -109,7 +109,10 @@ BitShiftExpr
 	
 fragment
 AddSubExpr
-	:	'AddSubyay';
+	:	MultExpr ((PLUS|'-') MultExpr)*;
+	
+fragment
+MultExpr:	'multiplicationiscool';
 
 fragment
 LoopExpression
