@@ -120,7 +120,10 @@ UnariesExpr
 	
 fragment
 BitNotExpr
-	:	'hope this works';
+	:	('!')* ExponentiationExpr;
+fragment
+ExponentiationExpr
+	:	'expfoolz';
 
 fragment
 LoopExpression
