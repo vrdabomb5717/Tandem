@@ -86,7 +86,11 @@ BoolAndExpr
 	:	EqTestExpr ('&&' EqTestExpr)*;
 fragment
 EqTestExpr
-	:	'Let us see';
+	:	MagCompExpr (('=='|'!=') MagCompExpr)?;
+	
+fragment
+MagCompExpr
+	:	'crossed fingers';
 
 fragment
 LoopExpression
