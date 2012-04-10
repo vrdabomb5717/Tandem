@@ -131,7 +131,11 @@ PipelineExpr
 	
 fragment
 Indexable
-	:	'indie';
+	:	AttributeExpr ('['AttributeExpr']')*;
+	
+fragment
+AttributeExpr
+	:	'a';
 
 fragment
 LoopExpression
