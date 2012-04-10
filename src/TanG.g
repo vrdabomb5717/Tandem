@@ -48,19 +48,29 @@ LoopStatement
 
 
 
-
-
 fragment
 Atom	:	ID ('[' (ID|INT|STRING|FLOAT) ']')*|FLOAT|INT|'(' Expression ')'|STRING;
 
 
+//Expression section
 fragment
 Expression
-	:	'jazz';
+	:	CondType|XorExpr ('or' XorExpr)*;
+
+fragment
+XorExpr	:	AndExpr ('xor' AndExpr)*;
+
+fragment
+AndExpr	:	'asdfasfjeioajfleajfl';
+
 
 fragment
 LoopExpression
 	:	'this is totally like a loop expression man... need those breaks in conds bro';
+ 
+ fragment
+ CondType
+ 	:	'This is a conditional statement';
  
 fragment
 BREAK	:	'break';
