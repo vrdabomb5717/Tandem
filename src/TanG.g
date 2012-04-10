@@ -116,7 +116,11 @@ MultExpr:	UnariesExpr (('*'|'%'|'/') UnariesExpr)*;
 
 fragment
 UnariesExpr
-	:	'Unaryshtuff';
+	:	('+'|'-')* BitNotExpr;
+	
+fragment
+BitNotExpr
+	:	'hope this works';
 
 fragment
 LoopExpression
