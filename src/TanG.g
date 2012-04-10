@@ -18,7 +18,7 @@ fragment
 Statement
 	:	NODE ID '(' Params ')' NEWLINE M NEWLINE END
 	|	Expression
-	|	ID '=' Expression
+	|	ID ('[' (ID|INT|STRING|FLOAT) ']')* '=' Expression
 	|	LoopType
 	|	RETURN Expression
 	|	ASSERT Expression;
@@ -45,6 +45,13 @@ LoopStatement
 	| ID '=' Expression
 	| RETURN Expression
 	| ASSERT Expression;
+
+
+
+
+
+fragment
+Atom	:	ID|FLOAT|INT|'(' Expression ')'|STRING;
 
 
 fragment
