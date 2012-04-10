@@ -98,7 +98,11 @@ BitorExpr
 	
 fragment
 BitXorExpr
-	:	'rabidabi';
+	:	BitAndExpr ('^' BitAndExpr)*;
+	
+fragment
+BitAndExpr
+	:	'yayforbitand';
 
 fragment
 LoopExpression
