@@ -47,32 +47,44 @@ LoopStatement
 	| ASSERT Expression;
 
 
+//Expression section
+fragment
+Expression
+	:	CondType|XorExpr (OR XorExpr)*;
+
+fragment
+XorExpr	:	AndExpr (XOR AndExpr)*;
+
+fragment
+AndExpr	:	NotExpr (AND NotExpr)*;
+
+fragment
+NotExpr	:	(NOT)? MemExpr;
+
+fragment
+MemExpr	:	IDTestExpr ( ( (NOT)? IN) IDTestExpr)?;
+
+fragment
+IDTestExpr
+	:	ModExpr ((IS (NOT)?) ModExpr)?;
+	
+fragment
+ModExpr	:	RangeExpr (MOD RangeExpr)*;
+
+fragment
+RangeExpr
+	:	InclRangeExpr ('..' InclRangeExpr)?;
+	
+fragment
+InclRangeExpr
+	:	'Inclusive Range Expression';
 
 fragment
 Atom	:	ID ('[' (ID|INT|STRING|FLOAT) ']')*|FLOAT|INT|'(' Expression ')'|STRING;
 
-
-//Expression section
 fragment
-Expression
-	:	CondType|XorExpr ('or' XorExpr)*;
-
-fragment
-XorExpr	:	AndExpr ('xor' AndExpr)*;
-
-fragment
-AndExpr	:	NotExpr ('and' NotExpr);
-
-fragment
-NotExpr	:	'not' MemExpr;
-
-fragment
-MemExpr	:	IDTestExpr (('in'|'not in') IDTestExpr)?;
-
-fragment
-IDTestExpr
-	:	'This is an Identity test';
-
+Indexable
+	:	ID ('[' (ID|INT|STRING|FLOAT) ']')* ('.'Indexable)*;
 
 fragment
 LoopExpression
@@ -139,6 +151,36 @@ UNTIL
 
 
 fragment
+OR
+	:	'or'
+	;
+fragment
+XOR
+	:	'xor'
+	;
+fragment
+AND
+	:	'and'
+	;
+fragment
+NOT
+	:	'not'
+	;
+fragment
+IS
+	:	'is'
+	;
+fragment
+MOD
+	:	'mod'
+	;
+fragment
+PLUS
+	:	'+'
+	;
+
+
+fragment
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
 
@@ -175,7 +217,7 @@ STRING
     ;
 
 fragment
-EXPONENT : ('e'|'E') ('+'|'-')? ('0'..'9')+ ;
+EXPONENT : ('e'|'E') (PLUS|'-')? ('0'..'9')+ ;
 
 fragment
 HEX_DIGIT : ('0'..'9'|'a'..'f'|'A'..'F') ;
@@ -198,3 +240,4 @@ fragment
 UNICODE_ESC
     :   '\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
     ;
+
