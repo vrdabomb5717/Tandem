@@ -79,7 +79,14 @@ RangeExpr
 	
 fragment
 NRangeExpr
-	:	'~~~';
+	:	BoolAndExpr ('||' BoolAndExpr)*;
+	
+fragment
+BoolAndExpr
+	:	EqTestExpression ('&&' EqTestExpression)*;
+fragment
+EqTestExpression
+	:	'equality test';
 
 fragment
 LoopExpression
