@@ -112,7 +112,11 @@ AddSubExpr
 	:	MultExpr ((PLUS|'-') MultExpr)*;
 	
 fragment
-MultExpr:	'multiplicationiscool';
+MultExpr:	UnariesExpr (('*'|'%'|'/') UnariesExpr)*;
+
+fragment
+UnariesExpr
+	:	'Unaryshtuff';
 
 fragment
 LoopExpression
