@@ -71,7 +71,7 @@ ModExpr	:	Assignment (MOD Assignment)*;
 
 fragment
 Assignment
-	:	ID '=' RangeExpr;
+	:	(ID '=')? RangeExpr;
 
 fragment
 RangeExpr
