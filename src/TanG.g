@@ -123,7 +123,11 @@ BitNotExpr
 	:	('!')* ExponentiationExpr;
 fragment
 ExponentiationExpr
-	:	'expfoolz';
+	:	(PipelineExpr '**')* PipelineExpr;
+	
+fragment
+PipelineExpr
+	:	'money';
 
 fragment
 LoopExpression
