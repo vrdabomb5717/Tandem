@@ -78,6 +78,12 @@ boolAndExpr
 	:	eqTestExpr (BOOLAND eqTestExpr)*;
 	
 eqTestExpr
+	:	magCompExpr (EQTEST magCompExpr)?;
+	
+magCompExpr
+	:	bitOrExpr (MAGCOMP bitOrExpr)*;
+	
+bitOrExpr
 	:	ID;	
 
 //Keywords
@@ -128,7 +134,12 @@ fragment
 RANGE	:	'..';
 fragment
 NRANGE	:	'||';
+fragment
 BOOLAND	:	'&&';
+fragment
+EQTEST	:	'=='|'!=';
+
+MAGCOMP	:	'>'|'<'|'>='|'<=';
 
 //IDs
 fragment
