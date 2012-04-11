@@ -110,6 +110,9 @@ expExpression
 	:	(pipelineExpr EXP)* pipelineExpr;
 	
 pipelineExpr
+	:	indexable (indexable)* (PIPE indexable)*;
+	
+indexable
 	:	ID;
 
 //Keywords
@@ -182,6 +185,8 @@ fragment
 BITNOT	:	'!';
 fragment
 EXP	:	'**';
+fragment
+PIPE	:	'|';
 
 //IDs
 fragment
