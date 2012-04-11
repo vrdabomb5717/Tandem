@@ -96,6 +96,20 @@ bitShiftExpr
 	:	addSubExpr (BITSHIFT addSubExpr)*;
 	
 addSubExpr
+	:	multExpr (ADDSUB multExpr)*;
+	
+multExpr	:	unariesExpr (MULT unariesExpr)*;
+
+unariesExpr
+	:	(ADDSUB)* bitNotExpr;
+	
+bitNotExpr
+	:	(BITNOT)* expExpression;
+	
+expExpression
+	:	(pipelineExpr EXP)* pipelineExpr;
+	
+pipelineExpr
 	:	ID;
 
 //Keywords
@@ -160,6 +174,14 @@ fragment
 BITAND	:	'/\\';
 fragment
 BITSHIFT	:	'>>'|'<<';
+fragment
+ADDSUB	:	'+'|'-';
+fragment
+MULT	:	'*'|'/'|'%';
+fragment
+BITNOT	:	'!';
+fragment
+EXP	:	'**';
 
 //IDs
 fragment
