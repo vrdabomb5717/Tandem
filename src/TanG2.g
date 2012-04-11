@@ -4,6 +4,8 @@ options{
 language=Java;
 output=AST;
 ASTLabelType=CommonTree;
+backtrack=true;
+memoize=true;
 }
 
 tanG	:	i* m;
@@ -20,17 +22,32 @@ statement
 	|	expression
 	|	loopType
 	|	return expression
-	|	assert expression;
+	|	assert expression
+	|	break (expression)?
+	|	continue;
 	
 params	:	ID(',' ID)*;
 
 //Loops
-loopType:	'dishereisaloop';
+loopType	:	for ID in iterable NEWLINE m end
+	|	while expression NEWLINE m end
+	|	do NEWLINE m while expression NEWLINE end
+	|	loop NEWLINE m end
+	|	until expression NEWLINE m end;
+//Things that can be iterated through
+iterable	:	ID;
 
 //Expressions
 expression
-	:	'this is an expression';
+	:	condType;
 
+//conditionals
+condType	:	if expression NEWLINE m else NEWLINE m end
+	|	unless expression NEWLINE m end
+	|	cond  (cstatement NEWLINE)* end;
+	
+cstatement
+	:	expression NEWLINE m end;
 
 //Keywords
 from	:	'from';
@@ -42,12 +59,19 @@ node	:	'node';
 end	:	'end';
 return	:	'return';
 assert	:	'assert';
+break	:	'break';
+continue	:	'continue';
 for	:	'for';
 in	:	'in';
 while	:	'while';
 do	:	'do';
 loop	:	'loop';
 until	:	'until';
+if	:	'if';
+else	:	'else';
+unless	:	'unless';
+cond	:	'cond';
+fork	:	'fork';
 
 //Lexer/Tokens
 fragment
