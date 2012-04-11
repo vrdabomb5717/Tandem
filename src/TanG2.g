@@ -39,7 +39,7 @@ iterable	:	ID;
 
 //Expressions
 expression
-	:	condType| precedentedExpression;
+	:	condType| orExpression;
 
 //conditionals
 condType	:	if expression NEWLINE m else NEWLINE m end
@@ -50,10 +50,12 @@ cstatement
 	:	expression NEWLINE m end;
 	
 //ExpressionTypes
-precedentedExpression
+orExpression
 	:	xorExpr (OR xorExpr)*;
 	
-xorExpr	:	'dawinner';
+xorExpr	:	andExpr (XOR andExpr)*;
+
+andExpr	:	'asdf';
 
 //Keywords
 from	:	'from';
@@ -80,9 +82,14 @@ cond	:	'cond';
 fork	:	'fork';
 
 //Lexer/Tokens
+
+//Operators
 fragment
 OR	:	'or';
+fragment
+XOR	:	'xor';
 
+//IDs
 fragment
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
