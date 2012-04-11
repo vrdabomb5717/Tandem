@@ -59,7 +59,12 @@ andExpr	:	notExpr (AND notExpr)*;
 
 notExpr	:	(NOT)? memExpr;
 
-memExpr	:	'doesitwork?';
+memExpr	:	idTestExpr (MEMTEST idTestExpr)?;
+
+idTestExpr
+	:	modExpr (IDTEST modExpr)?;
+	
+modExpr	:	ID;
 
 //Keywords
 from	:	'from';
@@ -96,6 +101,10 @@ fragment
 AND	:	'and';
 fragment
 NOT	:	'not';
+fragment
+MEMTEST	:	'in' | 'not in';
+fragment
+IDTEST	:	'is'| 'is not';
 
 //IDs
 fragment
