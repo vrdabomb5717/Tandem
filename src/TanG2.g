@@ -84,6 +84,12 @@ magCompExpr
 	:	bitOrExpr (MAGCOMP bitOrExpr)*;
 	
 bitOrExpr
+	:	bitXorExpr (BITOR bitXorExpr)*;
+	
+bitXorExpr
+	:	bitAndExpr (BITXOR bitAndExpr)*;
+	
+bitAndExpr
 	:	ID;	
 
 //Keywords
@@ -138,14 +144,18 @@ fragment
 BOOLAND	:	'&&';
 fragment
 EQTEST	:	'=='|'!=';
-
+fragment
 MAGCOMP	:	'>'|'<'|'>='|'<=';
+fragment
+BITOR	:	'\\/';
+fragment
+BITXOR	:	'^';
 
 //IDs
 fragment
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
-    
-fragment
+
+
 NEWLINE	:	'\r'? '\n'
 		;
