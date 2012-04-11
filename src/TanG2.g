@@ -64,7 +64,12 @@ memExpr	:	idTestExpr (MEMTEST idTestExpr)?;
 idTestExpr
 	:	modExpr (IDTEST modExpr)?;
 	
-modExpr	:	ID;
+modExpr	:	assignment (MOD assignment)*;
+
+assignment
+	:	(rangeExpr ASSN)* rangeExpr;
+	
+rangeExpr	:	ID;
 
 //Keywords
 from	:	'from';
@@ -105,6 +110,11 @@ fragment
 MEMTEST	:	'in' | 'not in';
 fragment
 IDTEST	:	'is'| 'is not';
+fragment
+MOD	:	'mod';
+fragment
+ASSN	:	'='|'+='|'-='|'*='|'/='|'%='|'**='|'>>='|'<<='|'^='
+	|	'/\\='|'\\/='|'&&='|'||=';
 
 //IDs
 fragment
