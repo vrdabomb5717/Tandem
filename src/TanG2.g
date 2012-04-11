@@ -55,7 +55,11 @@ orExpression
 	
 xorExpr	:	andExpr (XOR andExpr)*;
 
-andExpr	:	'asdf';
+andExpr	:	notExpr (AND notExpr)*;
+
+notExpr	:	(NOT)? memExpr;
+
+memExpr	:	'doesitwork?';
 
 //Keywords
 from	:	'from';
@@ -88,6 +92,10 @@ fragment
 OR	:	'or';
 fragment
 XOR	:	'xor';
+fragment
+AND	:	'and';
+fragment
+NOT	:	'not';
 
 //IDs
 fragment
