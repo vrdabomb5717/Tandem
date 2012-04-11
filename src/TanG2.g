@@ -113,7 +113,17 @@ pipelineExpr
 	:	indexable (indexable)* (PIPE indexable)*;
 	
 indexable
-	:	ID;
+	:	attributeExpr ('['! attributeExpr ']'!)*;
+	
+attributeExpr
+	:	atom ('.' ID)*;
+	
+atom	:	ID| '('!expression')'!|INT|FLOAT|STRING|HEX|BYTE|hash|set|list;
+
+hash	:	'{' (atom FATCOMMA atom (',' atom FATCOMMA atom)*)? '}';
+set	:	'{'(atom (',' atom)*)?'}';
+list	:	'['(atom (',' atom)*)?']';
+
 
 //Keywords
 from	:	'from';
@@ -187,12 +197,57 @@ fragment
 EXP	:	'**';
 fragment
 PIPE	:	'|';
-
-//IDs
 fragment
-ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
+FATCOMMA	:	'=>';
+
+//other stuff
+fragment
+INT :	'0'..'9'+
+    ;
+    
+fragment
+FLOAT
+    :   ('0'..'9')+ '.' ('0'..'9')* EXPONENT?
+    |   '.' ('0'..'9')+ EXPONENT?
+    |   ('0'..'9')+ EXPONENT
     ;
 
+COMMENT
+    :   '//' ~('\n'|'\r')* '\r'? '\n' {$channel=HIDDEN;}
+    |   '/*' ( options {greedy=false;} : . )* '*/' {$channel=HIDDEN;}
+    ;
 
 NEWLINE	:	'\r'? '\n'
 		;
+
+WS  :   ( ' '
+        | '\t'
+        | '\r'
+        | '\n'
+        ) {$channel=HIDDEN;}
+    ;
+    
+fragment
+HEX	:	'0x' (HEX_DIGIT)+;
+
+fragment
+BYTE	:	'0b' ('1'|'0')+;
+
+fragment
+STRING
+    :  '"' ( ESC_SEQ | ~('\\'|'"') )* '"'
+    ;
+
+fragment
+EXPONENT : ('e'|'E') (ADDSUB)? ('0'..'9')+ ;
+
+fragment
+HEX_DIGIT : ('0'..'9'|'a'..'f'|'A'..'F') ;
+
+fragment
+ESC_SEQ
+    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\');
+    
+fragment
+ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
+    ;
