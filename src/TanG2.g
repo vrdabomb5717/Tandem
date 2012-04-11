@@ -69,7 +69,16 @@ modExpr	:	assignment (MOD assignment)*;
 assignment
 	:	(rangeExpr ASSN)* rangeExpr;
 	
-rangeExpr	:	ID;
+rangeExpr	:	nRangeExpr (RANGE nRangeExpr)?;
+
+nRangeExpr
+	:	boolAndExpr (NRANGE boolAndExpr)*;
+
+boolAndExpr
+	:	eqTestExpr (BOOLAND eqTestExpr)*;
+	
+eqTestExpr
+	:	ID;	
 
 //Keywords
 from	:	'from';
@@ -115,6 +124,11 @@ MOD	:	'mod';
 fragment
 ASSN	:	'='|'+='|'-='|'*='|'/='|'%='|'**='|'>>='|'<<='|'^='
 	|	'/\\='|'\\/='|'&&='|'||=';
+fragment
+RANGE	:	'..';
+fragment
+NRANGE	:	'||';
+BOOLAND	:	'&&';
 
 //IDs
 fragment
