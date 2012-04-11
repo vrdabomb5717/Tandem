@@ -90,7 +90,13 @@ bitXorExpr
 	:	bitAndExpr (BITXOR bitAndExpr)*;
 	
 bitAndExpr
-	:	ID;	
+	:	bitShiftExpr (BITAND bitShiftExpr)*;
+	
+bitShiftExpr
+	:	addSubExpr (BITSHIFT addSubExpr)*;
+	
+addSubExpr
+	:	ID;
 
 //Keywords
 from	:	'from';
@@ -150,6 +156,10 @@ fragment
 BITOR	:	'\\/';
 fragment
 BITXOR	:	'^';
+fragment
+BITAND	:	'/\\';
+fragment
+BITSHIFT	:	'>>'|'<<';
 
 //IDs
 fragment
