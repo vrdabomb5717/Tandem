@@ -1,245 +1,215 @@
-grammar TanG;
+grammar TanG2;
 
 options{
-language = Ruby;
+language=Java;
 output=AST;
 ASTLabelType=CommonTree;
+backtrack=true;
+memoize=true;
 }
 
-TanG	:	I* M;
+tanG	:	i* m;
 
-fragment
-I	:	FROM (ID '.td') IMPORT (ID ('.' ID)* | '*') NEWLINE| IMPORT ID '.td' NEWLINE;
+//Import Statements
+i	:	td_from ID td_tandemextension td_imp (ID ('.' ID)* | '*') NEWLINE
+ 	|	td_imp ID td_tandemextension NEWLINE;
 
-fragment
-M	:	(Statement NEWLINE)*;
+//Main body
+m	:	(statement NEWLINE)*;
 
-fragment
-Statement
-	:	NODE WS ID WS '(' Params ')' NEWLINE M NEWLINE END
-	|	Expression
-	|	LoopType
-	|	RETURN WS Expression
-	|	ASSERT WS Expression;
-
-fragment
-Params	:	ID (',' ID)*;
-
-fragment
-LoopType:	FOR ID IN Iterable NEWLINE (LoopStatement NEWLINE)* END
-	| WHILE WS Expression NEWLINE (LoopStatement NEWLINE)* END
-	| DO NEWLINE (LoopStatement NEWLINE)* WHILE Expression NEWLINE END
-	| LOOP NEWLINE (LoopStatement NEWLINE)* END
-	| UNTIL Expression NEWLINE (LoopStatement NEWLINE)* END;
-
-fragment
-Iterable:	'You can iterate through me';
-
-fragment
-LoopStatement
-	:NODE ID '(' Params ')' NEWLINE M NEWLINE END 
-	| BREAK (Expression)? 
-	| CONTINUE 
-	| LoopExpression
-	| RETURN WS Expression
-	| ASSERT WS Expression;
-
-
-//Expression section
-fragment
-Expression
-	:	CondType|XorExpr (OR XorExpr)*;
-
-fragment
-XorExpr	:	AndExpr (XOR AndExpr)*;
-
-fragment
-AndExpr	:	NotExpr (AND NotExpr)*;
-
-fragment
-NotExpr	:	(NOT WS)? MemExpr;
-
-fragment
-MemExpr	:	IDTestExpr ((NOTIN | IN) IDTestExpr)?;
-
-fragment
-IDTestExpr
-	:	ModExpr ((IS|ISNOT) ModExpr)?;
+statement
+	:	td_node ID '('! params ')'! NEWLINE m NEWLINE td_end
+	|	expression
+	|	loopType
+	|	td_return expression
+	|	td_assert expression
+	|	td_break (expression)?
+	|	td_continue;
 	
-fragment
-ModExpr	:	Assignment (MOD Assignment)*;
+params	:	ID(',' ID)*;
 
-fragment
-Assignment
-	:	(RangeExpr '=')* RangeExpr;
+//Loops
+loopType	:	td_for ID td_in iterable NEWLINE m td_end
+	|	td_while expression NEWLINE m td_end
+	|	td_do NEWLINE m td_while expression NEWLINE td_end
+	|	td_loop NEWLINE m td_end
+	|	td_until expression NEWLINE m td_end;
+//Things that can be iterated through
+iterable	:	ID;
 
-fragment
-RangeExpr
-	:	NRangeExpr ('..' NRangeExpr)?;
-	
-fragment
-NRangeExpr
-	:	BoolAndExpr ('||' BoolAndExpr)*;
-	
-fragment
-BoolAndExpr
-	:	EqTestExpr ('&&' EqTestExpr)*;
-fragment
-EqTestExpr
-	:	MagCompExpr (('=='|'!=') MagCompExpr)?;
-	
-fragment
-MagCompExpr
-	:	BitorExpr (('>'|'<'|'>='|'<=') BitorExpr)*;
-	
-fragment
-BitorExpr
-	:	BitXorExpr ('\\/' BitXorExpr)*;
-	
-fragment
-BitXorExpr
-	:	BitAndExpr ('^' BitAndExpr)*;
-	
-fragment
-BitAndExpr
-	:	BitShiftExpr ('/\\' BitShiftExpr)*;
-fragment
-BitShiftExpr
-	:	AddSubExpr (('<<'|'>>') AddSubExpr)*;
-	
-fragment
-AddSubExpr
-	:	MultExpr ((PLUS|'-') MultExpr)*;
-	
-fragment
-MultExpr:	UnariesExpr (('*'|'%'|'/') UnariesExpr)*;
+//Expressions
+expression
+	:	condType| orExpression;
 
-fragment
-UnariesExpr
-	:	('+'|'-')* BitNotExpr;
+//conditionals
+condType	:	td_if expression NEWLINE m td_else NEWLINE m td_end
+	|	td_unless expression NEWLINE m td_end
+	|	td_cond  (cstatement NEWLINE)* td_end;
 	
-fragment
-BitNotExpr
-	:	('!')* ExponentiationExpr;
-fragment
-ExponentiationExpr
-	:	(PipelineExpr '**')* PipelineExpr;
+cstatement
+	:	expression NEWLINE m td_end;
 	
-fragment
-PipelineExpr
-	:	Indexable  (Indexable)* ('|' Indexable)*;
+//ExpressionTypes
+orExpression
+	:	xorExpr (td_or xorExpr)*;
 	
-fragment
-Indexable
-	:	AttributeExpr ('['AttributeExpr']')*;
-	
-fragment
-AttributeExpr
-	:	Atoms ('.' Atoms)*;
-fragment
-Atoms	:	'a';
+xorExpr	:	andExpr (td_xor andExpr)*;
 
-fragment
-LoopExpression
-	:	'@@@';
- 
- fragment
- CondType
- 	:	'###';
- 
-fragment
-BREAK	:	'$$$';
+andExpr	:	notExpr (td_and notExpr)*;
 
-fragment
-CONTINUE:	'continue'; 
- 
-fragment
-FROM
-	:	'from'
-	;
-fragment
-IMPORT
-	:	'import'
-	;
-fragment
-NODE
-	:	'node'
-	;
-fragment
-END
-	:	'end'
-	;
-fragment
-RETURN
-	:	'return'
-	;
-fragment
-ASSERT
-	:	'assert'
-	;
-fragment
-FOR
-	:	'for'
-	;
-fragment
-IN
-	:	'in'
-	;
-fragment
-WHILE
-	:	'while'
-	;
-fragment
-DO
-	:	'do'
-	;
-fragment
-LOOP
-	:	'loop'
-	;
-fragment
-UNTIL
-	:	'until'
-	;
+notExpr	:	(td_not)? memExpr;
+
+memExpr	:	idTestExpr (td_memtest idTestExpr)?;
+
+idTestExpr
+	:	modExpr (td_idtest modExpr)?;
+	
+modExpr	:	assignment (td_mod assignment)*;
+
+assignment
+	:	(rangeExpr ASSN)* rangeExpr;
+	
+rangeExpr	:	nRangeExpr (RANGE nRangeExpr)?;
+
+nRangeExpr
+	:	boolAndExpr (NRANGE boolAndExpr)*;
+
+boolAndExpr
+	:	eqTestExpr (BOOLAND eqTestExpr)*;
+	
+eqTestExpr
+	:	magCompExpr (EQTEST magCompExpr)?;
+	
+magCompExpr
+	:	bitOrExpr (MAGCOMP bitOrExpr)*;
+	
+bitOrExpr
+	:	bitXorExpr (BITOR bitXorExpr)*;
+	
+bitXorExpr
+	:	bitAndExpr (BITXOR bitAndExpr)*;
+	
+bitAndExpr
+	:	bitShiftExpr (BITAND bitShiftExpr)*;
+	
+bitShiftExpr
+	:	addSubExpr (BITSHIFT addSubExpr)*;
+	
+addSubExpr
+	:	multExpr (ADDSUB multExpr)*;
+	
+multExpr	:	unariesExpr (MULT unariesExpr)*;
+
+unariesExpr
+	:	(ADDSUB)* bitNotExpr;
+	
+bitNotExpr
+	:	(BITNOT)* expExpression;
+	
+expExpression
+	:	(pipelineExpr EXP)* pipelineExpr;
+	
+pipelineExpr
+	:	indexable (indexable)* (PIPE indexable)*;
+	
+indexable
+	:	attributeExpr ('['! attributeExpr ']'!)*;
+	
+attributeExpr
+	:	atom ('.' ID)*;
+	
+atom	:	ID| '('!expression')'!|INT|FLOAT|STRING|HEX|BYTE|hash|set|list;
+
+hash	:	'{' (atom FATCOMMA atom (',' atom FATCOMMA atom)*)? '}';
+set	:	'{'(atom (',' atom)*)?'}';
+list	:	'['(atom (',' atom)*)?']';
 
 
-fragment
-OR
-	:	'or'
-	;
-fragment
-XOR
-	:	'xor'
-	;
-fragment
-AND
-	:	'and'
-	;
-fragment
-NOT
-	:	'not'
-	;
-fragment
-IS
-	:	'is'
-	;
-fragment
-ISNOT	:	'is not';
-fragment
-NOTIN	:	'not in';
-fragment
-MOD
-	:	'mod'
-	;
-fragment
-PLUS
-	:	'+'
-	;
+//Keywords
+td_from	:	'from';
+td_imp 	:	'import';
+td_tandemextension
+           	:	'.td'
+           	;
+td_node    	:	'node';
+td_end     	:	'end';
+td_return  	:	'return';
+td_assert  	:	'assert';
+td_break   	:	'break';
+td_continue	:	'continue';
+td_for     	:	'for';
+td_in      	:	'in';
+td_while   	:	'while';
+td_do      	:	'do';
+td_loop    	:	'loop';
+td_until   	:	'until';
+td_if      	:	'if';
+td_else    	:	'else';
+td_unless  	:	'unless';
+td_cond    	:	'cond';
+td_fork    	:	'fork';
+td_or	:	OR;
+td_xor	:	XOR;
+td_and	:	AND;
+td_not	:	NOT;
+td_memtest
+	:	MEMTEST;
+td_idtest
+	:	IDTEST;
+td_mod	:	MOD;
 
+//Lexer/Tokens
 
-ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
-    ;
+//Operators
+fragment
+OR	:	'or';
+fragment
+XOR	:	'xor';
+fragment
+AND	:	'and';
+fragment
+NOT	:	'not';
+fragment
+MEMTEST	:	'in' | 'not in';
+fragment
+IDTEST	:	'is'| 'is not';
+fragment
+MOD	:	'mod';
+fragment
+ASSN	:	'='|'+='|'-='|'*='|'/='|'%='|'**='|'>>='|'<<='|'^='
+	|	'/\\='|'\\/='|'&&='|'||=';
+fragment
+RANGE	:	'..';
+fragment
+NRANGE	:	'||';
+fragment
+BOOLAND	:	'&&';
+fragment
+EQTEST	:	'=='|'!=';
+fragment
+MAGCOMP	:	'>'|'<'|'>='|'<=';
+fragment
+BITOR	:	'\\/';
+fragment
+BITXOR	:	'^';
+fragment
+BITAND	:	'/\\';
+fragment
+BITSHIFT	:	'>>'|'<<';
+fragment
+ADDSUB	:	'+'|'-';
+fragment
+MULT	:	'*'|'/'|'%';
+fragment
+BITNOT	:	'!';
+fragment
+EXP	:	'**';
+fragment
+PIPE	:	'|';
+fragment
+FATCOMMA	:	'=>';
 
+//other stuff
 fragment
 INT :	'0'..'9'+
     ;
@@ -256,7 +226,6 @@ COMMENT
     |   '/*' ( options {greedy=false;} : . )* '*/' {$channel=HIDDEN;}
     ;
 
-fragment
 NEWLINE	:	'\r'? '\n'
 		;
 
@@ -266,6 +235,12 @@ WS  :   ( ' '
         | '\n'
         ) {$channel=HIDDEN;}
     ;
+    
+fragment
+HEX	:	'0x' (HEX_DIGIT)+;
+
+fragment
+BYTE	:	'0b' ('1'|'0')+;
 
 fragment
 STRING
@@ -273,27 +248,15 @@ STRING
     ;
 
 fragment
-EXPONENT : ('e'|'E') (PLUS|'-')? ('0'..'9')+ ;
+EXPONENT : ('e'|'E') (ADDSUB)? ('0'..'9')+ ;
 
 fragment
 HEX_DIGIT : ('0'..'9'|'a'..'f'|'A'..'F') ;
 
 fragment
 ESC_SEQ
-    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\')
-    |   UNICODE_ESC
-    |   OCTAL_ESC
-    ;
-
+    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\');
+    
 fragment
-OCTAL_ESC
-    :   '\\' ('0'..'3') ('0'..'7') ('0'..'7')
-    |   '\\' ('0'..'7') ('0'..'7')
-    |   '\\' ('0'..'7')
+ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
-
-fragment
-UNICODE_ESC
-    :   '\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
-    ;
-
