@@ -10,7 +10,7 @@ import org.antlr.runtime.TokenStream;
 public class TandemTree{
 	public static void main(String args[]){
 		try{
-		TanGLexer lex = new TanGLexer(args[0]);
+		TanGLexer lex = new TanGLexer(new FileInputStream(args[0]));
 		TokenStream ts = new CommonTokenStream(lex);
 		TanGParser parse = new TanGParser(ts);
 		parse.tanG();
