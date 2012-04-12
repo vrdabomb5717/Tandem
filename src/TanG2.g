@@ -10,30 +10,30 @@ memoize=true;
 
 tanG	:	i* m;
 
-//Import Statemnts
-i	:	from ID tandemextension imp (ID ('.' ID)* | '*') NEWLINE
-	|	imp ID tandemextension NEWLINE;
+//Import Statements
+i	:	td_from ID td_tandemextension td_imp (ID ('.' ID)* | '*') NEWLINE
+ 	|	td_imp ID td_tandemextension NEWLINE;
 
 //Main body
 m	:	(statement NEWLINE)*;
 
 statement
-	:	node ID '('! params ')'! NEWLINE m NEWLINE end
+	:	td_node ID '('! params ')'! NEWLINE m NEWLINE td_end
 	|	expression
 	|	loopType
-	|	return expression
-	|	assert expression
-	|	break (expression)?
-	|	continue;
+	|	td_return expression
+	|	td_assert expression
+	|	td_break (expression)?
+	|	td_continue;
 	
 params	:	ID(',' ID)*;
 
 //Loops
-loopType	:	for ID in iterable NEWLINE m end
-	|	while expression NEWLINE m end
-	|	do NEWLINE m while expression NEWLINE end
-	|	loop NEWLINE m end
-	|	until expression NEWLINE m end;
+loopType	:	td_for ID td_in iterable NEWLINE m td_end
+	|	td_while expression NEWLINE m td_end
+	|	td_do NEWLINE m td_while expression NEWLINE td_end
+	|	td_loop NEWLINE m td_end
+	|	td_until expression NEWLINE m td_end;
 //Things that can be iterated through
 iterable	:	ID;
 
@@ -42,12 +42,12 @@ expression
 	:	condType| orExpression;
 
 //conditionals
-condType	:	if expression NEWLINE m else NEWLINE m end
-	|	unless expression NEWLINE m end
-	|	cond  (cstatement NEWLINE)* end;
+condType	:	td_if expression NEWLINE m td_else NEWLINE m td_end
+	|	td_unless expression NEWLINE m td_end
+	|	td_cond  (cstatement NEWLINE)* td_end;
 	
 cstatement
-	:	expression NEWLINE m end;
+	:	expression NEWLINE m td_end;
 	
 //ExpressionTypes
 orExpression
@@ -126,28 +126,28 @@ list	:	'['(atom (',' atom)*)?']';
 
 
 //Keywords
-from	:	'from';
-imp	:	'import';
-tandemextension
-	:	'.td'
-	;
-node	:	'node';
-end	:	'end';
-return	:	'return';
-assert	:	'assert';
-break	:	'break';
-continue	:	'continue';
-for	:	'for';
-in	:	'in';
-while	:	'while';
-do	:	'do';
-loop	:	'loop';
-until	:	'until';
-if	:	'if';
-else	:	'else';
-unless	:	'unless';
-cond	:	'cond';
-fork	:	'fork';
+td_from	:	'from';
+td_imp 	:	'import';
+td_tandemextension
+           	:	'.td'
+           	;
+td_node    	:	'node';
+td_end     	:	'end';
+td_return  	:	'return';
+td_assert  	:	'assert';
+td_break   	:	'break';
+td_continue	:	'continue';
+td_for     	:	'for';
+td_in      	:	'in';
+td_while   	:	'while';
+td_do      	:	'do';
+td_loop    	:	'loop';
+td_until   	:	'until';
+td_if      	:	'if';
+td_else    	:	'else';
+td_unless  	:	'unless';
+td_cond    	:	'cond';
+td_fork    	:	'fork';
 
 //Lexer/Tokens
 
