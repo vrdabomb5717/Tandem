@@ -11,7 +11,7 @@ public class TandemTree{
 	public static void main(String args[]){
 		try{
 		TanGLexer lex = new TanGLexer(args[0]);
-		TokenStream ts = new TokenStream(lex);
+		TokenStream ts = new CommonTokenStream(lex);
 		TanGParser parse = new TanGParser(ts);
 		 parse.startRule();
     	} catch(Exception e) {
