@@ -51,20 +51,20 @@ cstatement
 	
 //ExpressionTypes
 orExpression
-	:	xorExpr (OR xorExpr)*;
+	:	xorExpr (td_or xorExpr)*;
 	
-xorExpr	:	andExpr (XOR andExpr)*;
+xorExpr	:	andExpr (td_xor andExpr)*;
 
-andExpr	:	notExpr (AND notExpr)*;
+andExpr	:	notExpr (td_and notExpr)*;
 
-notExpr	:	(NOT)? memExpr;
+notExpr	:	(td_not)? memExpr;
 
-memExpr	:	idTestExpr (MEMTEST idTestExpr)?;
+memExpr	:	idTestExpr (td_memtest idTestExpr)?;
 
 idTestExpr
-	:	modExpr (IDTEST modExpr)?;
+	:	modExpr (td_idtest modExpr)?;
 	
-modExpr	:	assignment (MOD assignment)*;
+modExpr	:	assignment (td_mod assignment)*;
 
 assignment
 	:	(rangeExpr ASSN)* rangeExpr;
@@ -148,6 +148,15 @@ td_else    	:	'else';
 td_unless  	:	'unless';
 td_cond    	:	'cond';
 td_fork    	:	'fork';
+td_or	:	OR;
+td_xor	:	XOR;
+td_and	:	AND;
+td_not	:	NOT;
+td_memtest
+	:	MEMTEST;
+td_idtest
+	:	IDTEST;
+td_mod	:	MOD;
 
 //Lexer/Tokens
 
