@@ -1,4 +1,4 @@
-grammar TanG2;
+grammar TanG;
 
 options{
 language=Java;
