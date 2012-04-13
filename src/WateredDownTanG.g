@@ -24,7 +24,8 @@ mprime	:	statement (NEWLINE m)?;
 
 statement
 	:	td_node ID LPAREN! params RPAREN! NEWLINE m NEWLINE td_end
-	|	expression
+	|	orexpression
+	|	condType
 	|	loopType
 	|	td_return orexpression
 	|	td_assert orexpression
