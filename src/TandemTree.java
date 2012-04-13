@@ -13,6 +13,7 @@ public class TandemTree{
 
 		TanGLexer lex = new TanGLexer(new ANTLRInputStream(new FileInputStream(args[0])));
 		TokenStream ts = new CommonTokenStream(lex);
+		lex.reset();
 		TanGParser parse = new TanGParser(ts);
 		parse.tanG();
     	} catch(Exception e) {

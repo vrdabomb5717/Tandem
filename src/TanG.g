@@ -8,14 +8,19 @@ backtrack=true;
 memoize=true;
 }
 
-tanG	:	i* m;
+tanG	:	i* (NEWLINE m)?(NEWLINE EOF)?;
 
 //Import Statements
-i	:	td_from filename td_imp (ID (DOT ID)* | '*') NEWLINE
- 	|	td_imp filename NEWLINE;
+i	:	td_from filename td_imp (ID (DOT ID)* (COMMA  ID (DOT ID)*)* | '*') (NEWLINE iprime)? 
+ 	|	td_imp filename NEWLINE (NEWLINE iprime)? (NEWLINE EOF)?; 
+ 	
+ iprime	:	td_from filename td_imp (ID (DOT ID)* (COMMA  ID (DOT ID)*)* | '*') (NEWLINE i)?
+ 	|	td_imp filename (NEWLINE i)?;
 
 //Main body
-m	:	(statement NEWLINE)*;
+m	:	statement (NEWLINE mprime)?;
+
+mprime	:	statement (NEWLINE m)?;
 
 statement
 	:	td_node ID LPAREN! params RPAREN! NEWLINE m NEWLINE td_end
@@ -163,7 +168,8 @@ td_mod	:	MOD;
 FROM
 	:	'from'
 	;
-FILENAME	:	 ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')* '.td';
+FILENAME	:	(('"')('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')* '.td' ('"'))
+	|	(('\'')('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')* '.td' ('\''));
 IMPORT
 	:	'import'
 	;
@@ -233,6 +239,7 @@ RBRACK	:	']';
 LBRACE	:	'{';
 
 RBRACE	:	'}';
+QUOTE	:	'"';
 
 //other stuff
 INT :	'0'..'9'+
@@ -256,9 +263,8 @@ WS  :   ( ' '
         | '\t'
         | '\r'
         | '\n'
-        )+ {skip();}
-    ;
-    
+        )+ {skip();};
+
 HEX	:	'0x' (HEX_DIGIT)+;
 
 BYTE	:	'0b' ('1'|'0')+;
@@ -271,6 +277,7 @@ EXPONENT : ('e'|'E') ('+'|'-')? ('0'..'9')+ ;
 
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
+
 
 
 fragment
