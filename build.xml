@@ -65,8 +65,20 @@ Example with ANTLR3 outputdirectory modified:
 <target name="compile" depends="grammar"
   description="compile the source " >
   <!-- Compile the java code from ${src} into ${build} -->
-  <javac srcdir="${lib}/grammar" destdir="${build}"/>
-  <javac srcdir="${src}" destdir="${build}"/>
+  <!-- includeantruntime="false" -->
+  <javac destdir="${build}" includeantruntime="false">
+    <classpath>
+      <pathelement path="${java.class.path}"/>
+    </classpath>
+    <src path="${lib}/grammar" />
+  </javac>
+  <javac destdir="${build}" includeantruntime="false">
+    <!-- <classpath path="${build}" /> -->
+    <classpath>
+      <pathelement path="${java.class.path}"/>
+    </classpath>
+    <src path="${src}" />
+  </javac>
 </target>
 
 <target name="dist" depends="compile"
@@ -76,6 +88,12 @@ Example with ANTLR3 outputdirectory modified:
 
   <!-- Put everything in ${build} into the Tandem-${DSTAMP}.jar file -->
   <jar jarfile="${dist}/lib/Tandem-${DSTAMP}.jar" basedir="${build}"/>
+</target>
+
+<target name="parse_test">
+</target>
+
+<target name="test" depends="parse_test">
 </target>
 
 <target name="clean"
