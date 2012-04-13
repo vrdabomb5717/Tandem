@@ -1,0 +1,24 @@
+# TODO
+
+## General
+
+* Get a working compiler.
+
+
+## Varun
+
+* Think about adding ANTLR to a lib directory.
+* Work on ANT file to test input files.
+
+## Patrick
+
+* Fix the parser.
+
+## Jenee
+
+* Figure out how to traverse the AST.
+
+## Donald
+
+* Work on ANT file.
+* Work on build environment.
