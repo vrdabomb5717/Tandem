@@ -2,3 +2,6 @@ src/TanG2.tokens
 src/TanG2Lexer.java
 src/TanG2Parser.java
 *.class
+src/TanG.tokens
+src/TanGLexer.java
+src/TanGParser.java
