@@ -8,11 +8,11 @@ backtrack=true;
 memoize=true;
 }
 
-tanG	:	i* (NEWLINE m)?(NEWLINE EOF)?;
+tanG	:	(i ((NEWLINE  EOF)?|(NEWLINE m)))? | m?;
 
 //Import Statements
-i	:	td_from filename td_imp (ID (DOT ID)* (COMMA  ID (DOT ID)*)* | '*') (NEWLINE iprime)? 
- 	|	td_imp filename NEWLINE (NEWLINE iprime)? (NEWLINE EOF)?; 
+i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | '*'       ) (NEWLINE iprime)? 
+ 	|	td_imp filename (NEWLINE iprime)?; 
  	
  iprime	:	td_from filename td_imp (ID (DOT ID)* (COMMA  ID (DOT ID)*)* | '*') (NEWLINE i)?
  	|	td_imp filename (NEWLINE i)?;
@@ -49,7 +49,7 @@ expression
 //conditionals
 condType	:	td_if expression NEWLINE m td_else NEWLINE m td_end
 	|	td_unless expression NEWLINE m td_end
-	|	td_cond  (cstatement NEWLINE)* td_end;
+	|	td_cond  (NEWLINE (cstatement NEWLINE)+)? td_end;
 	
 cstatement
 	:	expression NEWLINE m td_end;
@@ -115,7 +115,7 @@ expExpression
 	:	(pipelineExpr EXP)* pipelineExpr;
 	
 pipelineExpr
-	:	indexable (indexable)* (PIPE indexable)*;
+	:	indexable ((indexable)* (PIPE indexable)+)?;
 	
 indexable
 	:	attributeExpr (LBRACK! attributeExpr RBRACK!)*;
@@ -164,7 +164,12 @@ td_mod	:	MOD;
 
 //Lexer/Tokens
 
-//Operators    
+//Operators  
+COMMENT
+    :   ('#' |'//') ~('\n'|'\r')* '\r'? '\n' {skip();}
+    |   '/*' ( options {greedy=false;} : . )* '*/' {skip();}
+    ;
+  
 FROM
 	:	'from'
 	;
@@ -251,10 +256,6 @@ FLOAT
     |   ('0'..'9')+ EXPONENT
     ;
 
-COMMENT
-    :   '//' ~('\n'|'\r')* '\r'? '\n' {$channel=HIDDEN;}
-    |   '/*' ( options {greedy=false;} : . )* '*/' {$channel=HIDDEN;}
-    ;
 
 NEWLINE	:	'\r'? '\n'
 		;
@@ -263,7 +264,7 @@ WS  :   ( ' '
         | '\t'
         | '\r'
         | '\n'
-        )+ {skip();};
+        )+ {$channel=HIDDEN;};
 
 HEX	:	'0x' (HEX_DIGIT)+;
 
