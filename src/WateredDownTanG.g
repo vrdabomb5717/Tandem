@@ -31,7 +31,7 @@ statement
 	|	td_break (orexpression)?
 	|	td_continue;
 	
-params	:	ID(COMMA ID)*;
+params	:	(ID(COMMA ID)*)?;
 
 //Loops
 loopType	:	td_for ID td_in iterable NEWLINE m td_end
