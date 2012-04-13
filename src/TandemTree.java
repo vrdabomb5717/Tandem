@@ -12,6 +12,11 @@ public class TandemTree{
 		try{
 
 		TanGLexer lex = new TanGLexer(new ANTLRInputStream(new FileInputStream(args[0])));
+		Token token;
+           	while ((token = lex.nextToken())!=Token.EOF_TOKEN) 
+		{
+             		System.out.println("Token: "+token.getText());
+           	}
 		TokenStream ts = new CommonTokenStream(lex);
 		lex.reset();
 		TanGParser parse = new TanGParser(ts);
