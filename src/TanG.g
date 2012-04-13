@@ -11,7 +11,7 @@ memoize=true;
 tanG	:	i* m;
 
 //Import Statements
-i	:	td_from ID filename td_imp (ID (DOT ID)* | ALLTHETHINGS) NEWLINE
+i	:	td_from ID filename td_imp (ID (DOT ID)* | '*') NEWLINE
  	|	td_imp ID filename NEWLINE;
 
 //Main body
@@ -120,8 +120,8 @@ attributeExpr
 	
 atom	:	ID| LPAREN!expression RPAREN!|INT|FLOAT|STRING|HEX|BYTE|hash|set|list;
 
-hash	:	LEFTBRACE (atom FATCOMMA atom (COMMA atom FATCOMMA atom)*)? '}';
-set	:	LEFTBRACE(atom (COMMA atom)*)? LBRACE;
+hash	:	LBRACE (atom FATCOMMA atom (COMMA atom FATCOMMA atom)*)? '}';
+set	:	LBRACE(atom (COMMA atom)*)? RBRACE;
 list	:	LBRACK(atom (COMMA atom)*)?RBRACK;
 
 
@@ -159,145 +159,85 @@ td_mod	:	MOD;
 
 //Lexer/Tokens
 
-//Operators
-fragment    
+//Operators    
 FROM
 	:	'from'
 	;
-fragment
 FILENAME	:	ID '.td';
-fragment
 IMPORT
 	:	'import'
 	;
-fragment
 NODE
 	:	'node'
 	;
-fragment
 END
 	:	'end'
 	;
-fragment
 RETURN
 	:	'return'
 	;
-fragment
 ASSERT	:	'assert';
-fragment
 CONTINUE	:	'continue';
-fragment
 BREAK	:	'break';
-fragment
 FOR	:	'for';
-fragment
 IN	:	'in';
-fragment
 WHILE	:	'while';
-fragment
 DO	:	'do';
-fragment
 LOOP	:	'loop';
-fragment
 IF	:	'if';
-fragment
 ELSE	:	'else';
-fragment
 UNTIL	:	'until';
-fragment
 UNLESS	:	'unless';
-fragment
 COND	:	'cond';
-fragment
 FORK	:	'fork';
-fragment
 OR	:	'or';
-fragment
 XOR	:	'xor';
-fragment
 AND	:	'and';
-fragment
 NOT	:	'not';
-fragment
 MEMTEST	:	'in' | 'not in';
-fragment
 IDTEST	:	'is'| 'is not';
-fragment
 MOD	:	'mod';
-fragment
 ASSN	:	'='|'+='|'-='|'*='|'/='|'%='|'**='|'>>='|'<<='|'^='
 	|	'/\\='|'\\/='|'&&='|'||=';
-fragment
 RANGE	:	'..';
-fragment
 NRANGE	:	'||';
-fragment
 BOOLAND	:	'&&';
-fragment
 EQTEST	:	'=='|'!=';
-fragment
 MAGCOMP	:	'>'|'<'|'>='|'<=';
-fragment
 BITOR	:	'\\/';
-fragment
 BITXOR	:	'^';
-fragment
 BITAND	:	'/\\';
-fragment
 BITSHIFT	:	'>>'|'<<';
-fragment
 ADDSUB	:	'+'|'-';
-fragment
-MULT	:	ALLTHETHINGS|'/'|'%';
-fragment
+MULT	:	'*'|'/'|'%';
 BITNOT	:	'!';
-fragment
 EXP	:	'**';
-fragment
 PIPE	:	'|';
-fragment
 FATCOMMA	:	'=>';
-fragment
 DOT
 	:	'.'
 	;
-fragment
-ALLTHETHINGS
-	:	'*'
-	;
-fragment
 LPAREN
 	:	'('
 	;
-fragment
 COMMA
 	:	','
 	;	
-fragment
 RPAREN
 	:	')'
 	;
 	
-fragment
-LBRACK
-	:	'['
-	;
-fragment
-LEFTBRACE
-	:	'{'
-	;
-fragment
+LBRACK	:	'[';
 RBRACK	:	']';
 
-fragment
 LBRACE	:	'{';
 
+RBRACE	:	'}';
+
 //other stuff
-fragment
 INT :	'0'..'9'+
     ;
     
-fragment
 FLOAT
     :   ('0'..'9')+ DOT ('0'..'9')* EXPONENT?
     |   DOT ('0'..'9')+ EXPONENT?
@@ -316,22 +256,22 @@ WS  :   ( ' '
         | '\t'
         | '\r'
         | '\n'
-        ) {$channel=HIDDEN;}
+        )+ {skip();}
     ;
     
-fragment
 HEX	:	'0x' (HEX_DIGIT)+;
 
-fragment
 BYTE	:	'0b' ('1'|'0')+;
 
-fragment
 STRING
     :  '"' ( ESC_SEQ | ~('\\'|'"') )* '"'
     ;
 
-fragment
-EXPONENT : ('e'|'E') (ADDSUB)? ('0'..'9')+ ;
+EXPONENT : ('e'|'E') ('+'|'-')? ('0'..'9')+ ;
+
+ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
+    ;
+
 
 fragment
 HEX_DIGIT : ('0'..'9'|'a'..'f'|'A'..'F') ;
@@ -340,9 +280,5 @@ fragment
 ESC_SEQ
     :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\');
     
-fragment
-ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
-    ;
-
 
 
