@@ -11,14 +11,14 @@ memoize=true;
 tanG	:	i* m;
 
 //Import Statements
-i	:	td_from ID td_tandemextension td_imp (ID ('.' ID)* | '*') NEWLINE
- 	|	td_imp ID td_tandemextension NEWLINE;
+i	:	td_from ID filename td_imp (ID (DOT ID)* | ALLTHETHINGS) NEWLINE
+ 	|	td_imp ID filename NEWLINE;
 
 //Main body
 m	:	(statement NEWLINE)*;
 
 statement
-	:	td_node ID '('! params ')'! NEWLINE m NEWLINE td_end
+	:	td_node ID LPAREN! params RPAREN! NEWLINE m NEWLINE td_end
 	|	expression
 	|	loopType
 	|	td_return expression
@@ -26,7 +26,7 @@ statement
 	|	td_break (expression)?
 	|	td_continue;
 	
-params	:	ID(',' ID)*;
+params	:	ID(COMMA ID)*;
 
 //Loops
 loopType	:	td_for ID td_in iterable NEWLINE m td_end
@@ -113,41 +113,40 @@ pipelineExpr
 	:	indexable (indexable)* (PIPE indexable)*;
 	
 indexable
-	:	attributeExpr ('['! attributeExpr ']'!)*;
+	:	attributeExpr (LBRACK! attributeExpr RBRACK!)*;
 	
 attributeExpr
-	:	atom ('.' ID)*;
+	:	atom (DOT ID)*;
 	
-atom	:	ID| '('!expression')'!|INT|FLOAT|STRING|HEX|BYTE|hash|set|list;
+atom	:	ID| LPAREN!expression RPAREN!|INT|FLOAT|STRING|HEX|BYTE|hash|set|list;
 
-hash	:	'{' (atom FATCOMMA atom (',' atom FATCOMMA atom)*)? '}';
-set	:	'{'(atom (',' atom)*)?'}';
-list	:	'['(atom (',' atom)*)?']';
+hash	:	LEFTBRACE (atom FATCOMMA atom (COMMA atom FATCOMMA atom)*)? '}';
+set	:	LEFTBRACE(atom (COMMA atom)*)? LBRACE;
+list	:	LBRACK(atom (COMMA atom)*)?RBRACK;
 
 
 //Keywords
-td_from	:	'from';
-td_imp 	:	'import';
-td_tandemextension
-           	:	'.td'
+td_from	:	FROM;
+td_imp 	:	IMPORT
            	;
-td_node    	:	'node';
-td_end     	:	'end';
-td_return  	:	'return';
-td_assert  	:	'assert';
-td_break   	:	'break';
-td_continue	:	'continue';
-td_for     	:	'for';
-td_in      	:	'in';
-td_while   	:	'while';
-td_do      	:	'do';
-td_loop    	:	'loop';
-td_until   	:	'until';
-td_if      	:	'if';
-td_else    	:	'else';
-td_unless  	:	'unless';
-td_cond    	:	'cond';
-td_fork    	:	'fork';
+filename	:	FILENAME;
+td_node    	:	NODE;
+td_end     	:	END;
+td_return  	:	RETURN;
+td_assert  	:	ASSERT;
+td_break   	:	BREAK;
+td_continue	:	CONTINUE;
+td_for     	:	FOR;
+td_in      	:	IN;
+td_while   	:	WHILE;
+td_do      	:	DO;
+td_loop    	:	LOOP;
+td_until   	:	UNTIL;
+td_if      	:	IF;
+td_else    	:	ELSE;
+td_unless  	:	UNLESS;
+td_cond    	:	COND;
+td_fork    	:	FORK;
 td_or	:	OR;
 td_xor	:	XOR;
 td_and	:	AND;
@@ -161,6 +160,56 @@ td_mod	:	MOD;
 //Lexer/Tokens
 
 //Operators
+fragment    
+FROM
+	:	'from'
+	;
+fragment
+FILENAME	:	ID '.td';
+fragment
+IMPORT
+	:	'import'
+	;
+fragment
+NODE
+	:	'node'
+	;
+fragment
+END
+	:	'end'
+	;
+fragment
+RETURN
+	:	'return'
+	;
+fragment
+ASSERT	:	'assert';
+fragment
+CONTINUE	:	'continue';
+fragment
+BREAK	:	'break';
+fragment
+FOR	:	'for';
+fragment
+IN	:	'in';
+fragment
+WHILE	:	'while';
+fragment
+DO	:	'do';
+fragment
+LOOP	:	'loop';
+fragment
+IF	:	'if';
+fragment
+ELSE	:	'else';
+fragment
+UNTIL	:	'until';
+fragment
+UNLESS	:	'unless';
+fragment
+COND	:	'cond';
+fragment
+FORK	:	'fork';
 fragment
 OR	:	'or';
 fragment
@@ -199,7 +248,7 @@ BITSHIFT	:	'>>'|'<<';
 fragment
 ADDSUB	:	'+'|'-';
 fragment
-MULT	:	'*'|'/'|'%';
+MULT	:	ALLTHETHINGS|'/'|'%';
 fragment
 BITNOT	:	'!';
 fragment
@@ -208,6 +257,40 @@ fragment
 PIPE	:	'|';
 fragment
 FATCOMMA	:	'=>';
+fragment
+DOT
+	:	'.'
+	;
+fragment
+ALLTHETHINGS
+	:	'*'
+	;
+fragment
+LPAREN
+	:	'('
+	;
+fragment
+COMMA
+	:	','
+	;	
+fragment
+RPAREN
+	:	')'
+	;
+	
+fragment
+LBRACK
+	:	'['
+	;
+fragment
+LEFTBRACE
+	:	'{'
+	;
+fragment
+RBRACK	:	']';
+
+fragment
+LBRACE	:	'{';
 
 //other stuff
 fragment
@@ -216,8 +299,8 @@ INT :	'0'..'9'+
     
 fragment
 FLOAT
-    :   ('0'..'9')+ '.' ('0'..'9')* EXPONENT?
-    |   '.' ('0'..'9')+ EXPONENT?
+    :   ('0'..'9')+ DOT ('0'..'9')* EXPONENT?
+    |   DOT ('0'..'9')+ EXPONENT?
     |   ('0'..'9')+ EXPONENT
     ;
 
@@ -260,3 +343,6 @@ ESC_SEQ
 fragment
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
+
+
+
