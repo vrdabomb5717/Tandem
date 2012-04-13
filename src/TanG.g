@@ -11,8 +11,8 @@ memoize=true;
 tanG	:	i* m;
 
 //Import Statements
-i	:	td_from ID filename td_imp (ID (DOT ID)* | '*') NEWLINE
- 	|	td_imp ID filename NEWLINE;
+i	:	td_from filename td_imp (ID (DOT ID)* | '*') NEWLINE
+ 	|	td_imp filename NEWLINE;
 
 //Main body
 m	:	(statement NEWLINE)*;
@@ -163,7 +163,7 @@ td_mod	:	MOD;
 FROM
 	:	'from'
 	;
-FILENAME	:	ID '.td';
+FILENAME	:	 ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')* '.td';
 IMPORT
 	:	'import'
 	;
