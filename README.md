@@ -8,7 +8,7 @@ Tandem is a node-based, general purpose programming language. It's useful for wr
 
 To install ANTLR, first download the [JAR file](http://www.antlr.org/download.html). Make sure that you add the path to the JAR file to your classpath.
 
-# Installation and Compilation
+# Compilation and Installation
 
 To compile the grammar file, assuming that ANTLR is on your classpath, run:
 
