@@ -1,39 +1,88 @@
-<project name="Tandem" default="dist" basedir=".">
-    <description>
-        build file for Tandem programming language.
-    </description>
+<project name="Tandem" default="compile" basedir=".">
+  <description>
+    build file for Tandem programming language.
+  </description>
   <!-- set global properties for this build -->
   <property name="src" location="src"/>
   <property name="build" location="bin"/>
   <property name="dist"  location="dist"/>
   <property name="test" location="test"/>
+  <property name="lib" location="lib"/>
+  <property name="grammar" value="TanG.g"/>
 
-  <target name="init">
-    <!-- Create the time stamp -->
-    <tstamp/>
-    <!-- Create the build directory structure used by compile -->
-    <mkdir dir="${build}"/>
-  </target>
+<!-- An ant macro which invokes ANTLR3
+This is just a parameterizable wrapper to simplify the invocation of ANTLR3.
+The default values can be overriden by assigning a value to an attribute
+when using the macro.
+Example with ANTLR3 outputdirectory modified:
+<antlr3 grammar.name="TanG.g" outputdirectory="${src}/${package}"/>
+-->
 
-  <target name="compile" depends="init"
-        description="compile the source " >
-    <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}"/>
-  </target>
+<target name="init">
+  <macrodef name="antlr">
+  <attribute name="grammar.name"/>
+  <attribute name="destdir" default="${lib}/grammar"/>
+  <attribute name="libdir" default="${lib}"/>
+  <sequential>
+    <java classname="org.antlr.Tool" fork="true" failonerror="true">
+      <arg value="-o"/>
+      <arg path="@{destdir}"/>
+      <arg value="-lib"/>
+      <arg path="@{libdir}"/>
+      <arg value="-verbose"/>
+      <arg value="-Xmultithreaded"/>
+      <arg value="-make"/>
+      <arg path="${src}/@{grammar.name}"/>
+    </java>
+  </sequential>
+</macrodef>
 
-  <target name="dist" depends="compile"
-        description="generate the distribution" >
-    <!-- Create the distribution directory -->
-    <mkdir dir="${dist}/lib"/>
+  <!-- Create the time stamp -->
+  <tstamp/>
+  <!-- Create the build directory structure used by compile -->
+  <mkdir dir="${build}"/>
+  <mkdir dir="${dist}"/>
+  <mkdir dir="${lib}"/>
+</target>
 
-    <!-- Put everything in ${build} into the Tandem-${DSTAMP}.jar file -->
-    <jar jarfile="${dist}/lib/Tandem-${DSTAMP}.jar" basedir="${build}"/>
-  </target>
+<target name="antlr_classpath">
+  <whichresource property="antlr.in.classpath" class="org.antlr.Tool" />
+  <fail message="ANTLR3 not found via CLASSPATH ${java.class.path}">
+    <condition>
+      <not>
+        <isset property="antlr.in.classpath"/>
+      </not>
+    </condition>
+  </fail>
+</target>
 
-  <target name="clean"
-        description="clean up" >
-    <!-- Delete the ${build} and ${dist} directory trees -->
-    <delete dir="${build}"/>
-    <delete dir="${dist}"/>
-  </target>
+<target name="grammar" depends="init, antlr_classpath"
+  description="compile the grammar " >
+  <!-- Compile the grammar from ${src} into ${build} -->
+ <antlr grammar.name="${grammar}" destdir="${lib}/grammar"/>
+</target>
+
+<target name="compile" depends="grammar"
+  description="compile the source " >
+  <!-- Compile the java code from ${src} into ${build} -->
+  <javac srcdir="${lib}/grammar" destdir="${build}"/>
+  <javac srcdir="${src}" destdir="${build}"/>
+</target>
+
+<target name="dist" depends="compile"
+  description="generate the distribution" >
+  <!-- Create the distribution directory -->
+  <mkdir dir="${dist}/lib"/>
+
+  <!-- Put everything in ${build} into the Tandem-${DSTAMP}.jar file -->
+  <jar jarfile="${dist}/lib/Tandem-${DSTAMP}.jar" basedir="${build}"/>
+</target>
+
+<target name="clean"
+  description="clean up" >
+  <!-- Delete the ${build} and ${dist} directory trees -->
+  <delete dir="${build}"/>
+  <delete dir="${dist}"/>
+  <delete dir="${lib}/grammar"/>
+</target>
 </project>

@@ -5,3 +5,6 @@ src/TanG2Parser.java
 src/TanG.tokens
 src/TanGLexer.java
 src/TanGParser.java
+lib/grammar/TanG.tokens
+lib/grammar/TanGLexer.java
+lib/grammar/TanGParser.java
