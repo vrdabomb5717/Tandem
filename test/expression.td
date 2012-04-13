@@ -1,5 +1,3 @@
-hash1 = {1=>2,2=>3,3=>4}
-list1 = [1,2,3]
 exp1 = 2**3
 false_var= !true
 a_neg = -2
