@@ -4,11 +4,9 @@ options{
 language=Java;
 output=AST;
 ASTLabelType=CommonTree;
-backtrack=true;
-memoize=true;
 }
 
-tanG	:	(i ((NEWLINE  EOF)?|(NEWLINE m)))? | m?;
+tanG	:	(i ((NEWLINE  EOF)?|(NEWLINE m)))? | m;
 
 //Import Statements
 i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | '*'       ) (NEWLINE iprime)? 
@@ -23,7 +21,7 @@ m	:	statement (NEWLINE mprime)?;
 mprime	:	statement (NEWLINE m)?;
 
 statement
-	:	td_node ID LPAREN! params RPAREN! NEWLINE m NEWLINE td_end
+	:	td_node ID LPAREN! params RPAREN! NEWLINE (m NEWLINE)? td_end
 	|	orexpression
 	|	condType
 	|	loopType
