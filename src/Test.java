@@ -16,6 +16,10 @@ public class Test{
            		while ((token = lexer.nextToken()).getType()!=org.antlr.runtime.Token.EOF) {
              		System.out.println("Token: "+token.getText());
            		}
+			lexer.reset();
+			TokenStream ts = new CommonTokenStream(lexer);
+			WateredDownTanGParser parse = new WateredDownTanGParser(ts);
+			parse.tanG();
         	} catch(Throwable t) {
            		System.out.println("Exception: "+t);
            		t.printStackTrace();

@@ -6,7 +6,7 @@ output=AST;
 ASTLabelType=CommonTree;
 }
 
-tanG	:	(i ((NEWLINE  EOF)?|(NEWLINE m)))? | m;
+tanG	:	NEWLINE? ((i ((NEWLINE  EOF)?|(NEWLINE m)))? | m);
 
 //Import Statements
 i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | '*'       ) (NEWLINE iprime)? 
@@ -183,16 +183,13 @@ FLOAT
     ;
 
 
-fragment
-NEWLINE	:	'\r'? '\n'
+NEWLINE	:	('\r'? '\n')+
 		;
 
 
 WS  :   ( ' '
         | '\t'
-        | '\r'
-        | '\n'
-        )+ {skip();};
+        ) {skip();};
 
 
 
