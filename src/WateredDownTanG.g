@@ -33,11 +33,11 @@ statement
 params	:	(ID(COMMA ID)*)?;
 
 //Loops
-loopType	:	td_for ID td_in iterable NEWLINE m td_end
-	|	td_while orexpression NEWLINE m td_end
-	|	td_do NEWLINE m td_while orexpression NEWLINE td_end
-	|	td_loop NEWLINE m td_end
-	|	td_until orexpression NEWLINE m td_end;
+loopType	:	td_for ID td_in iterable NEWLINE (m NEWLINE)? td_end
+	|	td_while orexpression NEWLINE (m NEWLINE) td_end
+	|	td_do NEWLINE (m NEWLINE)? td_while orexpression NEWLINE td_end
+	|	td_loop NEWLINE (m NEWLINE) td_end
+	|	td_until orexpression NEWLINE (m NEWLINE)? td_end;
 //Things that can be iterated through
 iterable	:	ID;
 
@@ -46,12 +46,12 @@ expression
 	:	condType;
 
 //conditionals
-condType	:	td_if orexpression NEWLINE m td_else NEWLINE m td_end
-	|	td_unless orexpression NEWLINE m td_end
-	|	td_cond  (NEWLINE (cstatement NEWLINE)+)? td_end;
+condType	:	td_if orexpression NEWLINE (m NEWLINE)? td_else NEWLINE (m NEWLINE)? td_end
+	|	td_unless orexpression NEWLINE (m NEWLINE)? td_end
+	|	td_cond  NEWLINE (cstatement NEWLINE)* td_end;
 	
 cstatement
-	:	orexpression NEWLINE m td_end;
+	:	orexpression NEWLINE (m NEWLINE)? td_end;
 	
 orexpression
 	:	ID;
