@@ -9,15 +9,16 @@ import org.antlr.runtime.*;
 
 public class Test{
 	public static void main(String args[]){
-		try{
-
-		WateredDownTanGLexer lex = new WateredDownTanGLexer(new ANTLRInputStream(new FileInputStream(args[0])));
-		TokenStream ts = new CommonTokenStream(lex);
-		lex.reset();
-		WateredDownTanGParser parse = new WateredDownTanGParser(ts);
-		parse.tanG();
-    	} catch(Exception e) {
-    		System.err.println("exception: "+e);
-    	}
-    }	
+        	try {
+           		CharStream input = new ANTLRFileStream(args[0]);
+           		WateredDownTanGLexer lexer = new WateredDownTanGLexer(input);
+           		Token token;
+           		while ((token = lexer.nextToken()).getType()!=org.antlr.runtime.Token.EOF) {
+             		System.out.println("Token: "+token.getText());
+           		}
+        	} catch(Throwable t) {
+           		System.out.println("Exception: "+t);
+           		t.printStackTrace();
+        	}
+    	}	
 }

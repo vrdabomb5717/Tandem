@@ -54,7 +54,7 @@ cstatement
 	:	orexpression NEWLINE m td_end;
 	
 orexpression
-	:	'@@@';
+	:	ID;
 
 //Keywords
 td_from	:	FROM;
@@ -183,14 +183,18 @@ FLOAT
     ;
 
 
+fragment
 NEWLINE	:	'\r'? '\n'
 		;
+
 
 WS  :   ( ' '
         | '\t'
         | '\r'
         | '\n'
-        )+ {$channel=HIDDEN;};
+        )+ {skip();};
+
+
 
 HEX	:	'0x' (HEX_DIGIT)+;
 
