@@ -60,66 +60,15 @@ xorExpr	:	andExpr (td_xor andExpr)*;
 
 andExpr	:	notExpr (td_and notExpr)*;
 
-notExpr	:	(td_not)? memExpr;
+notExpr	:	(td_not)*  memExpr;
 
 memExpr	:	idTestExpr (td_memtest idTestExpr)?;
 
 idTestExpr
-	:	modExpr (td_idtest modExpr)?;
+	:	modExpr (td_idtest modExpr)*;
 	
-modExpr	:	assignment (td_mod assignment)*;
-
-assignment
-	:	(rangeExpr ASSN)* rangeExpr;
 	
-rangeExpr	:	nRangeExpr (RANGE nRangeExpr)?;
-
-nRangeExpr
-	:	boolAndExpr (NRANGE boolAndExpr)*;
-
-boolAndExpr
-	:	eqTestExpr (BOOLAND eqTestExpr)*;
-	
-eqTestExpr
-	:	magCompExpr (EQTEST magCompExpr)?;
-	
-magCompExpr
-	:	bitOrExpr (MAGCOMP bitOrExpr)*;
-	
-bitOrExpr
-	:	bitXorExpr (BITOR bitXorExpr)*;
-	
-bitXorExpr
-	:	bitAndExpr (BITXOR bitAndExpr)*;
-	
-bitAndExpr
-	:	bitShiftExpr (BITAND bitShiftExpr)*;
-	
-bitShiftExpr
-	:	addSubExpr (BITSHIFT addSubExpr)*;
-	
-addSubExpr
-	:	multExpr (ADDSUB multExpr)*;
-	
-multExpr	:	unariesExpr (MULT unariesExpr)*;
-
-unariesExpr
-	:	(ADDSUB)* bitNotExpr;
-	
-bitNotExpr
-	:	(BITNOT)* expExpression;
-	
-expExpression
-	:	(pipelineExpr EXP)* pipelineExpr;
-	
-pipelineExpr
-	:	indexable ((indexable)* (PIPE indexable)+)?;
-	
-indexable
-	:	attributeExpr (LBRACK! attributeExpr RBRACK!)*;
-	
-attributeExpr
-	:	atom (DOT ID)*;
+modExpr	:	atom (td_mod atom)*;
 	
 //atom
 atom	:	ID;
@@ -151,9 +100,9 @@ td_xor	:	XOR;
 td_and	:	AND;
 td_not	:	NOT;
 td_memtest
-	:	MEMTEST;
+	:	NOT? IN;
 td_idtest
-	:	IDTEST;
+	:	IS (NOT)?;
 td_mod	:	MOD;
 
 //Lexer/Tokens
@@ -199,8 +148,7 @@ OR	:	'or';
 XOR	:	'xor';
 AND	:	'and';
 NOT	:	'not';
-MEMTEST	:	'in' | 'not in';
-IDTEST	:	'is'| 'is not';
+IS	:	'is';
 MOD	:	'mod';
 ASSN	:	'='|'+='|'-='|'*='|'/='|'%='|'**='|'>>='|'<<='|'^='
 	|	'/\\='|'\\/='|'&&='|'||=';
