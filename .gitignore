@@ -2,6 +2,15 @@ src/TanG2.tokens
 src/TanG2Lexer.java
 src/TanG2Parser.java
 *.class
+
 src/TanG.tokens
 src/TanGLexer.java
 src/TanGParser.java
+lib/grammar/TanG.tokens
+lib/grammar/TanGLexer.java
+lib/grammar/TanGParser.java
+
+# Package Files #
+*.jar
+*.war
+*.ear
