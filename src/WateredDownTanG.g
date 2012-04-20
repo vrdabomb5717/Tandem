@@ -23,6 +23,7 @@ mprime	:	statement (NEWLINE m)?;
 statement
 	:	td_node ID LPAREN! params RPAREN! NEWLINE (m NEWLINE)? td_end
 	|	expression
+	|	loopType
 	|	td_return orExpression
 	|	td_assert orExpression
 	|	td_break (orExpression)?
@@ -33,7 +34,6 @@ params	:	(ID(COMMA ID)*)?;
 //Loops
 loopType	:	td_for ID td_in iterable NEWLINE (m NEWLINE)? td_end
 	|	td_while orExpression NEWLINE (m NEWLINE) td_end
-	|	td_do NEWLINE (m NEWLINE)? td_while orExpression NEWLINE td_end
 	|	td_loop NEWLINE (m NEWLINE) td_end
 	|	td_until orExpression NEWLINE (m NEWLINE)? td_end;
 //Things that can be iterated through
