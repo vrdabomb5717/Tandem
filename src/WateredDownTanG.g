@@ -82,7 +82,11 @@ boolAndExpr
 	:	eqTestExpr (BOOLAND eqTestExpr)*;
 	
 eqTestExpr
-	:	indexable (EQTEST eqTestExpr)?;
+	:	magCompExpr (EQTEST eqTestExpr)?;
+	
+magCompExpr
+	:	indexable (MAGCOMP indexable)*;
+	
 	
 
 
