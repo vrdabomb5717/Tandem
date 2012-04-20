@@ -70,7 +70,25 @@ idTestExpr
 modExpr	:	assignment (td_mod assignment)*;
 
 assignment
-	:	indexable (ASSN assignment)?;
+	:	rangeExpr (ASSN rangeExpr)?;
+	
+rangeExpr
+	:	boolOrExpr (RANGE boolOrExpr)?;
+	
+boolOrExpr
+	:	indexable (BOOLOR indexable)*;
+
+
+
+
+
+
+
+
+
+
+
+
 	
 indexable
 	:	attributable (LBRACK attributable RBRACK)*;
@@ -167,21 +185,21 @@ AND	:	'and';
 NOT	:	'not';
 IS	:	'is';
 MOD	:	'mod';
+EQTEST	:	'=='|'!=';
 ASSN	:	'='|'+='|'-='|'*='|'/='|'%='|'**='|'>>='|'<<='|'^='
 	|	'/\\='|'\\/='|'&&='|'||=';
 RANGE	:	'..';
-NRANGE	:	'||';
+BOOLOR	:	'||';
 BOOLAND	:	'&&';
-EQTEST	:	'=='|'!=';
 MAGCOMP	:	'>'|'<'|'>='|'<=';
 BITOR	:	'\\/';
 BITXOR	:	'^';
 BITAND	:	'/\\';
 BITSHIFT	:	'>>'|'<<';
 ADDSUB	:	'+'|'-';
+EXP	:	'**';
 MULT	:	'*'|'/'|'%';
 BITNOT	:	'!';
-EXP	:	'**';
 PIPE	:	'|';
 FATCOMMA	:	'=>';
 DOT
@@ -205,7 +223,7 @@ LBRACE	:	'{';
 RBRACE	:	'}';
 //other stuff
 FLOAT
-    :   ('0'..'9')+ DOT ('0'..'9')* EXPONENT?
+    :   ('0'..'9')+ DOT ('0'..'9')+ EXPONENT?
     |   DOT ('0'..'9')+ EXPONENT?
     |   ('0'..'9')+ EXPONENT
     ;
