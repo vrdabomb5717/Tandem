@@ -13,9 +13,27 @@ public class TandemTest
 {
     public static void main(String args[])
     {
+        // try
+        // {
+        //     CharStream input = new ANTLRFileStream(args[0]);
+        //     TanGLexer lexer = new TanGLexer(input);
+
+        //     TokenStream ts = new CommonTokenStream(lexer);
+        //     TanGParser parse = new TanGParser(ts);
+        //     parse.tanG();
+        // }
+        // catch(Throwable t)
+        // {
+        //     System.out.println("Exception: "+t);
+        //     t.printStackTrace();
+        // }
+    }
+
+    public static boolean parseFile(String filename)
+    {
         try
         {
-            CharStream input = new ANTLRFileStream(args[0]);
+            CharStream input = new ANTLRFileStream(filename);
             TanGLexer lexer = new TanGLexer(input);
 
             TokenStream ts = new CommonTokenStream(lexer);
@@ -24,8 +42,18 @@ public class TandemTest
         }
         catch(Throwable t)
         {
-            System.out.println("Exception: "+t);
-            t.printStackTrace();
+            // System.out.println("Exception: "+t);
+            // t.printStackTrace();
+            return false;
         }
+
+        return true;
+    }
+
+
+    @Test
+    public void test_empty_file()
+    {
+        // assertTrue();
     }
 }
