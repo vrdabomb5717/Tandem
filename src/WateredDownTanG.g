@@ -85,7 +85,19 @@ eqTestExpr
 	:	magCompExpr (EQTEST eqTestExpr)?;
 	
 magCompExpr
-	:	indexable (MAGCOMP indexable)*;
+	:	bitOrExpr (MAGCOMP magCompExpr)?;
+	
+bitOrExpr
+	:	bitXorExpr (BITOR bitXorExpr)*;
+	
+bitXorExpr
+	:	bitAndExpr (BITXOR bitAndExpr)*;
+	
+bitAndExpr
+	:	bitShiftExpr (BITAND bitShiftExpr)*;
+	
+bitShiftExpr
+	:	indexable (BITSHIFT indexable)*;
 	
 	
 
