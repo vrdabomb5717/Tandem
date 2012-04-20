@@ -24,25 +24,25 @@ public class TandemTree{
 	public static void main(String args[]){
 		try{
 
-			WateredDownTanGLexer lex = new WateredDownTanGLexer(new ANTLRInputStream(new FileInputStream(args[0])));
-			Token token;
-			TokenStream ts = new CommonTokenStream(lex);
-			lex.reset();
-			WateredDownTanGParser parse = new WateredDownTanGParser(ts);
-			WateredDownTanGParser.tanG_return result = parse.tanG();
-			CommonTree t = (CommonTree)result.getTree();
-			TandemTree Tr = new TandemTree();
-			Tr.printTree(t, 2);
-			DOTTreeGenerator gen = new DOTTreeGenerator();
-			StringTemplate st = gen.toDOT(t);	
-			try {
-    				BufferedWriter out = new BufferedWriter(new FileWriter("graph.txt"));
-   				 out.write(st.toString());
-   				 out.close();
-			} catch (IOException e) {}		
-    		} catch(Exception e) {
-    			System.err.println("exception: "+e);
-    		}
-    	}	
+	 		TanGLexer lex = new TanGLexer(new ANTLRInputStream(new FileInputStream(args[0])));
+	 		Token token;
+	 		TokenStream ts = new CommonTokenStream(lex);
+	 		lex.reset();
+	 		TanGParser parse = new TanGParser(ts);
+	 		TanGParser.tanG_return result = parse.tanG();
+	 		CommonTree t = (CommonTree)result.getTree();
+	 		TandemTree Tr = new TandemTree();
+	 		Tr.printTree(t, 2);
+	 		DOTTreeGenerator gen = new DOTTreeGenerator();
+	 		StringTemplate st = gen.toDOT(t);	
+	 		try {
+	 		                          	BufferedWriter out = new BufferedWriter(new FileWriter("graph.txt"));
+	 		                          	 out.write(st.toString());
+	 		                          	 out.close();
+	 		} catch (IOException e) {}		
+	 	} catch(Exception e) {
+	 		System.err.println("exception: "+e);
+	 	}
+	}	
 }
 

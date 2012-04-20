@@ -1,18 +1,20 @@
-grammar WateredDownTanG;
+grammar TanG;
 
 options{
 language=Java;
 output=AST;
 ASTLabelType=CommonTree;
+backtrack=true;
+memoize=true;
 }
 
-tanG	:	NEWLINE? ((i ((NEWLINE  EOF)?|(NEWLINE m (NEWLINE EOF)?)))? | m);
+tanG	:	(i ((NEWLINE  EOF)?|(NEWLINE m)))? | m?;
 
 //Import Statements
-i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | STAR      ) (NEWLINE iprime)? 
+i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | '*'       ) (NEWLINE iprime)? 
  	|	td_imp filename (NEWLINE iprime)?; 
  	
- iprime	:	td_from filename td_imp (ID (DOT ID)* (COMMA  ID (DOT ID)*)* | STAR) (NEWLINE i)?
+ iprime	:	td_from filename td_imp (ID (DOT ID)* (COMMA  ID (DOT ID)*)* | '*') (NEWLINE i)?
  	|	td_imp filename (NEWLINE i)?;
 
 //Main body
@@ -21,35 +23,36 @@ m	:	statement (NEWLINE mprime)?;
 mprime	:	statement (NEWLINE m)?;
 
 statement
-	:	td_node ID LPAREN! params RPAREN! NEWLINE (m NEWLINE)? td_end
+	:	td_node ID LPAREN! params RPAREN! NEWLINE m NEWLINE td_end
 	|	expression
 	|	loopType
-	|	td_return orExpression
-	|	td_assert orExpression
-	|	td_break (orExpression)?
+	|	td_return expression
+	|	td_assert expression
+	|	td_break (expression)?
 	|	td_continue;
 	
-params	:	(ID(COMMA ID)*)?;
+params	:	ID(COMMA ID)*;
 
 //Loops
-loopType	:	td_for ID td_in iterable NEWLINE (m NEWLINE)? td_end
-	|	td_while orExpression NEWLINE (m NEWLINE) td_end
-	|	td_loop NEWLINE (m NEWLINE) td_end
-	|	td_until orExpression NEWLINE (m NEWLINE)? td_end;
+loopType	:	td_for ID td_in iterable NEWLINE m td_end
+	|	td_while expression NEWLINE m td_end
+	|	td_do NEWLINE m td_while expression NEWLINE td_end
+	|	td_loop NEWLINE m td_end
+	|	td_until expression NEWLINE m td_end;
 //Things that can be iterated through
 iterable	:	ID;
 
 //Expressions
 expression
-	:	condType | orExpression;
+	:	condType| orExpression;
 
 //conditionals
-condType	:	td_if orExpression NEWLINE (m NEWLINE)? td_else NEWLINE (m NEWLINE)? td_end
-	|	td_unless orExpression NEWLINE (m NEWLINE)? td_end
-	|	td_cond  NEWLINE (cstatement NEWLINE)* td_end;
+condType	:	td_if expression NEWLINE m td_else NEWLINE m td_end
+	|	td_unless expression NEWLINE m td_end
+	|	td_cond  (NEWLINE (cstatement NEWLINE)+)? td_end;
 	
 cstatement
-	:	orExpression NEWLINE (m NEWLINE)? td_end;
+	:	expression NEWLINE m td_end;
 	
 //ExpressionTypes
 orExpression
@@ -59,33 +62,31 @@ xorExpr	:	andExpr (td_xor andExpr)*;
 
 andExpr	:	notExpr (td_and notExpr)*;
 
-notExpr	:	(td_not)*  memExpr;
+notExpr	:	(td_not)? memExpr;
 
 memExpr	:	idTestExpr (td_memtest idTestExpr)?;
 
 idTestExpr
-	:	modExpr (td_idtest modExpr)*;
-	
+	:	modExpr (td_idtest modExpr)?;
 	
 modExpr	:	assignment (td_mod assignment)*;
 
 assignment
-	:	rangeExpr (ASSN assignment)?;
+	:	(rangeExpr ASSN)* rangeExpr;
 	
-rangeExpr
-	:	boolOrExpr (RANGE boolOrExpr)?|INTRANGE;
-	
-boolOrExpr
-	:	boolAndExpr (BOOLOR boolAndExpr)*;
+rangeExpr	:	nRangeExpr (RANGE nRangeExpr)?;
+
+nRangeExpr
+	:	boolAndExpr (NRANGE boolAndExpr)*;
 
 boolAndExpr
 	:	eqTestExpr (BOOLAND eqTestExpr)*;
 	
 eqTestExpr
-	:	magCompExpr (EQTEST eqTestExpr)?;
+	:	magCompExpr (EQTEST magCompExpr)?;
 	
 magCompExpr
-	:	bitOrExpr (MAGCOMP magCompExpr)?;
+	:	bitOrExpr (MAGCOMP bitOrExpr)*;
 	
 bitOrExpr
 	:	bitXorExpr (BITOR bitXorExpr)*;
@@ -102,38 +103,32 @@ bitShiftExpr
 addSubExpr
 	:	multExpr (ADDSUB multExpr)*;
 	
-multExpr:		unariesExpr ((MULT| STAR) unariesExpr)*;	
-
+multExpr	:	unariesExpr (MULT unariesExpr)*;
 
 unariesExpr
 	:	(ADDSUB)* bitNotExpr;
 	
 bitNotExpr
 	:	(BITNOT)* expExpression;
+	
 expExpression
-	:	pipelineExpr (EXP expExpression)?;
+	:	(pipelineExpr EXP)* pipelineExpr;
 	
 pipelineExpr
-	:	indexable ((WS indexable)*  (PIPE indexable)+)?;
-			
+	:	indexable ((indexable)* (PIPE indexable)+)?;
 	
 indexable
-	:	attributable (LBRACK attributable RBRACK)*;
-
-attributable
-	:	atom (DOT atom)*;
+	:	attributeExpr (LBRACK! attributeExpr RBRACK!)*;
 	
+attributeExpr
+	:	atom (DOT ID)*;
 	
-//atom
-atom	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN orExpression RPAREN|list|hashSet|td_truefalse;
+atom	:	ID| LPAREN!expression RPAREN!|INT|FLOAT|STRING|HEX|BYTE|hash|set|list;
 
-list	:	LBRACK (orExpression (COMMA orExpression)*)? RBRACK;
+hash	:	LBRACE (atom FATCOMMA atom (COMMA atom FATCOMMA atom)*)? '}';
+set	:	LBRACE(atom (COMMA atom)*)? RBRACE;
+list	:	LBRACK(atom (COMMA atom)*)?RBRACK;
 
-hashSet	:	LBRACE (orExpression (hashInsides|setInsides))? RBRACE;
-hashInsides
-	:	FATCOMMA orExpression (COMMA orExpression FATCOMMA orExpression)*;
-setInsides
-	:	(COMMA orExpression)*;//orExpression (COMMA orExpression)*;
 
 //Keywords
 td_from	:	FROM;
@@ -162,18 +157,17 @@ td_xor	:	XOR;
 td_and	:	AND;
 td_not	:	NOT;
 td_memtest
-	:	NOT? IN;
+	:	MEMTEST;
 td_idtest
-	:	IS (NOT)?;
+	:	IDTEST;
 td_mod	:	MOD;
-td_truefalse
-	:	TF;
+
 //Lexer/Tokens
 
 //Operators  
 COMMENT
     :   ('#' |'//') ~('\n'|'\r')* '\r'? '\n' {skip();}
-    |   '/*' ( options {greedy=false;} : . )* '*/' (NEWLINE)? {skip();}
+    |   '/*' ( options {greedy=false;} : . )* '*/' {skip();}
     ;
   
 FROM
@@ -211,28 +205,26 @@ OR	:	'or';
 XOR	:	'xor';
 AND	:	'and';
 NOT	:	'not';
-IS	:	'is';
+MEMTEST	:	'in' | 'not in';
+IDTEST	:	'is'| 'is not';
 MOD	:	'mod';
-TF	:	'true'|'false';
-INTRANGE	:	('0'..'9')+'..'('0'..'9')+;
-RANGE	:	'..';
-FATCOMMA	:	'=>';
-EQTEST	:	'=='|'!=';
 ASSN	:	'='|'+='|'-='|'*='|'/='|'%='|'**='|'>>='|'<<='|'^='
 	|	'/\\='|'\\/='|'&&='|'||=';
-BOOLOR	:	'||';
+RANGE	:	'..';
+NRANGE	:	'||';
 BOOLAND	:	'&&';
+EQTEST	:	'=='|'!=';
 MAGCOMP	:	'>'|'<'|'>='|'<=';
 BITOR	:	'\\/';
 BITXOR	:	'^';
 BITAND	:	'/\\';
 BITSHIFT	:	'>>'|'<<';
 ADDSUB	:	'+'|'-';
-EXP	:	'**';
-STAR	:	'*';
-MULT	:	'/'|'%';
+MULT	:	'*'|'/'|'%';
 BITNOT	:	'!';
+EXP	:	'**';
 PIPE	:	'|';
+FATCOMMA	:	'=>';
 DOT
 	:	'.'
 	;
@@ -252,26 +244,27 @@ RBRACK	:	']';
 LBRACE	:	'{';
 
 RBRACE	:	'}';
+QUOTE	:	'"';
+
 //other stuff
+INT :	'0'..'9'+
+    ;
+    
 FLOAT
-    :   ('0'..'9')+ DOT ('0'..'9')+ EXPONENT?
+    :   ('0'..'9')+ DOT ('0'..'9')* EXPONENT?
     |   DOT ('0'..'9')+ EXPONENT?
     |   ('0'..'9')+ EXPONENT
     ;
 
 
-INT :	'0'..'9'+
-    ;
-
-NEWLINE	:	('\r'? '\n')+
+NEWLINE	:	'\r'? '\n'
 		;
-
 
 WS  :   ( ' '
         | '\t'
-        ) {$channel=HIDDEN;};
-
-
+        | '\r'
+        | '\n'
+        )+ {$channel=HIDDEN;};
 
 HEX	:	'0x' (HEX_DIGIT)+;
 

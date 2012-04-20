@@ -9,20 +9,20 @@ import org.antlr.runtime.*;
 
 public class Test{
 	public static void main(String args[]){
-        	try {
-           		CharStream input = new ANTLRFileStream(args[0]);
-           		WateredDownTanGLexer lexer = new WateredDownTanGLexer(input);
-           		Token token;
-           		while ((token = lexer.nextToken()).getType()!=org.antlr.runtime.Token.EOF) {
-             		System.out.println("Token: "+token.getText());
-           		}
+	try {
+		CharStream input = new ANTLRFileStream(args[0]);
+		TanGLexer lexer = new TanGLexer(input);
+		Token token;
+		while ((token = lexer.nextToken()).getType()!=org.antlr.runtime.Token.EOF) {
+		System.out.println("Token: "+token.getText());
+		}
 			lexer.reset();
 			TokenStream ts = new CommonTokenStream(lexer);
-			WateredDownTanGParser parse = new WateredDownTanGParser(ts);
+			TanGParser parse = new TanGParser(ts);
 			parse.tanG();
-        	} catch(Throwable t) {
-           		System.out.println("Exception: "+t);
-           		t.printStackTrace();
-        	}
-    	}	
+	} catch(Throwable t) {
+		System.out.println("Exception: "+t);
+		t.printStackTrace();
+	}
+	}	
 }
