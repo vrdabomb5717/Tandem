@@ -6,7 +6,7 @@ output=AST;
 ASTLabelType=CommonTree;
 }
 
-tanG	:	NEWLINE? ((i ((NEWLINE  EOF)?|(NEWLINE m)))? | m);
+tanG	:	NEWLINE? ((i ((NEWLINE  EOF)?|(NEWLINE m (NEWLINE EOF)?)))? | m);
 
 //Import Statements
 i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | '*'       ) (NEWLINE iprime)? 
@@ -22,39 +22,56 @@ mprime	:	statement (NEWLINE m)?;
 
 statement
 	:	td_node ID LPAREN! params RPAREN! NEWLINE (m NEWLINE)? td_end
-	|	orexpression
-	|	condType
+	|	expression
 	|	loopType
-	|	td_return orexpression
-	|	td_assert orexpression
-	|	td_break (orexpression)?
+	|	td_return orExpression
+	|	td_assert orExpression
+	|	td_break (orExpression)?
 	|	td_continue;
 	
 params	:	(ID(COMMA ID)*)?;
 
 //Loops
 loopType	:	td_for ID td_in iterable NEWLINE (m NEWLINE)? td_end
-	|	td_while orexpression NEWLINE (m NEWLINE) td_end
-	|	td_do NEWLINE (m NEWLINE)? td_while orexpression NEWLINE td_end
+	|	td_while orExpression NEWLINE (m NEWLINE) td_end
+	|	td_do NEWLINE (m NEWLINE)? td_while orExpression NEWLINE td_end
 	|	td_loop NEWLINE (m NEWLINE) td_end
-	|	td_until orexpression NEWLINE (m NEWLINE)? td_end;
+	|	td_until orExpression NEWLINE (m NEWLINE)? td_end;
 //Things that can be iterated through
 iterable	:	ID;
 
 //Expressions
 expression
-	:	condType;
+	:	condType | orExpression;
 
 //conditionals
-condType	:	td_if orexpression NEWLINE (m NEWLINE)? td_else NEWLINE (m NEWLINE)? td_end
-	|	td_unless orexpression NEWLINE (m NEWLINE)? td_end
+condType	:	td_if orExpression NEWLINE (m NEWLINE)? td_else NEWLINE (m NEWLINE)? td_end
+	|	td_unless orExpression NEWLINE (m NEWLINE)? td_end
 	|	td_cond  NEWLINE (cstatement NEWLINE)* td_end;
 	
 cstatement
-	:	orexpression NEWLINE (m NEWLINE)? td_end;
+	:	orExpression NEWLINE (m NEWLINE)? td_end;
 	
-orexpression
-	:	ID;
+//ExpressionTypes
+orExpression
+	:	xorExpr (td_or xorExpr)*;
+	
+xorExpr	:	andExpr (td_xor andExpr)*;
+
+andExpr	:	notExpr (td_and notExpr)*;
+
+notExpr	:	(td_not)*  memExpr;
+
+memExpr	:	idTestExpr (td_memtest idTestExpr)?;
+
+idTestExpr
+	:	modExpr (td_idtest modExpr)*;
+	
+	
+modExpr	:	atom (td_mod atom)*;
+	
+//atom
+atom	:	ID;
 
 //Keywords
 td_from	:	FROM;
@@ -83,9 +100,9 @@ td_xor	:	XOR;
 td_and	:	AND;
 td_not	:	NOT;
 td_memtest
-	:	MEMTEST;
+	:	NOT? IN;
 td_idtest
-	:	IDTEST;
+	:	IS (NOT)?;
 td_mod	:	MOD;
 
 //Lexer/Tokens
@@ -131,8 +148,7 @@ OR	:	'or';
 XOR	:	'xor';
 AND	:	'and';
 NOT	:	'not';
-MEMTEST	:	'in' | 'not in';
-IDTEST	:	'is'| 'is not';
+IS	:	'is';
 MOD	:	'mod';
 ASSN	:	'='|'+='|'-='|'*='|'/='|'%='|'**='|'>>='|'<<='|'^='
 	|	'/\\='|'\\/='|'&&='|'||=';
