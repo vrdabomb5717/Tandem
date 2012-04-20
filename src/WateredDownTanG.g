@@ -97,9 +97,12 @@ bitAndExpr
 	:	bitShiftExpr (BITAND bitShiftExpr)*;
 	
 bitShiftExpr
-	:	indexable (BITSHIFT indexable)*;
+	:	addSubExpr (BITSHIFT addSubExpr)*;
 	
+addSubExpr
+	:	multExpr (ADDSUB multExpr)*;
 	
+multExpr:		indexable (MULT indexable)*;	
 
 
 
