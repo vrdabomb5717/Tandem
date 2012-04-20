@@ -9,10 +9,10 @@ ASTLabelType=CommonTree;
 tanG	:	NEWLINE? ((i ((NEWLINE  EOF)?|(NEWLINE m (NEWLINE EOF)?)))? | m);
 
 //Import Statements
-i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | '*'       ) (NEWLINE iprime)? 
+i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | STAR      ) (NEWLINE iprime)? 
  	|	td_imp filename (NEWLINE iprime)?; 
  	
- iprime	:	td_from filename td_imp (ID (DOT ID)* (COMMA  ID (DOT ID)*)* | '*') (NEWLINE i)?
+ iprime	:	td_from filename td_imp (ID (DOT ID)* (COMMA  ID (DOT ID)*)* | STAR) (NEWLINE i)?
  	|	td_imp filename (NEWLINE i)?;
 
 //Main body
@@ -70,7 +70,52 @@ idTestExpr
 modExpr	:	assignment (td_mod assignment)*;
 
 assignment
-	:	indexable (ASSN assignment)?;
+	:	rangeExpr (ASSN assignment)?;
+	
+rangeExpr
+	:	boolOrExpr (RANGE boolOrExpr)?|INTRANGE;
+	
+boolOrExpr
+	:	boolAndExpr (BOOLOR boolAndExpr)*;
+
+boolAndExpr
+	:	eqTestExpr (BOOLAND eqTestExpr)*;
+	
+eqTestExpr
+	:	magCompExpr (EQTEST eqTestExpr)?;
+	
+magCompExpr
+	:	bitOrExpr (MAGCOMP magCompExpr)?;
+	
+bitOrExpr
+	:	bitXorExpr (BITOR bitXorExpr)*;
+	
+bitXorExpr
+	:	bitAndExpr (BITXOR bitAndExpr)*;
+	
+bitAndExpr
+	:	bitShiftExpr (BITAND bitShiftExpr)*;
+	
+bitShiftExpr
+	:	addSubExpr (BITSHIFT addSubExpr)*;
+	
+addSubExpr
+	:	multExpr (ADDSUB multExpr)*;
+	
+multExpr:		unariesExpr ((MULT| STAR) unariesExpr)*;	
+
+
+unariesExpr
+	:	(ADDSUB)* bitNotExpr;
+	
+bitNotExpr
+	:	(BITNOT)* expExpression;
+expExpression
+	:	pipelineExpr (EXP expExpression)?;
+	
+pipelineExpr
+	:	indexable ((WS indexable)*  (PIPE indexable)+)?;
+			
 	
 indexable
 	:	attributable (LBRACK attributable RBRACK)*;
@@ -80,7 +125,7 @@ attributable
 	
 	
 //atom
-atom	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN orExpression RPAREN|list|hashSet;
+atom	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN orExpression RPAREN|list|hashSet|td_truefalse;
 
 list	:	LBRACK (orExpression (COMMA orExpression)*)? RBRACK;
 
@@ -121,7 +166,8 @@ td_memtest
 td_idtest
 	:	IS (NOT)?;
 td_mod	:	MOD;
-
+td_truefalse
+	:	TF;
 //Lexer/Tokens
 
 //Operators  
@@ -167,23 +213,26 @@ AND	:	'and';
 NOT	:	'not';
 IS	:	'is';
 MOD	:	'mod';
+TF	:	'true'|'false';
+INTRANGE	:	('0'..'9')+'..'('0'..'9')+;
+RANGE	:	'..';
+FATCOMMA	:	'=>';
+EQTEST	:	'=='|'!=';
 ASSN	:	'='|'+='|'-='|'*='|'/='|'%='|'**='|'>>='|'<<='|'^='
 	|	'/\\='|'\\/='|'&&='|'||=';
-RANGE	:	'..';
-NRANGE	:	'||';
+BOOLOR	:	'||';
 BOOLAND	:	'&&';
-EQTEST	:	'=='|'!=';
 MAGCOMP	:	'>'|'<'|'>='|'<=';
 BITOR	:	'\\/';
 BITXOR	:	'^';
 BITAND	:	'/\\';
 BITSHIFT	:	'>>'|'<<';
 ADDSUB	:	'+'|'-';
-MULT	:	'*'|'/'|'%';
-BITNOT	:	'!';
 EXP	:	'**';
+STAR	:	'*';
+MULT	:	'/'|'%';
+BITNOT	:	'!';
 PIPE	:	'|';
-FATCOMMA	:	'=>';
 DOT
 	:	'.'
 	;
@@ -205,7 +254,7 @@ LBRACE	:	'{';
 RBRACE	:	'}';
 //other stuff
 FLOAT
-    :   ('0'..'9')+ DOT ('0'..'9')* EXPONENT?
+    :   ('0'..'9')+ DOT ('0'..'9')+ EXPONENT?
     |   DOT ('0'..'9')+ EXPONENT?
     |   ('0'..'9')+ EXPONENT
     ;
@@ -220,7 +269,7 @@ NEWLINE	:	('\r'? '\n')+
 
 WS  :   ( ' '
         | '\t'
-        ) {skip();};
+        ) {$channel=HIDDEN;};
 
 
 
