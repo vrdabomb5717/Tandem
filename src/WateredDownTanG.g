@@ -113,7 +113,7 @@ td_mod	:	MOD;
 //Operators  
 COMMENT
     :   ('#' |'//') ~('\n'|'\r')* '\r'? '\n' {skip();}
-    |   '/*' ( options {greedy=false;} : . )* '*/' {skip();}
+    |   '/*' ( options {greedy=false;} : . )* '*/' (NEWLINE)? {skip();}
     ;
   
 FROM
