@@ -68,10 +68,13 @@ idTestExpr
 	:	modExpr (td_idtest modExpr)*;
 	
 	
-modExpr	:	atom (td_mod atom)*;
+modExpr	:	assignment (td_mod assignment)*;
+
+assignment
+	:	(atom ASSN)* atom;
 	
 //atom
-atom	:	ID;
+atom	:	ID|INT|FLOAT|HEX|BYTE;
 
 //Keywords
 td_from	:	FROM;
@@ -189,15 +192,15 @@ RBRACE	:	'}';
 QUOTE	:	'"';
 
 //other stuff
-INT :	'0'..'9'+
-    ;
-    
 FLOAT
     :   ('0'..'9')+ DOT ('0'..'9')* EXPONENT?
     |   DOT ('0'..'9')+ EXPONENT?
     |   ('0'..'9')+ EXPONENT
     ;
 
+
+INT :	'0'..'9'+
+    ;
 
 NEWLINE	:	('\r'? '\n')+
 		;
