@@ -16,6 +16,17 @@
   <property name="lib" location="lib"/>
   <property name="grammar" value="TanG.g"/>
 
+<!-- Path required to run the tests. Uses built-in JUnit,
+if one is installed, or the provided JUnit otherwise. -->
+<path id="test.classpath">
+  <pathelement location="${java.class.path}" />
+  <pathelement location="${lib}/junit/junit-4.10.jar" />
+  <fileset dir="${lib}">
+    <include name="**/*.jar"/>
+  </fileset>
+</path>
+
+
 <!-- An ant macro which invokes ANTLR3
 This is just a parameterizable wrapper to simplify the invocation of ANTLR3.
 The default values can be overriden by assigning a value to an attribute
@@ -24,112 +35,112 @@ Example with ANTLR3 outputdirectory modified:
 <antlr3 grammar.name="TanG.g" outputdirectory="${src}/${package}"/>
 -->
 
-<taskdef resource="org/apache/tools/ant/antlr/antlib.xml" classpath="${lib}/antlr3-task/ant-antlr3.jar" />
+<taskdef resource="org/apache/tools/ant/antlr/antlib.xml"
+  classpath="${lib}/antlr3-task/ant-antlr3.jar" />
 
 
- <macrodef name="antlr3">
-  <attribute name="grammar.name"/>
-  <attribute name="outputdirectory" default="${lib}/grammar"/>
-  <attribute name="libdirectory" default="${lib}"/>
-  <attribute name="multithreaded" default="true"/>
-  <attribute name="verbose" default="true"/>
-  <attribute name="report" default="true"/>
-  <attribute name="debug" default="false"/>
-  <sequential>
-    <ant-antlr3 xmlns:antlr="org/apache/tools/ant/antlr"
-      target="@{grammar.name}"
-      outputdirectory="@{outputdirectory}"
-      libdirectory="@{libdirectory}"
-      multithreaded="@{multithreaded}"
-      verbose="@{verbose}"
-      report="@{report}"
-      debug="@{debug}">
-       <classpath>
-        <pathelement location="${lib}/antlr3-task/ant-antlr3.jar"/>
-        <pathelement location="${java.class.path}"/>
+  <macrodef name="antlr3">
+    <attribute name="grammar.name"/>
+    <attribute name="outputdirectory" default="${lib}/grammar"/>
+    <attribute name="libdirectory" default="${lib}"/>
+    <attribute name="multithreaded" default="true"/>
+    <attribute name="verbose" default="true"/>
+    <attribute name="report" default="true"/>
+    <attribute name="debug" default="false"/>
+    <sequential>
+      <ant-antlr3 xmlns:antlr="org/apache/tools/ant/antlr"
+        target="@{grammar.name}"
+        outputdirectory="@{outputdirectory}"
+        libdirectory="@{libdirectory}"
+        multithreaded="@{multithreaded}"
+        verbose="@{verbose}"
+        report="@{report}"
+        debug="@{debug}">
+        <classpath>
+          <pathelement location="${lib}/antlr3-task/ant-antlr3.jar"/>
+          <pathelement location="${java.class.path}"/>
+        </classpath>
+        <jvmarg value="-Xmx512M"/>
+      </ant-antlr3>
+    </sequential>
+  </macrodef>
+
+
+  <target name="init">
+
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+    <mkdir dir="${dist}"/>
+    <mkdir dir="${lib}"/>
+    <mkdir dir="${lib}/grammar"/>
+  </target>
+
+  <target name="antlr_classpath">
+    <whichresource property="antlr.in.classpath" class="org.antlr.Tool" />
+    <fail message="ANTLR3 not found via CLASSPATH ${java.class.path}">
+      <condition>
+        <not>
+          <isset property="antlr.in.classpath"/>
+        </not>
+      </condition>
+    </fail>
+  </target>
+
+  <target name="grammar" depends="init, antlr_classpath"
+    description="compile the grammar " >
+    <!-- Compile the grammar from ${src} into ${build} -->
+    <antlr3 grammar.name="${src}/${grammar}" outputdirectory="${lib}/grammar"/>
+  </target>
+
+
+  <target name="compile" depends="grammar"
+    description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <!-- includeantruntime="false" -->
+    <javac destdir="${build}" includeantruntime="false">
+      <classpath>
+        <pathelement path="${java.class.path}"/>
       </classpath>
-      <jvmarg value="-Xmx512M"/>
-    </ant-antlr3>
-  </sequential>
-</macrodef>
+      <src path="${lib}/grammar" />
+    </javac>
+    <javac destdir="${build}" includeantruntime="false">
+      <!-- <classpath path="${build}" /> -->
+      <classpath>
+        <pathelement path="${java.class.path}"/>
+      </classpath>
+      <src path="${src}" />
+    </javac>
+  </target>
 
+  <target name="dist" depends="compile"
+    description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}/lib"/>
 
-<target name="init">
+    <!-- Put everything in ${build} into the Tandem-${DSTAMP}.jar file -->
+    <jar jarfile="${dist}/lib/Tandem-${DSTAMP}.jar" basedir="${build}"/>
+  </target>
 
-  <!-- Create the time stamp -->
-  <tstamp/>
-  <!-- Create the build directory structure used by compile -->
-  <mkdir dir="${build}"/>
-  <mkdir dir="${dist}"/>
-  <mkdir dir="${lib}"/>
-  <mkdir dir="${lib}/grammar"/>
-</target>
+  <target name="parse_test">
+    <java classname="TandemTree" classpath="${build}" fork="true">
+      <fileset dir="${test}">
+        <include name="*.td" />
+        <exclude name="failure/*.td" />
+      </fileset>
+    </java>
+  </target>
 
-<target name="antlr_classpath">
-  <whichresource property="antlr.in.classpath" class="org.antlr.Tool" />
-  <fail message="ANTLR3 not found via CLASSPATH ${java.class.path}">
-    <condition>
-      <not>
-        <isset property="antlr.in.classpath"/>
-      </not>
-    </condition>
-  </fail>
-</target>
+  <target name="test" depends="parse_test">
 
-<target name="grammar" depends="init, antlr_classpath"
-  description="compile the grammar " >
-  <!-- Compile the grammar from ${src} into ${build} -->
- <antlr3 grammar.name="${src}/${grammar}" outputdirectory="${lib}/grammar"/>
+  </target>
 
-</target>
-
-
-<target name="compile" depends="grammar"
-  description="compile the source " >
-  <!-- Compile the java code from ${src} into ${build} -->
-  <!-- includeantruntime="false" -->
-  <javac destdir="${build}" includeantruntime="false">
-    <classpath>
-      <pathelement path="${java.class.path}"/>
-    </classpath>
-    <src path="${lib}/grammar" />
-  </javac>
-  <javac destdir="${build}" includeantruntime="false">
-    <!-- <classpath path="${build}" /> -->
-    <classpath>
-      <pathelement path="${java.class.path}"/>
-    </classpath>
-    <src path="${src}" />
-  </javac>
-</target>
-
-<target name="dist" depends="compile"
-  description="generate the distribution" >
-  <!-- Create the distribution directory -->
-  <mkdir dir="${dist}/lib"/>
-
-  <!-- Put everything in ${build} into the Tandem-${DSTAMP}.jar file -->
-  <jar jarfile="${dist}/lib/Tandem-${DSTAMP}.jar" basedir="${build}"/>
-</target>
-
-<target name="parse_test">
-  <java classname="TandemTree" classpath="${build}" fork="true">
-    <fileset dir="${test}">
-      <include name="*.td" />
-      <exclude name="failure/*.td" />
-    </fileset>
-  </java>
-</target>
-
-<target name="test" depends="parse_test">
-
-</target>
-
-<target name="clean"
-  description="clean up" >
-  <!-- Delete the ${build} and ${dist} directory trees -->
-  <delete dir="${build}"/>
-  <delete dir="${dist}"/>
-  <delete dir="${lib}/grammar"/>
-</target>
+  <target name="clean"
+    description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+    <delete dir="${lib}/grammar"/>
+  </target>
 </project>
