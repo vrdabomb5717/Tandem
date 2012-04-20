@@ -4,9 +4,16 @@ Tandem is a node-based, general purpose programming language. It's useful for wr
 
 # Dependencies
 
-* [ANTLR](http://www.antlr.org)
+* Java 1.5 or greater
+* [ANTLR3](http://www.antlr.org) (if you want to compile the grammar)
+* [Apache Ant](http://ant.apache.org/)
+* [JUnit](http://www.junit.org/) (for running the compiler tests)
 
 To install ANTLR, first download the [JAR file](http://www.antlr.org/download.html). Make sure that you add the path to the JAR file to your classpath.
+
+Tandem includes a version of JUnit for running tests. However, this
+version may be out of date. It is recommended that you use the newest
+version of JUnit to run the unit tests.
 
 # Compilation and Installation
 
