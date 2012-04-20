@@ -16,6 +16,7 @@
   <property name="lib" location="lib"/>
   <property name="grammar" value="TanG.g"/>
   <property name="grammar1" value="WateredDownTanG.g"/>
+  <property name="test.class.name" value="TandemTest" />
 
 <!-- Path required to run the tests. Uses built-in JUnit,
 if one is installed, or the provided JUnit otherwise. -->
@@ -126,13 +127,23 @@ Example with ANTLR3 outputdirectory modified:
     <jar jarfile="${dist}/lib/Tandem-${DSTAMP}.jar" basedir="${build}"/>
   </target>
 
-  <target name="parse_test">
-    <java classname="TandemTree" classpath="${build}" fork="true">
-      <fileset dir="${test}">
-        <include name="*.td" />
-        <exclude name="failure/*.td" />
-      </fileset>
-    </java>
+  <target name="parse_test" depends="compile">
+    <junit printsummary="yes" showoutput="yes" fork="yes" haltonfailure="yes">
+      <test name="${test.class.name}" />
+      <formatter type="plain" usefile="false" />
+      <classpath>
+        <pathelement path="${build}"/>
+        <pathelement path="${java.class.path}"/>
+        <path refid="test.classpath"/>
+      </classpath>
+    </junit>
+
+<!--     <java classname="TandemTest" classpath="${build}" fork="true">
+      <classpath>
+        <pathelement path="${java.class.path}"/>
+        <path refid="test.classpath"/>
+      </classpath>
+    </java> -->
   </target>
 
   <target name="test" depends="parse_test">
