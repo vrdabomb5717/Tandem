@@ -44,7 +44,7 @@ Example with ANTLR3 outputdirectory modified:
     <attribute name="outputdirectory" default="${lib}/grammar"/>
     <attribute name="libdirectory" default="${lib}"/>
     <attribute name="multithreaded" default="true"/>
-    <attribute name="verbose" default="true"/>
+    <attribute name="verbose" default="false"/>
     <attribute name="report" default="true"/>
     <attribute name="debug" default="false"/>
     <sequential>
@@ -109,6 +109,7 @@ Example with ANTLR3 outputdirectory modified:
       <!-- <classpath path="${build}" /> -->
       <classpath>
         <pathelement path="${java.class.path}"/>
+        <path refid="test.classpath"/>
       </classpath>
       <src path="${src}" />
     </javac>
