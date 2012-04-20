@@ -15,6 +15,7 @@
   <property name="test" location="test"/>
   <property name="lib" location="lib"/>
   <property name="grammar" value="TanG.g"/>
+  <property name="grammar1" value="WateredDownTanG.g"/>
 
 <!-- Path required to run the tests. Uses built-in JUnit,
 if one is installed, or the provided JUnit otherwise. -->
