@@ -5,6 +5,8 @@ import org.antlr.runtime.TokenStream;
 import org.antlr.runtime.tree.CommonTree;
 import java.io.*;
 import org.antlr.runtime.*;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 
 public class TandemTest
