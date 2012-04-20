@@ -115,6 +115,7 @@ Example with ANTLR3 outputdirectory modified:
       </classpath>
       <src path="${src}" />
       <exclude name="**/Test.java"/>
+      <exclude name="**/TreeWalker.java"/>
     </javac>
   </target>
 
@@ -128,7 +129,7 @@ Example with ANTLR3 outputdirectory modified:
   </target>
 
   <target name="parse_test" depends="compile">
-    <junit showoutput="yes" fork="yes" haltonfailure="yes">
+    <junit showoutput="yes" fork="yes" haltonfailure="no">
       <test name="${test.class.name}" />
       <formatter type="plain" usefile="false" />
       <classpath>

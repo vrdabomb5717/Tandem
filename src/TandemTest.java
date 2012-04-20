@@ -61,7 +61,7 @@ public class TandemTest
             TanGParser parse = new TanGParser(ts);
             parse.tanG();
         }
-        catch(Throwable t)
+        catch(Exception t)
         {
             // System.out.println("Exception: "+t);
             // t.printStackTrace();
