@@ -74,7 +74,7 @@ assignment
 	:	(atom ASSN)* atom;
 	
 //atom
-atom	:	ID|INT|FLOAT|HEX|BYTE;
+atom	:	ID|INT|FLOAT|HEX|BYTE|STRING;
 
 //Keywords
 td_from	:	FROM;
