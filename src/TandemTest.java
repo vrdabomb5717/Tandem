@@ -52,6 +52,8 @@ public class TandemTest
 
     public static boolean parseFile(String filename)
     {
+        boolean parsing_success = false;
+
         try
         {
             CharStream input = new ANTLRFileStream(filename);
@@ -60,15 +62,24 @@ public class TandemTest
             TokenStream ts = new CommonTokenStream(lexer);
             TanGParser parse = new TanGParser(ts);
             parse.tanG();
+
+            int errorsCount = parse.getNumberOfSyntaxErrors();
+
+            if(errorsCount == 0)
+            {
+                parsing_success = true;
+            }
         }
         catch(Exception t)
         {
             // System.out.println("Exception: "+t);
             // t.printStackTrace();
-            return false;
+            parsing_success = false;
+            return parsing_success;
         }
 
-        return true;
+        return parsing_success;
+
     }
 
     public static File[] listTDFiles(File file)
