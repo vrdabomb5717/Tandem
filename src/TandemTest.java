@@ -7,11 +7,12 @@ import java.io.*;
 import org.antlr.runtime.*;
 
 
-public class Test
+public class TandemTest
 {
     public static void main(String args[])
     {
-        try {
+        try
+        {
             CharStream input = new ANTLRFileStream(args[0]);
             WateredDownTanGLexer lexer = new WateredDownTanGLexer(input);
 
