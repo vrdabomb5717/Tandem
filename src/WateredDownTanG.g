@@ -23,7 +23,6 @@ mprime	:	statement (NEWLINE m)?;
 statement
 	:	td_node ID LPAREN! params RPAREN! NEWLINE (m NEWLINE)? td_end
 	|	expression
-	|	loopType
 	|	td_return orExpression
 	|	td_assert orExpression
 	|	td_break (orExpression)?
@@ -71,10 +70,25 @@ idTestExpr
 modExpr	:	assignment (td_mod assignment)*;
 
 assignment
-	:	(atom ASSN)* atom;
+	:	indexable (ASSN assignment)?;
+	
+indexable
+	:	attributable (LBRACK attributable RBRACK)*;
+
+attributable
+	:	atom (DOT atom)*;
+	
 	
 //atom
-atom	:	ID|INT|FLOAT|HEX|BYTE|STRING;
+atom	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN orExpression RPAREN|list|hashSet;
+
+list	:	LBRACK (orExpression (COMMA orExpression)*)? RBRACK;
+
+hashSet	:	LBRACE (orExpression (hashInsides|setInsides))? RBRACE;
+hashInsides
+	:	FATCOMMA orExpression (COMMA orExpression FATCOMMA orExpression)*;
+setInsides
+	:	(COMMA orExpression)*;//orExpression (COMMA orExpression)*;
 
 //Keywords
 td_from	:	FROM;
@@ -189,8 +203,6 @@ RBRACK	:	']';
 LBRACE	:	'{';
 
 RBRACE	:	'}';
-QUOTE	:	'"';
-
 //other stuff
 FLOAT
     :   ('0'..'9')+ DOT ('0'..'9')* EXPONENT?
