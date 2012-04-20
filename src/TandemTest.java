@@ -17,6 +17,9 @@ public class TandemTest
     private static String testPath;
     private final static String whitespace = "misc/whitespace/";
     private final static String comments = "misc/comments/";
+    private final static String expression = "expression/";
+    private final static String statement = "statement/";
+    private final static String failure = "failure/";
 
     public static void main(String args[])
     {
@@ -88,34 +91,67 @@ public class TandemTest
         return files;
     }
 
-    @Test
-    public void test_whitespace()
+    public static void run_success(File file)
     {
-        // System.out.println(testPath + whitespace);
-        File file = new File(testPath + whitespace);
         File[] files = listTDFiles(file);
 
         for(File f : files)
         {
-            // System.out.println(f.getAbsolutePath());
-
             if(f != null)
             {
                 // System.out.println(f.getAbsolutePath());
-                assertTrue( parseFile(f.getAbsolutePath()) );
+                assertTrue("Failed to parse " + f.getName(), parseFile(f.getAbsolutePath()) );
+            }
+        }
+    }
+
+    public static void run_failure(File file)
+    {
+        File[] files = listTDFiles(file);
+
+        for(File f : files)
+        {
+            if(f != null)
+            {
+                // System.out.println(f.getAbsolutePath());
+                assertFalse("Should not have parsed " + f.getName(), parseFile(f.getAbsolutePath()) );
             }
         }
     }
 
     @Test
+    public void test_whitespace()
+    {
+        // System.out.println(testPath + whitespace);
+        File file = new File(testPath + whitespace);
+        run_success(file);
+    }
+
+    @Test
     public void test_comments()
     {
-        // assertTrue();
+        File file = new File(testPath + comments);
+        run_success(file);
     }
 
     @Test
     public void test_expression()
     {
-        // assertTrue();
+        File file = new File(testPath + expression);
+        run_success(file);
+    }
+
+    @Test
+    public void test_statement()
+    {
+        File file = new File(testPath + statement);
+        run_success(file);
+    }
+
+    @Test
+    public void test_failures()
+    {
+        File file = new File(testPath + failure);
+        run_failure(file);
     }
 }

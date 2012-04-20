@@ -128,7 +128,7 @@ Example with ANTLR3 outputdirectory modified:
   </target>
 
   <target name="parse_test" depends="compile">
-    <junit printsummary="yes" showoutput="yes" fork="yes" haltonfailure="yes">
+    <junit showoutput="yes" fork="yes" haltonfailure="yes">
       <test name="${test.class.name}" />
       <formatter type="plain" usefile="false" />
       <classpath>
