@@ -9,10 +9,10 @@ ASTLabelType=CommonTree;
 tanG	:	NEWLINE? ((i ((NEWLINE  EOF)?|(NEWLINE m (NEWLINE EOF)?)))? | m);
 
 //Import Statements
-i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | '*'       ) (NEWLINE iprime)? 
+i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | STAR      ) (NEWLINE iprime)? 
  	|	td_imp filename (NEWLINE iprime)?; 
  	
- iprime	:	td_from filename td_imp (ID (DOT ID)* (COMMA  ID (DOT ID)*)* | '*') (NEWLINE i)?
+ iprime	:	td_from filename td_imp (ID (DOT ID)* (COMMA  ID (DOT ID)*)* | STAR) (NEWLINE i)?
  	|	td_imp filename (NEWLINE i)?;
 
 //Main body
@@ -102,17 +102,20 @@ bitShiftExpr
 addSubExpr
 	:	multExpr (ADDSUB multExpr)*;
 	
-multExpr:		indexable (MULT indexable)*;	
+multExpr:		unariesExpr ((MULT| STAR) unariesExpr)*;	
 
 
-
-
-
-
-
-
-
-
+unariesExpr
+	:	(ADDSUB)* bitNotExpr;
+	
+bitNotExpr
+	:	(BITNOT)* expExpression;
+expExpression
+	:	pipelineExpr (EXP expExpression)?;
+	
+pipelineExpr
+	:	indexable ((WS indexable)*  (PIPE indexable)+)?;
+			
 	
 indexable
 	:	attributable (LBRACK attributable RBRACK)*;
@@ -213,6 +216,7 @@ MOD	:	'mod';
 TF	:	'true'|'false';
 INTRANGE	:	('0'..'9')+'..'('0'..'9')+;
 RANGE	:	'..';
+FATCOMMA	:	'=>';
 EQTEST	:	'=='|'!=';
 ASSN	:	'='|'+='|'-='|'*='|'/='|'%='|'**='|'>>='|'<<='|'^='
 	|	'/\\='|'\\/='|'&&='|'||=';
@@ -225,10 +229,10 @@ BITAND	:	'/\\';
 BITSHIFT	:	'>>'|'<<';
 ADDSUB	:	'+'|'-';
 EXP	:	'**';
-MULT	:	'*'|'/'|'%';
+STAR	:	'*';
+MULT	:	'/'|'%';
 BITNOT	:	'!';
 PIPE	:	'|';
-FATCOMMA	:	'=>';
 DOT
 	:	'.'
 	;
@@ -265,7 +269,7 @@ NEWLINE	:	('\r'? '\n')+
 
 WS  :   ( ' '
         | '\t'
-        ) {skip();};
+        ) {$channel=HIDDEN;};
 
 
 
