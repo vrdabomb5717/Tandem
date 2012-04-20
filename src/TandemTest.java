@@ -16,10 +16,10 @@ public class TandemTest
         try
         {
             CharStream input = new ANTLRFileStream(args[0]);
-            WateredDownTanGLexer lexer = new WateredDownTanGLexer(input);
+            TanGLexer lexer = new TanGLexer(input);
 
             TokenStream ts = new CommonTokenStream(lexer);
-            WateredDownTanGParser parse = new WateredDownTanGParser(ts);
+            TanGParser parse = new TanGParser(ts);
             parse.tanG();
         }
         catch(Throwable t)

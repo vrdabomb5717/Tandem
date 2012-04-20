@@ -44,8 +44,8 @@ Example with ANTLR3 outputdirectory modified:
     <attribute name="outputdirectory" default="${lib}/grammar"/>
     <attribute name="libdirectory" default="${lib}"/>
     <attribute name="multithreaded" default="true"/>
-    <attribute name="verbose" default="false"/>
-    <attribute name="report" default="true"/>
+    <attribute name="verbose" default="true"/>
+    <attribute name="report" default="false"/>
     <attribute name="debug" default="false"/>
     <sequential>
       <ant-antlr3 xmlns:antlr="org/apache/tools/ant/antlr"
@@ -99,19 +99,20 @@ Example with ANTLR3 outputdirectory modified:
     description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
     <!-- includeantruntime="false" -->
-    <javac destdir="${build}" includeantruntime="false">
+    <javac destdir="${build}" includeantruntime="false" verbose="false">
       <classpath>
         <pathelement path="${java.class.path}"/>
       </classpath>
       <src path="${lib}/grammar" />
     </javac>
-    <javac destdir="${build}" includeantruntime="false">
+    <javac destdir="${build}" includeantruntime="false" verbose="false">
       <!-- <classpath path="${build}" /> -->
       <classpath>
         <pathelement path="${java.class.path}"/>
         <path refid="test.classpath"/>
       </classpath>
       <src path="${src}" />
+      <exclude name="**/Test.java"/>
     </javac>
   </target>
 
