@@ -8,19 +8,18 @@ import java.io.*;
 import org.antlr.runtime.*;
 import org.antlr.stringtemplate.*;
 
-
 public class TandemTree{
-public void printTree(CommonTree t, int indent) {
-	if ( t != null ) {
-		StringBuffer sb = new StringBuffer(indent);
-		for ( int i = 0; i < indent; i++ )
-			sb = sb.append("   ");
-		for ( int i = 0; i < t.getChildCount(); i++ ) {
-			System.out.println(sb.toString() + t.getChild(i).toString());
-			printTree((CommonTree)t.getChild(i), indent+1);
+	public void printTree(CommonTree t, int indent) {
+		if ( t != null ) {
+			StringBuffer sb = new StringBuffer(indent);
+			for ( int i = 0; i < indent; i++ )
+				sb = sb.append("   ");
+			for ( int i = 0; i < t.getChildCount(); i++ ) {
+				System.out.println(sb.toString() + t.getChild(i).toString());
+				printTree((CommonTree)t.getChild(i), indent+1);
+			}
 		}
 	}
-}
 	
 	public static void main(String args[]){
 		try{
