@@ -70,15 +70,20 @@ idTestExpr
 modExpr	:	assignment (td_mod assignment)*;
 
 assignment
-	:	rangeExpr (ASSN rangeExpr)?;
+	:	rangeExpr (ASSN assignment)?;
 	
 rangeExpr
 	:	boolOrExpr (RANGE boolOrExpr)?|INTRANGE;
 	
 boolOrExpr
-	:	indexable (BOOLOR indexable)*;
+	:	boolAndExpr (BOOLOR boolAndExpr)*;
 
-
+boolAndExpr
+	:	eqTestExpr (BOOLAND eqTestExpr)*;
+	
+eqTestExpr
+	:	indexable (EQTEST eqTestExpr)?;
+	
 
 
 
@@ -98,7 +103,7 @@ attributable
 	
 	
 //atom
-atom	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN orExpression RPAREN|list|hashSet;
+atom	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN orExpression RPAREN|list|hashSet|td_truefalse;
 
 list	:	LBRACK (orExpression (COMMA orExpression)*)? RBRACK;
 
@@ -139,7 +144,8 @@ td_memtest
 td_idtest
 	:	IS (NOT)?;
 td_mod	:	MOD;
-
+td_truefalse
+	:	TF;
 //Lexer/Tokens
 
 //Operators  
@@ -185,6 +191,7 @@ AND	:	'and';
 NOT	:	'not';
 IS	:	'is';
 MOD	:	'mod';
+TF	:	'true'|'false';
 INTRANGE	:	('0'..'9')+'..'('0'..'9')+;
 RANGE	:	'..';
 EQTEST	:	'=='|'!=';
