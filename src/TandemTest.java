@@ -69,6 +69,10 @@ public class TandemTest
             {
                 parsing_success = true;
             }
+            else
+            {
+                System.err.println("Number of syntax errors in " + filename + ": " + errorsCount + "\n");
+            }
         }
         catch(Exception t)
         {
