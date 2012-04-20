@@ -73,7 +73,7 @@ assignment
 	:	rangeExpr (ASSN rangeExpr)?;
 	
 rangeExpr
-	:	boolOrExpr (RANGE boolOrExpr)?;
+	:	boolOrExpr (RANGE boolOrExpr)?|INTRANGE;
 	
 boolOrExpr
 	:	indexable (BOOLOR indexable)*;
@@ -185,10 +185,11 @@ AND	:	'and';
 NOT	:	'not';
 IS	:	'is';
 MOD	:	'mod';
+INTRANGE	:	('0'..'9')+'..'('0'..'9')+;
+RANGE	:	'..';
 EQTEST	:	'=='|'!=';
 ASSN	:	'='|'+='|'-='|'*='|'/='|'%='|'**='|'>>='|'<<='|'^='
 	|	'/\\='|'\\/='|'&&='|'||=';
-RANGE	:	'..';
 BOOLOR	:	'||';
 BOOLAND	:	'&&';
 MAGCOMP	:	'>'|'<'|'>='|'<=';
