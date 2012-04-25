@@ -1,3 +1,5 @@
+//TanG Grammar  Patrick DLG
+
 grammar TanG;
 
 options{
