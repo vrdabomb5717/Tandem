@@ -6,7 +6,7 @@ output=AST;
 ASTLabelType=CommonTree;
 }
 
-tanG	:	(NEWLINE? ((i ((NEWLINE  EOF)?|(NEWLINE m (NEWLINE EOF)?)))? | m));
+tanG	:	(NEWLINE* ((i ((NEWLINE  EOF)?|(NEWLINE m (NEWLINE EOF)?)))? | m));
 
 //Import Statements
 i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | STAR      ) (NEWLINE iprime)? 
@@ -278,7 +278,7 @@ NEWLINE	:	('\r'? '\n')+
 
 WS  :   ( ' '
         | '\t'
-        ) {$channel=HIDDEN;};
+        ) {skip();};
 
 
 
