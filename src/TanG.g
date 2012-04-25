@@ -6,7 +6,7 @@ output=AST;
 ASTLabelType=CommonTree;
 }
 
-tanG	:	NEWLINE? ((i ((NEWLINE  EOF)?|(NEWLINE m (NEWLINE EOF)?)))? | m);
+tanG	:	(NEWLINE? ((i ((NEWLINE  EOF)?|(NEWLINE m (NEWLINE EOF)?)))? | m));
 
 //Import Statements
 i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | STAR      ) (NEWLINE iprime)? 
@@ -114,18 +114,27 @@ expExpression
 	:	pipelineExpr (EXP expExpression)?;
 	
 pipelineExpr
-	:	indexable ((WS indexable)*  (PIPE indexable)+)?;
+	:	indexable ((pipeparamindexable)*  (PIPE indexable)+)?;
 			
 	
 indexable
 	:	attributable (LBRACK attributable RBRACK)*;
 
+pipeparamindexable
+	:	pipeparamattributable (LBRACK pipeparamattributable RBRACK)*;
+
 attributable
 	:	atom (DOT atom)*;
+	
+pipeparamattributable
+	:	pipeparamatom (DOT pipeparamatom)*;
 	
 	
 //atom
 atom	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN orExpression RPAREN|list|hashSet|td_truefalse;
+
+pipeparamatom
+	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN orExpression RPAREN|td_truefalse;
 
 list	:	LBRACK (orExpression (COMMA orExpression)*)? RBRACK;
 
@@ -172,8 +181,8 @@ td_truefalse
 
 //Operators  
 COMMENT
-    :   ('#' |'//') ~('\n'|'\r')* '\r'? '\n' {skip();}
-    |   '/*' ( options {greedy=false;} : . )* '*/' (NEWLINE)? {skip();}
+    :   ('#' |'//') ~('\n'|'\r')*   {skip();}
+    |   '/*' ( options {greedy=false;} : . )* '*/' {skip();}
     ;
   
 FROM
