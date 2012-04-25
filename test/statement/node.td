@@ -9,7 +9,9 @@ node node1(a, b)
 			node3 b
 		end
 		a==b
-			node4 a b
+			node4 a b    
+     
+
 		end
 	end
 	node node2(greaterA)
