@@ -6,22 +6,22 @@ output=AST;
 ASTLabelType=CommonTree;
 }
 
-tanG	:	(NEWLINE* ((i ((NEWLINE  EOF)?|(NEWLINE m (NEWLINE EOF)?)))? | m));
+tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | m));
 
 //Import Statements
-i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | STAR      ) (NEWLINE iprime)? 
- 	|	td_imp filename (NEWLINE iprime)?; 
+i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | STAR      ) (NEWLINE+ iprime)? 
+ 	|	td_imp filename (NEWLINE+ iprime)?; 
  	
- iprime	:	td_from filename td_imp (ID (DOT ID)* (COMMA  ID (DOT ID)*)* | STAR) (NEWLINE i)?
- 	|	td_imp filename (NEWLINE i)?;
+ iprime	:	td_from filename td_imp (ID (DOT ID)* (COMMA  ID (DOT ID)*)* | STAR) (NEWLINE+ i)?
+ 	|	td_imp filename (NEWLINE+ i)?;
 
 //Main body
-m	:	statement (NEWLINE mprime)?;
+m	:	statement (NEWLINE+ mprime)?;
 
-mprime	:	statement (NEWLINE m)?;
+mprime	:	statement (NEWLINE+ m)?;
 
 statement
-	:	td_node ID LPAREN! params RPAREN! NEWLINE (m NEWLINE)? td_end
+	:	td_node ID LPAREN! params RPAREN! NEWLINE+ (m NEWLINE+)? td_end
 	|	expression
 	|	loopType
 	|	td_return orExpression
@@ -32,10 +32,10 @@ statement
 params	:	(ID(COMMA ID)*)?;
 
 //Loops
-loopType	:	td_for ID td_in iterable NEWLINE (m NEWLINE)? td_end
-	|	td_while orExpression NEWLINE (m NEWLINE) td_end
-	|	td_loop NEWLINE (m NEWLINE) td_end
-	|	td_until orExpression NEWLINE (m NEWLINE)? td_end;
+loopType	:	td_for ID td_in iterable NEWLINE+ (m NEWLINE+)? td_end
+	|	td_while orExpression NEWLINE+ (m NEWLINE+) td_end
+	|	td_loop NEWLINE+ (m NEWLINE+) td_end
+	|	td_until orExpression NEWLINE+ (m NEWLINE+)? td_end;
 //Things that can be iterated through
 iterable	:	ID;
 
@@ -44,12 +44,12 @@ expression
 	:	condType | orExpression;
 
 //conditionals
-condType	:	td_if orExpression NEWLINE (m NEWLINE)? td_else NEWLINE (m NEWLINE)? td_end
-	|	td_unless orExpression NEWLINE (m NEWLINE)? td_end
-	|	td_cond  NEWLINE (cstatement NEWLINE)* td_end;
+condType	:	td_if orExpression NEWLINE+ (m NEWLINE+)? td_else NEWLINE+ (m NEWLINE+)? td_end
+	|	td_unless orExpression NEWLINE+ (m NEWLINE+)? td_end
+	|	td_cond  NEWLINE+ (cstatement NEWLINE+)* td_end;
 	
 cstatement
-	:	orExpression NEWLINE (m NEWLINE)? td_end;
+	:	orExpression NEWLINE+ (m NEWLINE+)? td_end;
 	
 //ExpressionTypes
 orExpression
