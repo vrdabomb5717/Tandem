@@ -2,14 +2,14 @@ node node1(a, b)
 	cond
 		a>b
 			x=a+b
-			node2(x)
+			node2 x
 		end
 		b>a
 			y=b-a
-			node3(b)
+			node3 b
 		end
 		a==b
-			node4(a,b)
+			node4 a b
 		end
 	end
 	node node2(greaterA)
@@ -23,7 +23,7 @@ node node1(a, b)
 	node node4(myA, myB)
 		a = myA *5
 		b = myB -5
-		node5(a,b)
+		node5 a b
 		node node5(g,h)
 			sum = "I am at node 5"
 			print sum
