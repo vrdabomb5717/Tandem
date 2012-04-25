@@ -114,7 +114,7 @@ expExpression
 	:	pipelineExpr (EXP expExpression)?;
 	
 pipelineExpr
-	:	indexable ((pipeparamindexable)*  (PIPE indexable)+)?;
+	:	indexable (pipeparamindexable)*  (PIPE indexable)*;
 			
 	
 indexable
