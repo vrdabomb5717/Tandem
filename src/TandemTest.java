@@ -52,18 +52,35 @@ public class TandemTest
 
     public static boolean parseFile(String filename)
     {
+        boolean lexing_success = false;
         boolean parsing_success = false;
 
         try
         {
+            // System.setErr(null);
             CharStream input = new ANTLRFileStream(filename);
             TanGLexer lexer = new TanGLexer(input);
 
             TokenStream ts = new CommonTokenStream(lexer);
+
+            int errorsCount = lexer.getNumberOfSyntaxErrors();
+
+            if(errorsCount == 0)
+            {
+                lexing_success = true;
+            }
+            else
+            {
+                lexing_success = false;
+                System.err.println("Number of lexer errors in " + filename + ": " + errorsCount + "\n");
+                // return lexing_success;
+            }
+
+
             TanGParser parse = new TanGParser(ts);
             parse.tanG();
 
-            int errorsCount = parse.getNumberOfSyntaxErrors();
+            errorsCount = parse.getNumberOfSyntaxErrors();
 
             if(errorsCount == 0)
             {
@@ -71,7 +88,9 @@ public class TandemTest
             }
             else
             {
+                parsing_success = false;
                 System.err.println("Number of syntax errors in " + filename + ": " + errorsCount + "\n");
+                // return parsing_success;
             }
         }
         catch(Exception t)
@@ -82,7 +101,7 @@ public class TandemTest
             return parsing_success;
         }
 
-        return parsing_success;
+        return lexing_success && parsing_success;
 
     }
 
