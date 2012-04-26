@@ -15,7 +15,33 @@ Tandem includes a version of JUnit for running tests. However, this
 version may be out of date. It is recommended that you use the newest
 version of JUnit to run the unit tests.
 
-# Compilation and Installation
+# Compilation and Installation using Ant
+
+The easiest way to use Tandem is to use Ant, a tool similar to *make*.
+
+	$ git clone git://github.com/vrdabomb5717/Tandem.git
+	$ cd Tandem
+
+Now, create the build, dist, lib, and grammar directories, and compile the grammar:
+
+	$ ant init
+	$ ant grammar
+
+At this point, the file will complain if it cannot fine ANTLR in your classpath.
+
+Compile the rest of the files, and try running the tests:
+
+	$ ant compile
+	$ ant test
+
+Running *ant test* will create the needed directories, compile the grammar, compile the parser and lexer, and test the files using JUnit. It may be easier to just use that.
+
+You can also try traversing the tree:
+
+	$ ant walk -Dfile=test/expression/expression.td
+
+
+# Compilation and Installation without using Ant
 
 To compile the grammar file, assuming that ANTLR is on your classpath, run:
 

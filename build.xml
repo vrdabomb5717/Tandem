@@ -23,9 +23,9 @@ if one is installed, or the provided JUnit otherwise. -->
 <path id="test.classpath">
   <pathelement location="${java.class.path}" />
   <pathelement location="${lib}/junit/junit-4.10.jar" />
- <fileset dir="${lib}">
-  <include name="**/*.jar"/>
-</fileset>
+  <fileset dir="${lib}">
+    <include name="**/*.jar"/>
+  </fileset>
 </path>
 
 
