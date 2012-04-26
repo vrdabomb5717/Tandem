@@ -10,6 +10,7 @@ public class TreeWalker {
 	public void printTree(CommonTree t) {
 		if ( t != null ) {			
 			for ( int i = 0; i < t.getChildCount(); i++ ) {
+				System.out.println("node text:"+t.getText());				
 				switch(t.getType()){
 				//TODO: Add Code
 					case TanGParser.ADDSUB:	
