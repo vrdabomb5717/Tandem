@@ -55,81 +55,81 @@ cstatement
 	
 //ExpressionTypes
 orExpression
-	:	xorExpr (td_or xorExpr)*;
+	:	xorExpr (td_or^ xorExpr)*;
 	
-xorExpr	:	andExpr (td_xor andExpr)*;
+xorExpr	:	andExpr (td_xor^ andExpr)*;
 
-andExpr	:	notExpr (td_and notExpr)*;
+andExpr	:	notExpr (td_and^ notExpr)*;
 
-notExpr	:	(td_not)*  memExpr;
+notExpr	:	(td_not^)*  memExpr;
 
-memExpr	:	idTestExpr (td_memtest idTestExpr)?;
+memExpr	:	idTestExpr (td_memtest^ idTestExpr)?;
 
 idTestExpr
-	:	modExpr (td_idtest modExpr)*;
+	:	modExpr (td_idtest^ modExpr)*;
 	
 	
-modExpr	:	assignment (td_mod assignment)*;
+modExpr	:	assignment (td_mod^ assignment)*;
 
 assignment
-	:	rangeExpr (ASSN assignment)?;
+	:	rangeExpr (ASSN^ assignment)?;
 	
 rangeExpr
-	:	boolOrExpr (RANGE boolOrExpr)?|INTRANGE;
+	:	boolOrExpr (RANGE^ boolOrExpr)?|INTRANGE;
 	
 boolOrExpr
-	:	boolAndExpr (BOOLOR boolAndExpr)*;
+	:	boolAndExpr (BOOLOR^ boolAndExpr)*;
 
 boolAndExpr
-	:	eqTestExpr (BOOLAND eqTestExpr)*;
+	:	eqTestExpr (BOOLAND^ eqTestExpr)*;
 	
 eqTestExpr
-	:	magCompExpr (EQTEST eqTestExpr)?;
+	:	magCompExpr (EQTEST^ eqTestExpr)?;
 	
 magCompExpr
-	:	bitOrExpr (MAGCOMP magCompExpr)?;
+	:	bitOrExpr (MAGCOMP^ magCompExpr)?;
 	
 bitOrExpr
-	:	bitXorExpr (BITOR bitXorExpr)*;
+	:	bitXorExpr (BITOR^ bitXorExpr)*;
 	
 bitXorExpr
-	:	bitAndExpr (BITXOR bitAndExpr)*;
+	:	bitAndExpr (BITXOR^ bitAndExpr)*;
 	
 bitAndExpr
-	:	bitShiftExpr (BITAND bitShiftExpr)*;
+	:	bitShiftExpr (BITAND^ bitShiftExpr)*;
 	
 bitShiftExpr
-	:	addSubExpr (BITSHIFT addSubExpr)*;
+	:	addSubExpr (BITSHIFT^ addSubExpr)*;
 	
 addSubExpr
-	:	multExpr (ADDSUB multExpr)*;
+	:	multExpr (ADDSUB^ multExpr)*;
 	
-multExpr:		unariesExpr ((MULT| STAR) unariesExpr)*;	
+multExpr:		unariesExpr ((MULT^| STAR^) unariesExpr)*;	
 
 
 unariesExpr
-	:	(ADDSUB)* bitNotExpr;
+	:	(ADDSUB^)* bitNotExpr;
 	
 bitNotExpr
-	:	(BITNOT)* expExpression;
+	:	(BITNOT^)* expExpression;
 expExpression
-	:	pipelineExpr (EXP expExpression)?;
+	:	pipelineExpr (EXP^ expExpression)?;
 	
 pipelineExpr
-	:	indexable (pipeparamindexable)*  (PIPE indexable)*;
+	:	indexable (pipeparamindexable)*  (PIPE^ indexable)*;
 			
 	
 indexable
-	:	attributable (LBRACK attributable RBRACK)*;
+	:	attributable (LBRACK! attributable RBRACK!)*;
 
 pipeparamindexable
-	:	pipeparamattributable (LBRACK pipeparamattributable RBRACK)*;
+	:	pipeparamattributable (LBRACK! pipeparamattributable RBRACK!)*;
 
 attributable
-	:	atom (DOT atom)*;
+	:	atom (DOT^ atom)*;
 	
 pipeparamattributable
-	:	pipeparamatom (DOT pipeparamatom)*;
+	:	pipeparamatom (DOT^ pipeparamatom)*;
 	
 	
 //atom
@@ -305,6 +305,7 @@ HEX_DIGIT : ('0'..'9'|'a'..'f'|'A'..'F') ;
 fragment
 ESC_SEQ
     :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\');
+    
     
 
 

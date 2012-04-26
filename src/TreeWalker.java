@@ -17,6 +17,8 @@ public class TreeWalker {
 						break;
 					case TanGParser.AND:
 						break;
+					case TanGParser.ASSERT:
+						break;					
 					case TanGParser.ASSN:
 						break;
 					case TanGParser.BITAND:
@@ -28,13 +30,31 @@ public class TreeWalker {
 					case TanGParser.BITSHIFT:
 						break;					
 					case TanGParser.BITXOR:
-						break;
+						break;					
 					case TanGParser.BOOLAND:
+						break;
+					case TanGParser.BOOLOR:
+						break;					
+					case TanGParser.BREAK:
 						break;
 					case TanGParser.BYTE:
 						break;
+					case TanGParser.COMMA:
+						break;
 					case TanGParser.COMMENT:
 						break;
+					case TanGParser.COND:
+						break;
+					case TanGParser.CONTINUE:
+						break;
+					case TanGParser.DO:
+						break;
+					case TanGParser.DOT:
+						break;
+					case TanGParser.ELSE:
+						break;
+					case TanGParser.END:
+						break;					
 					case TanGParser.EOF:
 						break;
 					case TanGParser.EQTEST:
@@ -47,7 +67,15 @@ public class TreeWalker {
 						break;
 					case TanGParser.FATCOMMA:
 						break;
+					case TanGParser.FILENAME:
+						break;
 					case TanGParser.FLOAT:
+						break;
+					case TanGParser.FOR:
+						break;
+					case TanGParser.FORK:
+						break;
+					case TanGParser.FROM:
 						break;
 					case TanGParser.HEX:
 						break;
@@ -55,40 +83,74 @@ public class TreeWalker {
 						break;
 					case TanGParser.ID:
 						break;
-					case TanGParser.IDTEST:
+					case TanGParser.IF:
+						break;
+					case TanGParser.IMPORT:
+						break;
+					case TanGParser.IN:
 						break;
 					case TanGParser.INT:
 						break;
+					case TanGParser.INTRANGE:
+						break;
+					case TanGParser.IS:
+						break;
+					case TanGParser.LBRACE:
+						break;
+					case TanGParser.LBRACK:
+						break;
+					case TanGParser.LOOP:
+						break;
+					case TanGParser.LPAREN:
+						break;
 					case TanGParser.MAGCOMP:
-						break;
-					case TanGParser.MEMTEST:
-						break;
+						break;					
 					case TanGParser.MOD:
 						break;
 					case TanGParser.MULT:
 						break;
 					case TanGParser.NEWLINE:
 						break;
+					case TanGParser.NODE:
+						break;
 					case TanGParser.NOT:
-						break;
-					case TanGParser.NRANGE:
-						break;
+						break;					
 					case TanGParser.OR:
 						break;
 					case TanGParser.PIPE:
 						break;
 					case TanGParser.RANGE:
 						break;
+					case TanGParser.RBRACE:
+						break;
+					case TanGParser.RBRACK:
+						break;
+					case TanGParser.RETURN:
+						break;
+					case TanGParser.RPAREN:
+						break;
+					case TanGParser.STAR:
+						break;
 					case TanGParser.STRING:
+						break;
+					case TanGParser.TF:
+						break;
+					case TanGParser.UNLESS:
+						break;
+					case TanGParser.UNTIL:
+						break;
+					case TanGParser.WHILE:
 						break;
 					case TanGParser.WS:
 						break;
 					case TanGParser.XOR:
-						break;	
-					//TODO: T_ cases
-				}
+						break;						
+				}				
 				printTree((CommonTree)t.getChild(i));
 			}
 		}
 	}
+	
+	
 }
+

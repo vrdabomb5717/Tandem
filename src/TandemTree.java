@@ -31,6 +31,8 @@ public class TandemTree{
 	 		TanGParser parse = new TanGParser(ts);
 	 		TanGParser.tanG_return result = parse.tanG();
 	 		CommonTree t = (CommonTree)result.getTree();
+			TreeWalker walk = new TreeWalker();
+			walk.printTree(t);
 	 		TandemTree Tr = new TandemTree();
 	 		Tr.printTree(t, 2);
 	 		DOTTreeGenerator gen = new DOTTreeGenerator();
