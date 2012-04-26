@@ -11,6 +11,7 @@ node node1(a, b)
 		a==b
 			node4 a b    
      
+			x=y=z=1
 
 		end
 	end
@@ -21,6 +22,7 @@ node node1(a, b)
 	node node3(greaterB)
 		answer =greaterB-8
 		node4 answer greaterB | node2 
+		a|b|c|d|e|f
 	end
 	node node4(myA, myB)
 		a = myA *5

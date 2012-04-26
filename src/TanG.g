@@ -48,10 +48,10 @@ expression
 //conditionals
 condType	:	td_if orExpression NEWLINE+ (m NEWLINE+)? td_else NEWLINE+ (m NEWLINE+)? td_end
 	|	td_unless orExpression NEWLINE+ (m NEWLINE+)? td_end
-	|	td_cond  NEWLINE+ (cstatement NEWLINE+)* td_end;
+	|	td_cond^  NEWLINE+ (cstatement NEWLINE+)* td_end;
 	
 cstatement
-	:	orExpression NEWLINE+ (m NEWLINE+)? td_end;
+	:	orExpression^ NEWLINE+ (m NEWLINE+)? td_end;
 	
 //ExpressionTypes
 orExpression
