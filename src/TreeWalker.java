@@ -7,20 +7,38 @@ import java.io.*;
 import org.antlr.runtime.*;
 
 public class TreeWalker {	
-	public void printTree(CommonTree t) {
+	public void walkTree(CommonTree t, String filename) {
+		try {
+		BufferedWriter out = new BufferedWriter(new FileWriter(filename + ".rb"));
+		walk(t, out);
+		
+		out.close();
+		}
+		catch (IOException e) {}
+	}
+	public void walk(CommonTree t, BufferedWriter out){
+		try{
 		if ( t != null ) {			
 			for ( int i = 0; i < t.getChildCount(); i++ ) {
-				System.out.println("node text:"+t.getText());				
+				//System.out.println("node text:"+t.getText());	
+				//System.out.println("here: " + t.getChild(i).toString()); 
+				//walk((CommonTree)t.getChild(i));
+				//System.out.println("node type:"+t.getType());
+				//System.out.println(TanGParser.ID);
 				switch(t.getType()){
 				//TODO: Add Code
 					case TanGParser.ADDSUB:	
 						//print out ruby code to a file
+						out.write(t.getChild(i).toString());
+						walk((CommonTree)t.getChild(i), out);
 						break;
 					case TanGParser.AND:
 						break;
 					case TanGParser.ASSERT:
 						break;					
 					case TanGParser.ASSN:
+						out.write(t.getChild(i).toString());
+						walk((CommonTree)t.getChild(i), out);
 						break;
 					case TanGParser.BITAND:
 						break;
@@ -63,6 +81,8 @@ public class TreeWalker {
 					case TanGParser.ESC_SEQ:
 						break;
 					case TanGParser.EXP:
+						out.write(t.getChild(i).toString());
+						walk((CommonTree)t.getChild(i), out);
 						break;
 					case TanGParser.EXPONENT:
 						break;
@@ -83,6 +103,8 @@ public class TreeWalker {
 					case TanGParser.HEX_DIGIT:
 						break;
 					case TanGParser.ID:
+						out.write(t.getChild(i).toString());
+						walk((CommonTree)t.getChild(i), out);
 						break;
 					case TanGParser.IF:
 						break;
@@ -147,11 +169,12 @@ public class TreeWalker {
 					case TanGParser.XOR:
 						break;						
 				}				
-				printTree((CommonTree)t.getChild(i));
+				//walktTree((CommonTree)t.getChild(i));
 			}
-		}
-	}
-	
-	
+		
+		
+	}	}
+		catch (IOException e) {}
+		
 }
-
+}
