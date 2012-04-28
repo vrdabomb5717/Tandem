@@ -34,7 +34,7 @@ Compile the rest of the files, and try running the tests:
 	$ ant compile
 	$ ant test
 
-Running *ant test* will create the needed directories, compile the grammar, compile the parser and lexer, and test the files using JUnit. It may be easier to just use that.
+Running `ant test` will create the needed directories, compile the grammar, compile the parser and lexer, and test the files using JUnit. It may be easier to just use that.
 
 You can also try traversing the tree:
 
