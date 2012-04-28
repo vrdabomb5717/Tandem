@@ -75,7 +75,7 @@ assignment
 	:	rangeExpr (ASSN^ assignment)?;
 	
 rangeExpr
-	:	boolOrExpr (RANGE^ boolOrExpr)?|INTRANGE;
+	:	boolOrExpr (RANGE^ boolOrExpr)?|INTRANGE^;
 	
 boolOrExpr
 	:	boolAndExpr (BOOLOR^ boolAndExpr)*;
