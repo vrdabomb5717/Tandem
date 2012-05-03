@@ -11,6 +11,7 @@ public class TreeWalker {
 		try {
 		BufferedWriter out = new BufferedWriter(new FileWriter(filename + ".rb"));
 		walk((CommonTree) t, out);
+		//traverse all the nodes of the root
 		for ( int i = 0; i < t.getChildCount(); i++ ) {
 			walk(((CommonTree)t.getChild(i)), out);
 		}
@@ -247,6 +248,7 @@ public class TreeWalker {
 						for ( int i = 1; i < t.getChildCount(); i++ ) {
 							walk((CommonTree)t.getChild(i), out);
 						}
+						out.newLine();
 						out.write("end");
 						break;
 					case TanGParser.NOT:
@@ -277,7 +279,7 @@ public class TreeWalker {
 
 						break;
 					case TanGParser.RANGE:
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.RBRACE:
 						out.write(t.getText());
@@ -302,13 +304,13 @@ public class TreeWalker {
 						out.write(t.getText() + " ");
 						break;
 					case TanGParser.TF:
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.UNLESS:
 						out.write("! while");
 						break;
 					case TanGParser.UNTIL:
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.WHILE:
 						out.write(t.getText() + " ");
