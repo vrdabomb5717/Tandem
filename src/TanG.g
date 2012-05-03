@@ -29,7 +29,7 @@ m	:	statement (NEWLINE+ mprime)?;
 mprime	:	statement (NEWLINE+ m)?;
 
 statement
-	:	td_node^ ID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
+	:	(td_pubpriv? td_node)^ ID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
 	|	expression
 	|	loopType
 	|	td_return orExpression
@@ -188,6 +188,8 @@ td_truefalse
 td_none	:	NONE;
 td_null	:	NULL;
 td_some	:	SOME;
+td_pubpriv
+	:	PUBPRIV;
 //Lexer/Tokens
 
 //Operators  
