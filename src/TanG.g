@@ -133,10 +133,10 @@ pipeparamattributable
 	
 	
 //atom
-atom	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN orExpression RPAREN|list|hashSet|td_truefalse;
+atom	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN orExpression RPAREN|list|hashSet|td_truefalse|td_none|td_null|td_some;
 
 pipeparamatom
-	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN orExpression RPAREN|td_truefalse;
+	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN orExpression RPAREN|td_truefalse|td_null|td_some|td_none;
 
 list	:	LBRACK (orExpression (COMMA orExpression)*)? RBRACK;
 
@@ -179,6 +179,9 @@ td_idtest
 td_mod	:	MOD;
 td_truefalse
 	:	TF;
+td_none	:	NONE;
+td_null	:	NULL;
+td_some	:	SOME;
 //Lexer/Tokens
 
 //Operators  
@@ -225,6 +228,13 @@ NOT	:	'not';
 IS	:	'is';
 MOD	:	'mod';
 TF	:	'true'|'false';
+NULL	:	'null';
+SOME	:	'some';
+NONE	:	'none';
+WITH	:	'with';
+TRY	:	'try';
+CATCH	:	'catch';
+FINALLY	:	'finally';
 INTRANGE	:	('0'..'9')+'..'('0'..'9')+;
 RANGE	:	'..';
 FATCOMMA	:	'=>';
