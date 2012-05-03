@@ -275,56 +275,56 @@ public class TreeWalker {
 						//	}
 						//						}
 
-						break;
-					case TanGParser.RANGE:
-						out.write(t.getText());
-						break;
-					case TanGParser.RBRACE:
-						out.write(t.getText());
-						break;
-					case TanGParser.RBRACK:
-						out.write(t.getText());
-						break;
-					case TanGParser.RETURN:
-						break;
-					case TanGParser.RPAREN:
-						out.write(t.getText());
-						break;
-					case TanGParser.SOME:
-						out.write(t.getText()+ " ");
-						break:
-					case TanGParser.STAR:
-						walk((CommonTree)t.getChild(0), out);
-						out.write(t.getText() + " ");
-						walk((CommonTree)t.getChild(1), out);
-						break;
-					case TanGParser.STRING:
-						out.write(t.getText() + " ");
-						break;
-					case TanGParser.TF:
-						out.write(t.getText());
-						break;
-					case TanGParser.UNLESS:
-						out.write("! while");
-						break;
-					case TanGParser.UNTIL:
-						out.write(t.getText());
-						break;
-					case TanGParser.WHILE:
-						out.write(t.getText() + " ");
-						break;
-					case TanGParser.WS:
-						out.write(t.getText());
-						break;
-					case TanGParser.XOR:
-						walk((CommonTree)t.getChild(0), out);
-						out.write(t.getText()  + " ");
-						walk((CommonTree)t.getChild(1), out);
-						break;						
-				}						
-		
+	 			 		break;
+	 			 	case TanGParser.RANGE:
+	 			 		out.write(t.getText());
+	 			 		break;
+	 			 	case TanGParser.RBRACE:
+	 			 		out.write(t.getText());
+	 			 		break;
+	 			 	case TanGParser.RBRACK:
+	 			 		out.write(t.getText());
+	 			 		break;
+	 			 	case TanGParser.RETURN:
+	 			 		break;
+	 			 	case TanGParser.RPAREN:
+	 			 		out.write(t.getText());
+	 			 		break;
+	 			 	case TanGParser.SOME:
+	 			 		out.write(t.getText()+ " ");
+	 			 		break;
+	 			 	case TanGParser.STAR:
+	 			 		walk((CommonTree)t.getChild(0), out);
+	 			 		out.write(t.getText() + " ");
+	 			 		walk((CommonTree)t.getChild(1), out);
+	 			 		break;
+	 			 	case TanGParser.STRING:
+	 			 		out.write(t.getText() + " ");
+	 			 		break;
+	 			 	case TanGParser.TF:
+	 			 		out.write(t.getText());
+	 			 		break;
+	 			 	case TanGParser.UNLESS:
+	 			 		out.write("! while");
+	 			 		break;
+	 			 	case TanGParser.UNTIL:
+	 			 		out.write(t.getText());
+	 			 		break;
+	 			 	case TanGParser.WHILE:
+	 			 		out.write(t.getText() + " ");
+	 			 		break;
+	 			 	case TanGParser.WS:
+	 			 		out.write(t.getText());
+	 			 		break;
+	 			 	case TanGParser.XOR:
+	 			 		walk((CommonTree)t.getChild(0), out);
+	 			 		out.write(t.getText()  + " ");
+	 			 		walk((CommonTree)t.getChild(1), out);
+	 			 		break;						
+	 			}		      				
+	 	
 	}	}
-		catch (IOException e) {}
-		
+	 	catch (IOException e) {}
+	 	
 }
 }
