@@ -10,8 +10,9 @@ public class TreeWalker {
 	public void walkTree(CommonTree t, String filename) {
 		try {
 		BufferedWriter out = new BufferedWriter(new FileWriter(filename + ".rb"));
+		walk((CommonTree) t, out);
 		for ( int i = 0; i < t.getChildCount(); i++ ) {
-		walk(((CommonTree)t.getChild(i)), out);
+			walk(((CommonTree)t.getChild(i)), out);
 		}
 		out.close();
 		}
@@ -20,7 +21,6 @@ public class TreeWalker {
 	public void walk(CommonTree t, BufferedWriter out){
 		try{
 		if ( t != null ) {			
-			//	for ( int i = 0; i < t.getChildCount(); i++ ) {
 			//	every unary operator needs to be preceded by a open parenthesis and ended with a closed parenthesis
 				switch(t.getType()){
 					case TanGParser.ADDSUB:	
@@ -43,7 +43,7 @@ public class TreeWalker {
 						break;
 					case TanGParser.AND:
 						walk((CommonTree)t.getChild(0), out);
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.ASSERT:
@@ -55,7 +55,7 @@ public class TreeWalker {
 						break;
 					case TanGParser.BITAND:
 						walk((CommonTree)t.getChild(0), out);
-						out.write("&");
+						out.write("& ");
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.BITNOT:
@@ -66,31 +66,31 @@ public class TreeWalker {
 						break;
 					case TanGParser.BITOR:
 						walk((CommonTree)t.getChild(0), out);
-						out.write("|");
+						out.write("| ");
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.BITSHIFT:						
 						walk((CommonTree)t.getChild(0), out);
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						walk((CommonTree)t.getChild(1), out);
 						break;					
 					case TanGParser.BITXOR:
 						walk((CommonTree)t.getChild(0), out);
-						out.write("^");
+						out.write("^ ");
 						walk((CommonTree)t.getChild(1), out);
 						break;					
 					case TanGParser.BOOLAND:				
 						walk((CommonTree)t.getChild(0), out);
-						out.write(t.getText());
+						out.write(t.getText()  + " ");
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.BOOLOR:
 						walk((CommonTree)t.getChild(0), out);
-						out.write(t.getText());
+						out.write(t.getText()  + " ");
 						walk((CommonTree)t.getChild(1), out);
 						break;					
 					case TanGParser.BREAK:
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.BYTE:
 						break;
@@ -123,6 +123,7 @@ public class TreeWalker {
 					case TanGParser.DOT:
 						break;
 					case TanGParser.ELSE:
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.END:
 						out.write(t.getText());
@@ -138,6 +139,7 @@ public class TreeWalker {
 						}
 						break;
 					case TanGParser.ESC_SEQ:
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.EXP:
 						walk((CommonTree)t.getChild(0), out);
@@ -147,16 +149,17 @@ public class TreeWalker {
 					case TanGParser.EXPONENT:
 						out.write("(");
 						walk((CommonTree)t.getChild(0), out);
-						out.write("* 10**");
+						out.write("* 10 ** ");
 						walk((CommonTree)t.getChild(1), out);
 						out.write(")");
 						break;
 					case TanGParser.FATCOMMA:
 						break;
 					case TanGParser.FILENAME:
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.FLOAT:
-						out.write(t.getText());
+						out.write(t.getText()  + " ");
 						break;
 					case TanGParser.FOR:
 						break;
@@ -165,10 +168,10 @@ public class TreeWalker {
 					case TanGParser.FROM:
 						break;
 					case TanGParser.HEX:
-						out.write(t.getText());
+						out.write(t.getText()  + " ");
 						break;
 					case TanGParser.HEX_DIGIT:
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.ID:
 						out.write(t.getText() + " ");
@@ -176,11 +179,12 @@ public class TreeWalker {
 					case TanGParser.IF:
 						break;
 					case TanGParser.IMPORT:
+						out.write("require ");
 						break;
 					case TanGParser.IN:
 						break;
 					case TanGParser.INT:
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.INTRANGE:
 						out.write(t.getText());
@@ -194,6 +198,7 @@ public class TreeWalker {
 						out.write(t.getText());
 						break;
 					case TanGParser.LOOP:
+						out.write("while true ");
 						break;
 					case TanGParser.LPAREN:
 						out.write(t.getText());
@@ -220,7 +225,7 @@ public class TreeWalker {
 						out.write(t.getText());
 						break;
 					case TanGParser.NODE:
-						out.write("module ");
+						out.write("class ");
 						walk((CommonTree)t.getChild(0), out);
 						out.newLine();
 						out.write("def main");
@@ -262,7 +267,7 @@ public class TreeWalker {
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.STRING:
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.TF:
 						out.write(t.getText());
@@ -278,13 +283,10 @@ public class TreeWalker {
 						break;
 					case TanGParser.XOR:
 						walk((CommonTree)t.getChild(0), out);
-						out.write(t.getText());
+						out.write(t.getText()  + " ");
 						walk((CommonTree)t.getChild(1), out);
 						break;						
-				}				
-				//walktTree((CommonTree)t.getChild(i));
-		//	}
-		
+				}						
 		
 	}	}
 		catch (IOException e) {}
