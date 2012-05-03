@@ -246,6 +246,13 @@ public class TreeWalker {
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.PIPE:
+					//	for ( int i = t.getChildCount()-1; i > -1; i--) {
+							if(i==0){
+//GETBACK HEREEEEE
+							walk((CommonTree)t.getChild(t.getChildCount()-1), out);
+							}
+						//						}
+
 						break;
 					case TanGParser.RANGE:
 						out.write(t.getText());
