@@ -47,6 +47,7 @@ public class TreeWalker {
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.ASSERT:
+						out.write(t.getText() + " ");
 						break;					
 					case TanGParser.ASSN:
 						walk((CommonTree)t.getChild(0), out);
@@ -60,7 +61,7 @@ public class TreeWalker {
 						break;
 					case TanGParser.BITNOT:
 						out.write("(");
-						out.write(t.getText());						
+						out.write(t.getText());					
 						walk((CommonTree)t.getChild(0), out);
 						out.write(")");
 						break;
@@ -69,7 +70,7 @@ public class TreeWalker {
 						out.write("| ");
 						walk((CommonTree)t.getChild(1), out);
 						break;
-					case TanGParser.BITSHIFT:						
+					case TanGParser.BITSHIFT:					
 						walk((CommonTree)t.getChild(0), out);
 						out.write(t.getText() + " ");
 						walk((CommonTree)t.getChild(1), out);
@@ -121,6 +122,7 @@ public class TreeWalker {
 					case TanGParser.DO:
 						break;
 					case TanGParser.DOT:
+						out.write(t.getText());
 						break;
 					case TanGParser.ELSE:
 						out.write(t.getText() + " ");
@@ -154,6 +156,7 @@ public class TreeWalker {
 						out.write(")");
 						break;
 					case TanGParser.FATCOMMA:
+						out.write(t.getText());
 						break;
 					case TanGParser.FILENAME:
 						out.write(t.getText() + " ");
@@ -162,6 +165,7 @@ public class TreeWalker {
 						out.write(t.getText()  + " ");
 						break;
 					case TanGParser.FOR:
+						out.write(t.getText());
 						break;
 					case TanGParser.FORK:
 						break;
@@ -177,11 +181,13 @@ public class TreeWalker {
 						out.write(t.getText() + " ");
 						break;
 					case TanGParser.IF:
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.IMPORT:
 						out.write("require ");
 						break;
 					case TanGParser.IN:
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.INT:
 						out.write(t.getText() + " ");
@@ -225,7 +231,13 @@ public class TreeWalker {
 						out.write(t.getText());
 						break;
 					case TanGParser.NODE:
-						out.write("class ");
+						
+						if (t.getText().equals("public node")){
+							out.write("public class ");
+						}
+						else{
+							out.write("private class ");
+						}
 						walk((CommonTree)t.getChild(0), out);
 						out.newLine();
 						out.write("def main");
@@ -247,10 +259,10 @@ public class TreeWalker {
 						break;
 					case TanGParser.PIPE:
 					//	for ( int i = t.getChildCount()-1; i > -1; i--) {
-							if(i==0){
-//GETBACK HEREEEEE
-							walk((CommonTree)t.getChild(t.getChildCount()-1), out);
-							}
+						//	if (i==0){
+
+						//	walk((CommonTree)t.getChild(t.getChildCount()-1), out);
+						//	}
 						//						}
 
 						break;
@@ -280,10 +292,13 @@ public class TreeWalker {
 						out.write(t.getText());
 						break;
 					case TanGParser.UNLESS:
+						out.write("! while");
 						break;
 					case TanGParser.UNTIL:
+						out.write(t.getText());
 						break;
 					case TanGParser.WHILE:
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.WS:
 						out.write(t.getText());
