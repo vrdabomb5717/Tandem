@@ -26,11 +26,11 @@ public class TreeWalker {
 					case TanGParser.ADDSUB:	
 						if(t.getChildCount() > 1){
 							walk((CommonTree)t.getChild(0), out);
-							out.write(t.getText());
+							out.write(t.getText() + " ");
 							walk((CommonTree)t.getChild(1), out);
 						}
 						else{
-							if(t.getText().equals("-")){
+							if(t.getText().equals("- ")){
 								out.write("(");
 								out.write(t.getText());
 								walk((CommonTree)t.getChild(0), out);
@@ -50,7 +50,7 @@ public class TreeWalker {
 						break;					
 					case TanGParser.ASSN:
 						walk((CommonTree)t.getChild(0), out);
-						out.write(" " + t.getText() + " ");
+						out.write( t.getText() + " ");
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.BITAND:
@@ -90,16 +90,31 @@ public class TreeWalker {
 						walk((CommonTree)t.getChild(1), out);
 						break;					
 					case TanGParser.BREAK:
+						out.write(t.getText());
 						break;
 					case TanGParser.BYTE:
 						break;
+
 					case TanGParser.COMMA:
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.COMMENT:
 						out.write(t.getText());
 						break;
 					case TanGParser.COND:
+						
+						for (int j = 1; j < t.getChildCount(); j=j+2 ) {
+							if(j ==  t.getChildCount()-3){
+								out.write("else ");
+								walk((CommonTree)t.getChild(j), out);
+							}
+							else if(j <  t.getChildCount()-3){
+								out.write("when ");
+								walk((CommonTree)t.getChild(j), out);
+							}else{
+								walk((CommonTree)t.getChild(j), out);
+							}
+						}
 						break;
 					case TanGParser.CONTINUE:
 						break;
@@ -116,14 +131,17 @@ public class TreeWalker {
 						break;
 					case TanGParser.EQTEST:	
 						walk((CommonTree)t.getChild(0), out);
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						walk((CommonTree)t.getChild(1), out);
+						for ( int i = 2; i < t.getChildCount()-1; i++ ) {
+							walk((CommonTree)t.getChild(i), out);
+						}
 						break;
 					case TanGParser.ESC_SEQ:
 						break;
 					case TanGParser.EXP:
 						walk((CommonTree)t.getChild(0), out);
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.EXPONENT:
@@ -165,6 +183,7 @@ public class TreeWalker {
 						out.write(t.getText());
 						break;
 					case TanGParser.INTRANGE:
+						out.write(t.getText());
 						break;
 					case TanGParser.IS:
 						break;
@@ -181,8 +200,11 @@ public class TreeWalker {
 						break;
 					case TanGParser.MAGCOMP:
 						walk((CommonTree)t.getChild(0), out);
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						walk((CommonTree)t.getChild(1), out);
+						for ( int i = 2; i < t.getChildCount()-1; i++ ) {
+							walk((CommonTree)t.getChild(i), out);
+						}
 						break;					
 					case TanGParser.MOD:
 						walk((CommonTree)t.getChild(0), out);
@@ -191,7 +213,7 @@ public class TreeWalker {
 						break;
 					case TanGParser.MULT:
 						walk((CommonTree)t.getChild(0), out);
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.NEWLINE:
@@ -209,6 +231,9 @@ public class TreeWalker {
 					case TanGParser.NOT:
 						out.write(t.getText());
 						walk((CommonTree)t.getChild(0), out);
+						for ( int i = 1; i < t.getChildCount()-1; i++ ) {
+							walk((CommonTree)t.getChild(i), out);
+						}
 						break;					
 					case TanGParser.OR:
 						walk((CommonTree)t.getChild(0), out);
@@ -218,6 +243,7 @@ public class TreeWalker {
 					case TanGParser.PIPE:
 						break;
 					case TanGParser.RANGE:
+						out.write(t.getText());
 						break;
 					case TanGParser.RBRACE:
 						out.write(t.getText());
@@ -232,7 +258,7 @@ public class TreeWalker {
 						break;
 					case TanGParser.STAR:
 						walk((CommonTree)t.getChild(0), out);
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.STRING:
