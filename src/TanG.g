@@ -122,29 +122,28 @@ expExpression
 	:	pipelineExpr (EXP^ expExpression)?;
 	
 pipelineExpr
-	:	(       pipenode (    ((pipeparamindexable)+  (PIPE^ pipenode)*)    |     ((PIPE^ pipenode)+)        )      )|indexable;
+	:	(       pipenode (    ((pipeindexable)+  (PIPE^ pipenode)*)    |     ((PIPE^ pipenode)+)        )      )|indexable;
 pipenode
 	:	ID (DOT^ ID)*;
 			
 	
 indexable
-	:	ID^ (LBRACK attributable RBRACK)*|attributable;
+	:	(ID^ (LBRACK indexable RBRACK)+)|attributable;
+	
+pipeindexable
+	:	(ID^ (LBRACK pipeindexable RBRACK)+)|pipeattributable;
 
-pipeparamindexable
-	:	pipeparamattributable (LBRACK pipeparamattributable RBRACK)*;
 
 attributable
-	:	ID (DOT^ ID)*|atom;
-	
-pipeparamattributable
-	:	pipeparamatom (DOT^ pipeparamatom)*;
-	
+	:	(ID (DOT^ ID)+)|atom;
+
+pipeattributable
+	:	(ID (DOT^ ID)+)|pipeatom;	
 	
 //atom
 atom	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|list|hashSet|td_truefalse|td_none|td_null|td_some;
+pipeatom:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|hashSet|td_truefalse|td_none|td_null|td_some;
 
-pipeparamatom
-	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|td_truefalse|td_null|td_some|td_none;
 
 list	:	LBRACK (orExpression (COMMA orExpression)*)? RBRACK;
 
