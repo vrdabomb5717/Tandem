@@ -94,6 +94,7 @@ public class TreeWalker {
 					case TanGParser.BYTE:
 						break;
 					case TanGParser.COMMA:
+						out.write(t.getText());
 						break;
 					case TanGParser.COMMENT:
 						out.write(t.getText());
@@ -109,6 +110,7 @@ public class TreeWalker {
 					case TanGParser.ELSE:
 						break;
 					case TanGParser.END:
+						out.write(t.getText());
 						break;					
 					case TanGParser.EOF:
 						break;
@@ -196,6 +198,13 @@ public class TreeWalker {
 						out.write(t.getText());
 						break;
 					case TanGParser.NODE:
+						out.write("module ");
+						walk((CommonTree)t.getChild(0), out);
+						out.newLine();
+						out.write("def main");
+						for ( int i = 1; i < t.getChildCount(); i++ ) {
+							walk((CommonTree)t.getChild(i), out);
+						}
 						break;
 					case TanGParser.NOT:
 						out.write(t.getText());
