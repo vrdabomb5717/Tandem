@@ -153,7 +153,7 @@ public class TreeWalker {
 						out.write(t.getText());
 						break;
 					case TanGParser.ID:
-						out.write(t.getText());
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.IF:
 						break;
