@@ -292,7 +292,7 @@ public class TreeWalker {
 						break;
 					case TanGParser.SOME:
 						out.write(t.getText()+ " ");
-						break:
+						break;
 					case TanGParser.STAR:
 						walk((CommonTree)t.getChild(0), out);
 						out.write(t.getText() + " ");
