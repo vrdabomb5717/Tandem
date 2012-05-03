@@ -128,13 +128,13 @@ pipenode
 			
 	
 indexable
-	:	attributable^ (LBRACK attributable RBRACK)*;
+	:	ID^ (LBRACK attributable RBRACK)*|attributable;
 
 pipeparamindexable
 	:	pipeparamattributable (LBRACK pipeparamattributable RBRACK)*;
 
 attributable
-	:	atom (DOT^ atom)*;
+	:	ID (DOT^ ID)*|atom;
 	
 pipeparamattributable
 	:	pipeparamatom (DOT^ pipeparamatom)*;
