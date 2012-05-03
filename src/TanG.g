@@ -36,7 +36,7 @@ statement
 	|	td_assert orExpression
 	|	td_break (orExpression)?
 	|	td_continue;
-	
+
 params	:	(ID(COMMA ID)*)?;
 
 //Loops
@@ -55,14 +55,14 @@ expression
 condType	:	td_if orExpression NEWLINE+ (m NEWLINE+)? td_else NEWLINE+ (m NEWLINE+)? td_end
 	|	td_unless orExpression NEWLINE+ (m NEWLINE+)? td_end
 	|	td_cond^  NEWLINE+ (cstatement NEWLINE+)* td_end;
-	
+
 cstatement
 	:	orExpression^ NEWLINE+ (m NEWLINE+)? td_end;
-	
+
 //ExpressionTypes
 orExpression
 	:	xorExpr (td_or^ xorExpr)*;
-	
+
 xorExpr	:	andExpr (td_xor^ andExpr)*;
 
 andExpr	:	notExpr (td_and^ notExpr)*;
@@ -73,63 +73,63 @@ memExpr	:	idTestExpr (td_memtest^ idTestExpr)?;
 
 idTestExpr
 	:	modExpr (td_idtest^ modExpr)?;
-	
-	
+
+
 modExpr	:	assignment (td_mod^ assignment)*;
 
 assignment
 	:	rangeExpr (ASSN^ assignment)?;
-	
+
 rangeExpr
 	:	boolOrExpr (RANGE^ boolOrExpr)?|INTRANGE^;
-	
+
 boolOrExpr
 	:	boolAndExpr (BOOLOR^ boolAndExpr)*;
 
 boolAndExpr
 	:	eqTestExpr (BOOLAND^ eqTestExpr)*;
-	
+
 eqTestExpr
 	:	magCompExpr (EQTEST^ magCompExpr)?;
-	
+
 magCompExpr
 	:	bitOrExpr (MAGCOMP^ bitOrExpr)?;
-	
+
 bitOrExpr
 	:	bitXorExpr (BITOR^ bitXorExpr)*;
-	
+
 bitXorExpr
 	:	bitAndExpr (BITXOR^ bitAndExpr)*;
-	
+
 bitAndExpr
 	:	bitShiftExpr (BITAND^ bitShiftExpr)*;
-	
+
 bitShiftExpr
 	:	addSubExpr (BITSHIFT^ addSubExpr)*;
-	
+
 addSubExpr
 	:	multExpr (ADDSUB^ multExpr)*;
-	
+
 multExpr:		unariesExpr ((MULT^| STAR^) unariesExpr)*;	
 
 
 unariesExpr
 	:	(ADDSUB^)* bitNotExpr;
-	
+
 bitNotExpr
 	:	(BITNOT^)* expExpression;
 expExpression
 	:	pipelineExpr (EXP^ expExpression)?;
-	
+
 pipelineExpr
 	:	(       pipenode (    ((pipeindexable)+  (PIPE^ pipenode)*)    |     ((PIPE^ pipenode)+)        )      )|indexable;
 pipenode
 	:	ID (DOT^ ID)*;
-			
-	
+
+
 indexable
 	:	(ID^ (LBRACK indexable RBRACK)+)|attributable;
-	
+
 pipeindexable
 	:	(ID^ (LBRACK pipeindexable RBRACK)+)|pipeattributable;
 
@@ -139,7 +139,7 @@ attributable
 
 pipeattributable
 	:	(ID (DOT^ ID)+)|pipeatom;	
-	
+
 //atom
 atom	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|list|hashSet|td_truefalse|td_none|td_null|td_some;
 pipeatom:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|hashSet|td_truefalse|td_none|td_null|td_some;
@@ -272,7 +272,7 @@ COMMA
 RPAREN
 	:	')'
 	;
-	
+
 LBRACK	:	'[';
 RBRACK	:	']';
 

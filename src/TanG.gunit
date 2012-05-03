@@ -46,7 +46,6 @@ node node1(a, b)
 	end
 end
 >>OK //expect success
-//This one should fail
 <<
 node node1(a, b)
 	cond
@@ -86,6 +85,19 @@ node node1(a, b)
 	end
 end
 >> FAIL //expect failure
+
+//Test imports
+i	:
+<<import "success.td"
+import "mobetter.td">> OK
+
+<<
+  import "success.td"
+>>OK
+
+
+//Should fail
+<<import fail.td>>FAIL
 
 
 
