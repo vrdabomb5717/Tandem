@@ -31,12 +31,20 @@ public class TandemTree{
 	 		TanGParser parse = new TanGParser(ts);
 	 		TanGParser.tanG_return result = parse.tanG();
 	 		CommonTree t = (CommonTree)result.getTree();
+
+			CommonTreeNodeStream nodes = new CommonTreeNodeStream((CommonTree)t);
+	       		nodes.setTokenStream(ts);
+	        	TanG_TG differ = new TanG_TG(nodes);
+	        	TanG_TG.orExpression_return r2= differ.orExpression();
+	        	CommonTree t_transform = (CommonTree)r2.getTree();
+
+
 			TreeWalker walk = new TreeWalker();
-			walk.walkTree(t, args[0].substring(0, args[0].length()-3));
+			walk.walkTree(t_transform, args[0].substring(0, args[0].length()-3));
 	 		TandemTree Tr = new TandemTree();
-	 		Tr.printTree(t, 2);
+	 		Tr.printTree(t_transform, 2);
 	 		DOTTreeGenerator gen = new DOTTreeGenerator();
-	 		StringTemplate st = gen.toDOT(t);	
+	 		StringTemplate st = gen.toDOT(t_transform);	
 	 		try {
 	 		                          	BufferedWriter out = new BufferedWriter(new FileWriter("graph.txt"));
 	 		                          	 out.write(st.toString());
