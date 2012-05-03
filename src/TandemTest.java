@@ -20,6 +20,7 @@ public class TandemTest
     private final static String expression = "expression/";
     private final static String mathexp = "expression/math";
     private final static String bitwiseexp = "expression/bitwise";
+    private final static String logicexp = "expression/logic";
     private final static String statement = "statement/";
     private final static String failure = "failure/";
 
@@ -186,6 +187,13 @@ public class TandemTest
 
     @Test
     public void test_bitwise_expression()
+    {
+        File file = new File(testPath + bitwiseexp);
+        run_success(file);
+    }
+
+    @Test
+    public void test_logic_expression()
     {
         File file = new File(testPath + bitwiseexp);
         run_success(file);
