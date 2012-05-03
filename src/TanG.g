@@ -29,7 +29,7 @@ m	:	statement (NEWLINE+ mprime)?;
 mprime	:	statement (NEWLINE+ m)?;
 
 statement
-	:	td_node^ ID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
+	:	(td_node)^ ID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
 	|	expression
 	|	loopType
 	|	td_return orExpression
@@ -194,7 +194,6 @@ td_some	:	SOME;
 COMMENT
     :   ('#' |'//') ~('\n'|'\r')*   {skip();}
 ;
-PUBPRIV	:	'public'|'private';
 
 FROM
 	:	'from'
@@ -205,7 +204,7 @@ IMPORT
 	:	'import'
 	;
 NODE
-	:	'node'
+	:	'node'|'public node' |'private node'
 	;
 END
 	:	'end'
@@ -309,6 +308,9 @@ STRING
     ;
 
 EXPONENT : ('e'|'E') ('+'|'-')? ('0'..'9')+ ;
+
+PUBPRIV	:	'public'|'private';
+
 
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
