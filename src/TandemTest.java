@@ -18,6 +18,8 @@ public class TandemTest
     private final static String whitespace = "misc/whitespace/";
     private final static String comments = "misc/comments/";
     private final static String expression = "expression/";
+    private final static String mathexp = "expression/math";
+    private final static String bitwiseexp = "expression/bitwise";
     private final static String statement = "statement/";
     private final static String failure = "failure/";
 
@@ -64,7 +66,7 @@ public class TandemTest
             TokenStream ts = new CommonTokenStream(lexer);
 
             int errorsCount = lexer.getNumberOfSyntaxErrors();
-
+            // ts.toString();
             if(errorsCount == 0)
             {
                 lexing_success = true;
@@ -172,6 +174,20 @@ public class TandemTest
     public void test_expression()
     {
         File file = new File(testPath + expression);
+        run_success(file);
+    }
+
+    @Test
+    public void test_math_expression()
+    {
+        File file = new File(testPath + mathexp);
+        run_success(file);
+    }
+
+    @Test
+    public void test_bitwise_expression()
+    {
+        File file = new File(testPath + bitwiseexp);
         run_success(file);
     }
 

@@ -14,14 +14,14 @@ ASTLabelType=CommonTree;
 
 
 
+
+
 tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | m));
 
 //Import Statements
-i	:	td_from filename td_imp (    ID      (DOT ID)*    (   COMMA  ID (DOT ID)*      )*    | STAR      ) (NEWLINE+ iprime)? 
- 	|	td_imp filename (NEWLINE+ iprime)?; 
+i	:	td_imp filename (NEWLINE+ iprime)?; 
  	
- iprime	:	td_from filename td_imp (ID (DOT ID)* (COMMA  ID (DOT ID)*)* | STAR) (NEWLINE+ i)?
- 	|	td_imp filename (NEWLINE+ i)?;
+ iprime	:	td_imp filename (NEWLINE+ i)?;
 
 //Main body
 m	:	statement (NEWLINE+ mprime)?;
@@ -29,7 +29,7 @@ m	:	statement (NEWLINE+ mprime)?;
 mprime	:	statement (NEWLINE+ m)?;
 
 statement
-	:	td_node^ ID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
+	:	(td_pubpriv? td_node)^ ID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
 	|	expression
 	|	loopType
 	|	td_return orExpression
@@ -188,13 +188,15 @@ td_truefalse
 td_none	:	NONE;
 td_null	:	NULL;
 td_some	:	SOME;
+td_pubpriv
+	:	PUBPRIV;
 //Lexer/Tokens
 
 //Operators  
 COMMENT
     :   ('#' |'//') ~('\n'|'\r')*   {skip();}
-    |   '/*' ( options {greedy=false;} : . )* '*/' {skip();}
-    ;
+;
+PUBPRIV	:	'public'|'private';
 
 FROM
 	:	'from'
@@ -258,7 +260,7 @@ ADDSUB	:	'+'|'-';
 EXP	:	'**';
 STAR	:	'*';
 MULT	:	'/'|'%';
-BITNOT	:	'!';
+BITNOT	:	'!'|'~';
 PIPE	:	'|';
 DOT
 	:	'.'
@@ -321,8 +323,12 @@ HEX_DIGIT : ('0'..'9'|'a'..'f'|'A'..'F') ;
 fragment
 ESC_SEQ
     :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\');
+
+fragment
+CommentEnd
+	:	'*/';   
     
 INVALID
  :  . {
         errors.add("Invalid character: '" + $text + "' on line: " +
-            getLine() + ", index: " + getCharPositionInLine()); };   
+            getLine() + ", index: " + getCharPositionInLine()); }; 
