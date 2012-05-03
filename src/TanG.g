@@ -8,6 +8,12 @@ output=AST;
 ASTLabelType=CommonTree;
 }
 
+@lexer::members{
+ public List<String> errors = new ArrayList<String>();
+}
+
+
+
 tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | m));
 
 //Import Statements
@@ -189,7 +195,7 @@ COMMENT
     :   ('#' |'//') ~('\n'|'\r')*   {skip();}
     |   '/*' ( options {greedy=false;} : . )* '*/' {skip();}
     ;
-  
+
 FROM
 	:	'from'
 	;
@@ -316,6 +322,7 @@ fragment
 ESC_SEQ
     :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\');
     
-    
-
-
+INVALID
+ :  . {
+        errors.add("Invalid character: '" + $text + "' on line: " +
+            getLine() + ", index: " + getCharPositionInLine()); };   
