@@ -1,5 +1,9 @@
 # Project Log
 
+## 5/2/12
+
+Removed chain comparisons in order to be able to move on.
+
 ## 4/26/12
 
 Started on the tree grammar for the parser. Need to rewrite 3 or so rules to do the transformations for magnitude comparisons, equality testing, and the pipeline. Started work on the code generator, where a Ruby file is created within the Java code.
