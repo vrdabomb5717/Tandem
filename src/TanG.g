@@ -66,7 +66,7 @@ notExpr	:	(td_not^)*  memExpr;
 memExpr	:	idTestExpr (td_memtest^ idTestExpr)?;
 
 idTestExpr
-	:	modExpr (td_idtest^ modExpr)*;
+	:	modExpr (td_idtest^ modExpr)?;
 	
 	
 modExpr	:	assignment (td_mod^ assignment)*;
@@ -84,10 +84,10 @@ boolAndExpr
 	:	eqTestExpr (BOOLAND^ eqTestExpr)*;
 	
 eqTestExpr
-	:	magCompExpr (EQTEST^ eqTestExpr)?;
+	:	magCompExpr (EQTEST^ magCompExpr)?;
 	
 magCompExpr
-	:	bitOrExpr (MAGCOMP^ magCompExpr)?;
+	:	bitOrExpr (MAGCOMP^ bitOrExpr)?;
 	
 bitOrExpr
 	:	bitXorExpr (BITOR^ bitXorExpr)*;
