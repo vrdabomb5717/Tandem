@@ -23,7 +23,7 @@ m	:	statement (NEWLINE+ mprime)?;
 mprime	:	statement (NEWLINE+ m)?;
 
 statement
-	:	td_node ID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
+	:	td_node^ ID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
 	|	expression
 	|	loopType
 	|	td_return orExpression
