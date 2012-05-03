@@ -78,32 +78,46 @@ bitNotExpr
 	:	(BITNOT^)* expExpression;
 expExpression
 	:	pipelineExpr (EXP^ expExpression)?;
-	
 
 
+//we could revert to like midnight thursday
+//pipelineExpr
+//	:	(       pipenode (    ((pipeindexable)+  (PIPE^ pipenode)*)    |     ((PIPE^ pipenode)+)        )      )|indexable;
+
+//pipelineExpr
+//	:	indexable (PIPE^ pipelineExpr)?; //pipeparamindexable*;
 
 pipelineExpr
-	:	indexable (PIPE^ pipelineExpr)? pipeparamindexable*;
+	:	pipenode ((PIPE^ pipelineExpr2)?) endproc;
+
+pipelineExpr2
+	:	pipenode ((PIPE^ pipelineExpr2)?);
+
+endproc 
+	:	pipeindexable*;  
+
+			
+pipenode
+	:	ID (DOT^ ID)*;
 			
 	
 indexable
-	:	attributable^ (LBRACK attributable RBRACK)*;
+	:	(ID^ (LBRACK indexable RBRACK)+)|attributable;
+	
+pipeindexable
+	:	(ID^ (LBRACK pipeindexable RBRACK)+)|pipeattributable;
 
-pipeparamindexable
-	:	pipeparamattributable (LBRACK pipeparamattributable RBRACK)*;
 
 attributable
-	:	atom (DOT^ atom)*;
-	
-pipeparamattributable
-	:	pipeparamatom (DOT^ pipeparamatom)*;
-	
+	:	(ID (DOT^ ID)+)|atom;
+
+pipeattributable
+	:	(ID (DOT^ ID)+)|pipeatom;	
 	
 //atom
 atom	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|list|hashSet|td_truefalse|td_none|td_null|td_some;
+pipeatom:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|hashSet|td_truefalse|td_none|td_null|td_some;
 
-pipeparamatom
-	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|td_truefalse|td_null|td_some|td_none;
 
 list	:	LBRACK (orExpression (COMMA orExpression)*)? RBRACK;
 
@@ -149,6 +163,3 @@ td_truefalse
 td_none	:	NONE;
 td_null	:	NULL;
 td_some	:	SOME;
-
-
-
