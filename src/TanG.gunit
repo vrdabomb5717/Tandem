@@ -1,9 +1,13 @@
 gunit TanG;
 
-//test rule: TanG with two tests
 
+
+
+//Test Parser
+
+//Test tanG production
 //This should succeed
-TanG	:	
+tanG	:	
 <<
 node node1(a, b)
 	cond
@@ -42,6 +46,7 @@ node node1(a, b)
 	end
 end
 >>OK //expect success
+//This one should fail
 <<
 node node1(a, b)
 	cond
@@ -80,6 +85,18 @@ node node1(a, b)
 		end
 	end
 end
->> FAIL //expect fail
+>> FAIL //expect failure
+
+//Test import
+i	:
+<<import "Success.td"
+import "fun.td">> OK
+<<
+import "Success.td"
+import "fun.td"
+
+>>OK
+
+
 
 
