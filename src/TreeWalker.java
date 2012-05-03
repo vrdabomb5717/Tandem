@@ -233,17 +233,21 @@ public class TreeWalker {
 					case TanGParser.NODE:
 						
 						if (t.getText().equals("public node")){
-							out.write("public class ");
+							out.write("class ");
+							walk((CommonTree)t.getChild(0), out);
 						}
 						else{
-							out.write("private class ");
+							out.write("class ");
+							walk((CommonTree)t.getChild(0), out);
+							out.newLine();
+							out.write("private");
 						}
-						walk((CommonTree)t.getChild(0), out);
 						out.newLine();
 						out.write("def main");
 						for ( int i = 1; i < t.getChildCount(); i++ ) {
 							walk((CommonTree)t.getChild(i), out);
 						}
+						out.write("end");
 						break;
 					case TanGParser.NOT:
 						out.write(t.getText());
@@ -251,7 +255,13 @@ public class TreeWalker {
 						for ( int i = 1; i < t.getChildCount()-1; i++ ) {
 							walk((CommonTree)t.getChild(i), out);
 						}
-						break;					
+						break;	
+					case TanGParser.NONE:
+						out.write(t.getText()+ " ");
+						break;
+					case TanGParser.NULL:
+						out.write(t.getText()+ " ");
+						break;				
 					case TanGParser.OR:
 						walk((CommonTree)t.getChild(0), out);
 						out.write(t.getText());
@@ -279,6 +289,9 @@ public class TreeWalker {
 						break;
 					case TanGParser.RPAREN:
 						out.write(t.getText());
+						break;
+					case TanGParser.SOME:
+						out.write(t.getText()+ " ");
 						break;
 					case TanGParser.STAR:
 						walk((CommonTree)t.getChild(0), out);
