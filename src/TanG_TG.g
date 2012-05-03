@@ -80,7 +80,7 @@ expExpression
 	:	pipelineExpr (EXP^ expExpression)?;
 
 
-//we could revert to like midnight thursday
+//we could revert to about midnight thursday
 //pipelineExpr
 //	:	(       pipenode (    ((pipeindexable)+  (PIPE^ pipenode)*)    |     ((PIPE^ pipenode)+)        )      )|indexable;
 
