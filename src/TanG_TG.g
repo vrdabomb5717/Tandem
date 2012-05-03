@@ -83,7 +83,7 @@ expExpression
 
 
 pipelineExpr
-	:	indexable (PIPE^ indexable)* pipeparamindexable*;
+	:	indexable (PIPE^ pipelineExpr)? pipeparamindexable*;
 			
 	
 indexable
