@@ -99,6 +99,12 @@ import "mobetter.td">> OK
 //Should fail
 <<import fail.td>>FAIL
 
+//Main Body Test
+m	:
+//should succeed
+<<a=b>>OK
+
+
 
 
 

@@ -19,7 +19,7 @@ ASTLabelType=CommonTree;
 tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | m));
 
 //Import Statements
-i	:	td_imp filename (NEWLINE+ iprime)?; 
+i	:	td_imp filename (NEWLINE+ iprime)? -> filename td_imp (NEWLINE+ iprime)? ; 
  	
  iprime	:	td_imp filename (NEWLINE+ i)?;
 
