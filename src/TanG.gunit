@@ -87,15 +87,6 @@ node node1(a, b)
 end
 >> FAIL //expect failure
 
-//Test import
-i	:
-<<import "Success.td"
-import "fun.td">> OK
-<<
-import "Success.td"
-import "fun.td"
-
->>OK
 
 
 
