@@ -163,7 +163,7 @@ Example with ANTLR3 outputdirectory modified:
   </target>
 
 
-  <target name="test" depends="parse_test">
+  <target name="test" depends="gunit_test, parse_test">
 
   </target>
 
