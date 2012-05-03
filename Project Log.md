@@ -2,7 +2,7 @@
 
 ## 5/2/12
 
-Removed chain comparisons in order to be able to move on.
+Removed chain comparisons in order to be able to move on. Changed code generator to use nested classes instead of modules, and began to add public and private keywords to nodes.
 
 ## 4/26/12
 
