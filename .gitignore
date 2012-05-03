@@ -15,3 +15,5 @@ lib/grammar/TanGParser.java
 *.war
 *.ear
 graph.txt
+lib/grammar/TanG_TG.java
+lib/grammar/TanG_TG.tokens
