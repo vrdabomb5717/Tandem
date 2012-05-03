@@ -122,7 +122,9 @@ expExpression
 	:	pipelineExpr (EXP^ expExpression)?;
 	
 pipelineExpr
-	:	indexable (pipeparamindexable)*  (PIPE^ indexable)*;
+	:	(       pipenode (    ((pipeparamindexable)+  (PIPE^ pipenode)*)    |     ((PIPE^ pipenode)+)        )      )|indexable;
+pipenode
+	:	ID (DOT^ ID)*;
 			
 	
 indexable
