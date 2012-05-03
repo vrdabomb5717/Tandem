@@ -17,6 +17,7 @@
   <property name="grammar" value="TanG.g"/>
   <property name ="treeGrammar" value="TanG_TG.g"/>
   <property name="grammar1" value="WateredDownTanG.g"/>
+  <property name="gunit_test" value="TanG.gunit" />
   <property name="test.class.name" value="TandemTest" />
 
 <!-- Path required to run the tests. Uses built-in JUnit,
@@ -148,6 +149,19 @@ Example with ANTLR3 outputdirectory modified:
       </classpath>
     </java> -->
   </target>
+
+  <target name="gunit_test" depends="compile">
+    <copy file="${src}/${gunit_test}" tofile="${build}/${gunit_test}"/>
+    <java classname="org.antlr.gunit.Interp">
+      <arg value="${build}/${gunit_test}"/>
+      <classpath>
+        <pathelement path="${build}"/>
+        <pathelement path="${java.class.path}"/>
+      </classpath>
+    </java>
+
+  </target>
+
 
   <target name="test" depends="parse_test">
 
