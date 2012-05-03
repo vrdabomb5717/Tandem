@@ -10,3 +10,5 @@ not not b
 not a
 not not a
 not not not a == b
+a != b
+not a != not not b
