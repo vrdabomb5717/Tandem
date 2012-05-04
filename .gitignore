@@ -20,3 +20,4 @@ lib/grammar/TanG_TG.tokens
 bin/
 bin
 dist
+test/statement/node.rb
