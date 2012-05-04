@@ -336,3 +336,17 @@ FLOAT:
 <<.0E-0>>OK
 
 
+//Test HEX
+HEX:
+<<0x09aAFff>>OK
+
+<<0x>>FAIL
+
+//Test Byte
+BYTE:
+<<0b010010110>>OK
+<<0b>>FAIL
+<<0b012>>
+
+
+
