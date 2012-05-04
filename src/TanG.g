@@ -19,9 +19,9 @@ ASTLabelType=CommonTree;
 tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | m));
 
 //Import Statements
-i	:	td_imp^ filename (NEWLINE+ iprime)?; 
+i	:	((td_imp^ filename)|td_require STRING) (NEWLINE+ iprime)?; 
  	
- iprime	:	td_imp^ filename (NEWLINE+ i)?;
+ iprime	:	((td_imp^ filename)|td_require STRING) (NEWLINE+ i)?;
 
 //Main body
 m	:	statement (NEWLINE+ mprime)?;
@@ -191,6 +191,9 @@ td_truefalse
 td_none	:	NONE;
 td_null	:	NULL;
 td_some	:	SOME;
+td_require
+	:	REQUIRE;
+	
 //Lexer/Tokens
 
 //Operators  
@@ -206,6 +209,7 @@ FILENAME	:	(('"')('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')* '.td'
 IMPORT
 	:	'import'
 	;
+REQUIRE	:	'require';
 NODE
 	:	'node'|'public node' |'private node'
 	;
