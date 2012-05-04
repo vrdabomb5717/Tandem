@@ -335,6 +335,15 @@ end>>OK
 	nope
 end>>FAIL
 
+//until
+<<until pigsFly
+	!hellFreezeOver
+end>>OK
+
+<<until true false
+	asdf
+end>>FAIL
+
 
 //Lexer Tests
 
