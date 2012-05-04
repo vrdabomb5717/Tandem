@@ -429,13 +429,6 @@ hashSet:
 //hash fail
 <<{=>}>>FAIL
 
-//set success
-<<{1,2,3,4}>>OK
-//set success
-<<{1,{2,3},3}>>OK
-
-//set failure
-<<{1,{1,2}>>FAIL
 
 
 //Lexer Tests
