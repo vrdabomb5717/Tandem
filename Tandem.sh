@@ -127,7 +127,7 @@ case `echo "a=$version;b=3.4;r=-1;if(a==b)r=0;if(a>b)r=1;r"|bc` in
     
 echo ANTLR version greater than 3.4 &
 
-ant walk -Dfile="$FILE" 
+ant walk -Dfile="$FILE" -q
 
 ruby_file=${FILE%.*}
 
