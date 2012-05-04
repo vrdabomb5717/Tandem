@@ -345,6 +345,32 @@ end>>OK
 end>>FAIL
 
 
+
+//condTypes
+condType:
+//if-statements
+
+<<if x is y
+	x is z
+else
+	x is a
+end>>OK
+
+<<if x is y
+	skipElse
+end>>FAIL
+
+//unless
+
+<<unless player is charlieParker
+	not listen
+end>>OK
+
+<<unless if true
+	wait
+end>>FAIL
+
+
 //Lexer Tests
 
 //Comment Tests
