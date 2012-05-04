@@ -415,6 +415,28 @@ end>>OK
 
 
 
+//SPECIAL ATOMS
+
+//list
+list:
+<<[a is b, c, d, [1,2]]>>OK
+<<[a,b,[c,d]>>FAIL
+
+//hash
+hashSet:
+//hash success
+<<{"jam" => 0b0110, "jar" => 0xAFFC2}>>OK
+//hash fail
+<<{=>}>>FAIL
+
+//set success
+<<{1,2,3,4}>>OK
+//set success
+<<{1,{2,3},3}>>OK
+
+//set failure
+<<{1,{1,2}>>FAIL
+
 
 //Lexer Tests
 
@@ -459,6 +481,14 @@ BYTE:
 <<0b010010110>>OK
 <<0b>>FAIL
 <<0b012>>FAIL
+
+//TEST string
+STRING:
+<<"WithotEscape codes babe">>OK
+<<"Dog\nDog on new line">>OK
+<<"DOG>>FAIL
+
+
 
 
 
