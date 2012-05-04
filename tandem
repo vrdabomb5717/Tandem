@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 EXPECTED_ARGS=1
 E_BADARGS=65
