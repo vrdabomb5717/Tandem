@@ -145,15 +145,29 @@ import "mobetter.td">> OK
 //Should fail
 <<import fail.td>>FAIL
 
+
+
 //Main Body Test
 m	:
 
+//cond failures
 <<cond 
 	a is b
 		a is c
 			1+1
 		end
 	end
+end>>FAIL
+
+//assert test
+<<assert a is b>>OK
+
+<<assert assert>>FAIL
+
+<<break true>>OK
+
+<<assert loop
+	break
 end>>FAIL
 
 //should succeed
