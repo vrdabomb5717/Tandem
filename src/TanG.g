@@ -1,5 +1,6 @@
 //TanG Grammar  Patrick DLG
-
+ 
+ 
 grammar TanG;
 
 options{
@@ -19,9 +20,9 @@ ASTLabelType=CommonTree;
 tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | m));
 
 //Import Statements
-i	:	((td_imp^ filename)|td_require STRING) (NEWLINE+ iprime)?; 
+i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?; 
  	
- iprime	:	((td_imp^ filename)|td_require STRING) (NEWLINE+ i)?;
+ iprime	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ i)?;
 
 //Main body
 m	:	statement (NEWLINE+ mprime)?;
@@ -196,7 +197,8 @@ td_require
 	
 //Lexer/Tokens
 
-//Operators  
+//Operators
+FUNCID	:	('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*'?';  
 COMMENT
     :   ('#' |'//') ~('\n'|'\r')*   {skip();}
 ;
