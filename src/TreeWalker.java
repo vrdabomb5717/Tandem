@@ -272,6 +272,7 @@ public class TreeWalker {
 						break;
 					case TanGParser.NODE:
 						LinkedList<CommonTree> list = new LinkedList<CommonTree>();
+						out.newLine();
 						//every node will be converted to a class with the name of the node as the class name
 						if (t.getText().equals("public node"))
 						{
@@ -310,10 +311,7 @@ public class TreeWalker {
 					case TanGParser.NODEID:
 						//DO SET
 						//
-						if(t.getText().contains("Set")){
-							String temp = t.getText().replace("Set", "Set.new");
-							out.write(temp);
-						}else if(t.getText().equals("Println")){
+						 if(t.getText().equals("Println")){
 							out.write("puts");
 						}
 						else if(t.getText().equals("Print")){
@@ -364,26 +362,30 @@ public class TreeWalker {
 							list2.push((CommonTree)t.getChild(i));
 						
 						}
+						else{
 							walk((CommonTree)t.getChild(i), out);
-							String param = "";
-							while(list2.isEmpty()==false){
-								
-								while((list2.peek()).getType() != TanGParser.NODEID){
-									params = list2.pop() + params;
-									
-								} 
-								out.write("(");	
-								walk((CommonTree)list2.pop(), out);
-								if(!(param.equals(""))){
-									out.write(param);
-								}
-								param = "";
-								out.write(")");
 							
+							while(list2.isEmpty()==false){
+								if (list2.peek().getType() == TanGParser.ID ){
+									params += list2.peek().getText() + ", " + params;
+								}
+								
+								if (list2.peek().getType() != TanGParser.ID){
+									out.write("(");
+							
+									walk((CommonTree)list2.pop(), out);
+							
+									out.write(")");
+								}else{
+									list2.pop();
+								}
+								
 							}
 						}
 						}
-				
+						if (!(params.equals(""))){
+							out.write("(" + params.substring(0, params.length()-2) + ")");
+						}
 						break;
 					case TanGParser.PUBPRIV:
 						break;
