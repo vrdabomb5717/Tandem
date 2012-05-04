@@ -147,6 +147,15 @@ import "mobetter.td">> OK
 
 //Main Body Test
 m	:
+
+<<cond 
+	a is b
+		a is c
+			1+1
+		end
+	end
+end>>FAIL
+
 //should succeed
 <<a=b>>OK
 //Should fail, no NodeCode again!
@@ -291,6 +300,7 @@ end>>OK
 
 
 
+
 //Expression Unit Tests
 
 expression:
@@ -369,6 +379,27 @@ end>>OK
 <<unless if true
 	wait
 end>>FAIL
+
+
+
+//cond-statements
+
+<<cond
+	a>b
+		jazz
+	end
+end>>OK
+
+<<cond
+	a is b
+		1+1
+	end
+	a is c
+		1+2
+	end
+end>>OK
+
+
 
 
 //Lexer Tests
