@@ -4,6 +4,8 @@
 
 Now, only ID's can be indexable or attributable.  Literal lists cannot be pipeline parameters.  Nodes are now required to have capital names.
 
+Added support for importing Ruby code. Can only call methods that are in the form of Class.method or Class.method?, but Ruby methods that end in other punctuation will not work. This takes care of the system libraries.
+
 
 ## 5/2/12
 
