@@ -149,6 +149,26 @@ import "mobetter.td">> OK
 m	:
 //should succeed
 <<a=b>>OK
+//Should fail, no NodeCode again!
+<<2|A>>FAIL
+
+//Should fail, no NodeCode again!
+<<2 A>>FAIL
+
+<<2 a b>>FAIL
+
+<<3|4|5>>FAIL
+
+<<a|b|b>>FAIL
+
+<<"Car"|"A"|C>>FAIL
+
+//Should succeed; proper pipeline
+<<A a b|B|C>>OK
+
+//should fail: no NodeCode in the pipeline
+<<A|B + 2|C>>FAIL
+
 
 //This should fail
 <<node node1(a, b)
@@ -275,14 +295,14 @@ expression:
 //Should fail, no NodeCode in the PIPELINE!!
 <<A|B|(C+2)>>FAIL
 
-//Should succeed; proper pipeline
-<<A a b|B|C>>OK
-
-//should fail: no NodeCode in the pipeline
-<<A|B+2|C>>FAIL
+//Should fail, no NodeCode again!
+<<A|2>>FAIL
 
 //should succeed: note that it is actually two pipelines (pipe has higher precedence than +)
 <<A|B+C|D>>OK
+
+//should fail
+<<1[2]>>
 
 
 
