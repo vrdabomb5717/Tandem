@@ -125,13 +125,13 @@ case `echo "a=$version;b=3.4;r=-1;if(a==b)r=0;if(a>b)r=1;r"|bc` in
 	      exit
         ;; esac
     
-echo ANTLR version greater than 3.4
+echo ANTLR version greater than 3.4 &
 
-java TandemTree "$FILE" &
+ant walk -Dfile="$FILE" 
 
-ruby_file=${FILE%%.*}
+ruby_file=${FILE%.*}
 
-ruby "$ruby_file".rb &
+ruby "$ruby_file".rb 
 
 
 
