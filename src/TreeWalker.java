@@ -5,6 +5,7 @@ import org.antlr.runtime.TokenStream;
 import org.antlr.runtime.tree.CommonTree;
 import java.io.*;
 import org.antlr.runtime.*;
+import java.util.*;
 
 public class TreeWalker {	
 
@@ -14,10 +15,10 @@ public class TreeWalker {
 		BufferedWriter out = new BufferedWriter(new FileWriter(filename + ".rb"));
 		walk((CommonTree) t, out);
 		//traverse all the child nodes of the root
-		for ( int i = 0; i < t.getChildCount(); i++ ) 
-		{
-			walk(((CommonTree)t.getChild(i)), out);
-		}
+	//	for ( int i = 0; i < t.getChildCount(); i++ ) 
+	//	{
+	//		walk(((CommonTree)t.getChild(i)), out);
+	//	}
 		out.close();
 		}
 		catch (IOException e) {}
@@ -119,6 +120,8 @@ public class TreeWalker {
 						break;
 					case TanGParser.COND:
 						//we start at the second child node and skip every other one to skip the newlines
+						out.write("case ");
+						out.newLine();
 						for (int j = 1; j < t.getChildCount(); j=j+2 ) 
 						{	
 							//for all the conditions, except the last, begin it with the keyword "when"
@@ -131,7 +134,7 @@ public class TreeWalker {
 								while (!(((t.getChild(j).getChild(k)).getType())== (TanGParser.NEWLINE))){
 									k++;
 								}
-								while (k < t.getChild(j).getChildCount()){
+								while (k < t.getChild(j).getChildCount()-1){
 									walk((CommonTree)(t.getChild(j).getChild(k)), out);
 									k++;
 								}
@@ -144,7 +147,7 @@ public class TreeWalker {
 								while (!(((t.getChild(j).getChild(k)).getType())==(TanGParser.NEWLINE))){
 									k++;
 								}
-								while (k < t.getChild(j).getChildCount()){
+								while (k < t.getChild(j).getChildCount()-1){
 									walk((CommonTree)(t.getChild(j).getChild(k)), out);
 									k++;
 								}
@@ -267,6 +270,7 @@ public class TreeWalker {
 						out.write(t.getText());
 						break;
 					case TanGParser.NODE:
+						LinkedList<CommonTree> list = new LinkedList<CommonTree>();
 						//every node will be converted to a class with the name of the node as the class name
 						if (t.getText().equals("public node"))
 						{
@@ -286,12 +290,24 @@ public class TreeWalker {
 						out.write("def main");
 						for ( int i = 1; i < t.getChildCount(); i++ ) 
 						{
-							walk((CommonTree)t.getChild(i), out);
+							if (t.getChild(i).getType()==TanGParser.NODE){
+								list.addLast(((CommonTree)t.getChild(i)));
+							}
+							else{
+								walk((CommonTree)t.getChild(i), out);
+							}
+						}
+						while(list.isEmpty()==false){
+							walk((CommonTree)list.getFirst(), out);
+							list.remove();
 						}
 						out.newLine();
 						out.write("end ");
 						out.newLine();
 						
+						break;
+					case TanGParser.NODEID:
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.NOT:
 						out.write(t.getText());
@@ -310,13 +326,15 @@ public class TreeWalker {
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.PIPE:
-					//	for ( int i = t.getChildCount()-1; i > -1; i--) {
+						for ( int i = t.getChildCount()-1; i > -1; i--) {
 						//	if (i==0){
 
 						//	walk((CommonTree)t.getChild(t.getChildCount()-1), out);
 						//	}
 						//						}
 
+						break;
+					case TanGParser.PUBPRIV:
 						break;
 					case TanGParser.RANGE:
 						out.write(t.getText() + " ");
@@ -328,6 +346,7 @@ public class TreeWalker {
 						out.write(t.getText());
 						break;
 					case TanGParser.RETURN:
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.RPAREN:
 						out.write(t.getText());
