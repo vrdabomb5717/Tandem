@@ -317,6 +317,23 @@ end>>OK
 	makeithappen
 end>>FAIL
 
+//while-loop
+<<while x>2
+	x=x+1
+end>>OK
+
+<<while return true
+	beelzebub
+end>>FAIL
+
+//loop
+<<loop
+	break x
+end>>OK
+
+<<loop true
+	nope
+end>>FAIL
 
 
 //Lexer Tests
