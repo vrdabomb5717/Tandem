@@ -1,0 +1,9 @@
+<ivy-module version="2.0">
+    <info organisation="edu.columbia.comsw4115-spring2012.tandem" module="tandem-deps"/>
+    <dependencies>
+		<dependency org="org.antlr" name="antlr" rev="3.4"/>
+		<dependency org="org.antlr" name="gunit" rev="3.4"/>
+        <dependency org="junit" name="junit" rev="4.10"/>
+        <dependency org="org.jruby" name="jruby-complete" rev="1.6.7.1"/>
+    </dependencies>
+</ivy-module>
