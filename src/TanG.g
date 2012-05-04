@@ -122,7 +122,7 @@ expExpression
 	:	pipelineExpr (EXP^ expExpression)?;
 
 pipelineExpr
-	:	indexable|((pipenode (pipeindexable)* (pipe pipenode2)*)) -> pipeindexable* pipenode (pipe pipenode2)*
+	:	indexable|((pipenode (pipeindexable)* (pipe pipenode2)*)) -> LPAREN pipeindexable* RPAREN pipenode (pipe pipenode2)*
 	;
 
 pipe	:	PIPE;
