@@ -149,6 +149,26 @@ import "mobetter.td">> OK
 m	:
 //should succeed
 <<a=b>>OK
+//Should fail, no NodeCode again!
+<<2|A>>FAIL
+
+//Should fail, no NodeCode again!
+<<2 A>>FAIL
+
+<<2 a b>>FAIL
+
+<<3|4|5>>FAIL
+
+<<a|b|b>>FAIL
+
+<<"Car"|"A"|C>>FAIL
+
+//Should succeed; proper pipeline
+<<A a b|B|C>>OK
+
+//should fail: no NodeCode in the pipeline
+<<A|B + 2|C>>FAIL
+
 
 //This should fail
 <<node node1(a, b)
@@ -266,6 +286,9 @@ end
 	end
 end>>OK
 
+//should fail
+<<1[2]>>FAIL
+
 
 
 //Expression Unit Tests
@@ -275,22 +298,96 @@ expression:
 //Should fail, no NodeCode in the PIPELINE!!
 <<A|B|(C+2)>>FAIL
 
-//Should succeed; proper pipeline
-<<A a b|B|C>>OK
-
-//should fail: no NodeCode in the pipeline
-<<A|B+2|C>>FAIL
+//Should fail, no NodeCode again!
+<<A|2>>FAIL
 
 //should succeed: note that it is actually two pipelines (pipe has higher precedence than +)
 <<A|B+C|D>>OK
 
 
+//LoopTests
+loopType:
+
+//for-loop
+<<for item in list
+	stuff
+end>>OK
+
+<<for item in list in biggerList
+	makeithappen
+end>>FAIL
+
+//while-loop
+<<while x>2
+	x=x+1
+end>>OK
+
+<<while return true
+	beelzebub
+end>>FAIL
+
+//loop
+<<loop
+	break x
+end>>OK
+
+<<loop true
+	nope
+end>>FAIL
+
+//until
+<<until pigsFly
+	!hellFreezeOver
+end>>OK
+
+<<until true false
+	asdf
+end>>FAIL
 
 
+//Lexer Tests
+
+//Comment Tests
+COMMENT :
+
+//success
+<<#this is a comment>>OK
+
+//success
+<<//This is also a comment>>OK
+
+<</This is not a comments>>FAIL
+
+//success
+<<//#//#//#?>>OK
 
 
+//Float stuff
+FLOAT:
+//success
+<<1.1e+99>>OK
+
+//fail due to improper exponent
+<<1.1e-9.9>>FAIL
+
+//float stuff
+<<.0978>>OK
+
+//float stuff
+<<.0E-0>>OK
 
 
+//Test HEX
+HEX:
+<<0x09aAFff>>OK
+
+<<0x>>FAIL
+
+//Test Byte
+BYTE:
+<<0b010010110>>OK
+<<0b>>FAIL
+<<0b012>>FAIL
 
 
 
