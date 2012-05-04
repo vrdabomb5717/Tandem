@@ -286,6 +286,9 @@ end
 	end
 end>>OK
 
+//should fail
+<<1[2]>>FAIL
+
 
 
 //Expression Unit Tests
@@ -300,10 +303,6 @@ expression:
 
 //should succeed: note that it is actually two pipelines (pipe has higher precedence than +)
 <<A|B+C|D>>OK
-
-//should fail
-<<1[2]>>
-
 
 
 
