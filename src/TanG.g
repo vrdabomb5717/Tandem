@@ -1,5 +1,6 @@
 //TanG Grammar  Patrick DLG
-
+ 
+ 
 grammar TanG;
 
 options{
@@ -19,9 +20,9 @@ ASTLabelType=CommonTree;
 tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | m));
 
 //Import Statements
-i	:	td_imp^ filename (NEWLINE+ iprime)?; 
+i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?; 
  	
- iprime	:	td_imp^ filename (NEWLINE+ i)?;
+ iprime	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ i)?;
 
 //Main body
 m	:	statement (NEWLINE+ mprime)?;
@@ -122,13 +123,14 @@ expExpression
 	:	pipelineExpr (EXP^ expExpression)?;
 
 pipelineExpr
-	:	(pipenode (pipeindexable)* (PIPE^ pipenode)*) |indexable
+	:	indexable|((pipenode (pipeindexable)* (pipe^ pipenode)*))
 	;
 
+pipe	:	PIPE;
+
 pipenode
-	:	NODEID (DOT^ NODEID)*;
-
-
+	:	NODEID (DOT^ (NODEID|ID|FUNCID))*;
+	
 indexable
 	:	(ID^ (LBRACK indexable RBRACK)+)|attributable;
 
@@ -149,11 +151,10 @@ pipeatom:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|hashSet|td_
 
 list	:	LBRACK (orExpression (COMMA orExpression)*)? RBRACK;
 
-hashSet	:	LBRACE (orExpression (hashInsides|setInsides))? RBRACE;
+hashSet	:	LBRACE (orExpression (hashInsides))? RBRACE;
 hashInsides
 	:	FATCOMMA orExpression (COMMA orExpression FATCOMMA orExpression)*;
-setInsides
-	:	(COMMA orExpression)*;//orExpression (COMMA orExpression)*;
+
 
 //Keywords
 td_from	:	FROM;
@@ -191,9 +192,13 @@ td_truefalse
 td_none	:	NONE;
 td_null	:	NULL;
 td_some	:	SOME;
+td_require
+	:	REQUIRE;
+	
 //Lexer/Tokens
 
-//Operators  
+//Operators
+FUNCID	:	('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*'?';  
 COMMENT
     :   ('#' |'//') ~('\n'|'\r')*   {skip();}
 ;
@@ -206,6 +211,7 @@ FILENAME	:	(('"')('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')* '.td'
 IMPORT
 	:	'import'
 	;
+REQUIRE	:	'require';
 NODE
 	:	'node'|'public node' |'private node'
 	;
@@ -328,9 +334,7 @@ fragment
 ESC_SEQ
     :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\');
 
-fragment
-CommentEnd
-	:	'*/';   
+
     
 INVALID
  :  . {

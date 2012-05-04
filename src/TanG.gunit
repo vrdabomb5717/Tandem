@@ -137,6 +137,14 @@ i	:
 <<import "success.td"
 import "mobetter.td">> OK
 
+<<require "test">>OK
+
+<<import "success.td"
+require "rubyfile"
+import "test.td">>OK
+
+<<import require "game">>FAIL
+
 <<
   import "success.td"
 >>OK
@@ -145,8 +153,31 @@ import "mobetter.td">> OK
 //Should fail
 <<import fail.td>>FAIL
 
+
+
 //Main Body Test
 m	:
+
+//cond failures
+<<cond 
+	a is b
+		a is c
+			1+1
+		end
+	end
+end>>FAIL
+
+//assert test
+<<assert a is b>>OK
+
+<<assert assert>>FAIL
+
+<<break true>>OK
+
+<<assert loop
+	break
+end>>FAIL
+
 //should succeed
 <<a=b>>OK
 //Should fail, no NodeCode again!
@@ -291,6 +322,7 @@ end>>OK
 
 
 
+
 //Expression Unit Tests
 
 expression:
@@ -303,6 +335,110 @@ expression:
 
 //should succeed: note that it is actually two pipelines (pipe has higher precedence than +)
 <<A|B+C|D>>OK
+
+
+//LoopTests
+loopType:
+
+//for-loop
+<<for item in list
+	stuff
+end>>OK
+
+<<for item in list in biggerList
+	makeithappen
+end>>FAIL
+
+//while-loop
+<<while x>2
+	x=x+1
+end>>OK
+
+<<while return true
+	beelzebub
+end>>FAIL
+
+//loop
+<<loop
+	break x
+end>>OK
+
+<<loop true
+	nope
+end>>FAIL
+
+//until
+<<until pigsFly
+	!hellFreezeOver
+end>>OK
+
+<<until true false
+	asdf
+end>>FAIL
+
+
+
+//condTypes
+condType:
+//if-statements
+
+<<if x is y
+	x is z
+else
+	x is a
+end>>OK
+
+<<if x is y
+	skipElse
+end>>FAIL
+
+//unless
+
+<<unless player is charlieParker
+	not listen
+end>>OK
+
+<<unless if true
+	wait
+end>>FAIL
+
+
+
+//cond-statements
+
+<<cond
+	a>b
+		jazz
+	end
+end>>OK
+
+<<cond
+	a is b
+		1+1
+	end
+	a is c
+		1+2
+	end
+end>>OK
+
+
+
+//SPECIAL ATOMS
+
+//list
+list:
+<<[a is b, c, d, [1,2]]>>OK
+<<[a,b,[c,d]>>FAIL
+
+//hash
+hashSet:
+//hash success
+<<{"jam" => 0b0110, "jar" => 0xAFFC2}>>OK
+//hash fail
+<<{=>}>>FAIL
+<<{a,b,c}>>FAIL
+<<{a<=c=>d<=e}>>OK
+
 
 //Lexer Tests
 
@@ -334,5 +470,32 @@ FLOAT:
 
 //float stuff
 <<.0E-0>>OK
+
+
+//Test HEX
+HEX:
+<<0x09aAFff>>OK
+
+<<0x>>FAIL
+
+//Test Byte
+BYTE:
+<<0b010010110>>OK
+<<0b>>FAIL
+<<0b012>>FAIL
+
+//TEST string
+STRING:
+<<"WithotEscape codes babe">>OK
+<<"Dog\nDog on new line">>OK
+<<"DOG>>FAIL
+
+//TEST FUNCID
+FUNCID:
+<<Abcdefg?>>OK
+<<gu?ess?>>FAIL
+<<empty?>>OK
+
+
 
 
