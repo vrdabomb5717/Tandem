@@ -145,8 +145,31 @@ import "mobetter.td">> OK
 //Should fail
 <<import fail.td>>FAIL
 
+
+
 //Main Body Test
 m	:
+
+//cond failures
+<<cond 
+	a is b
+		a is c
+			1+1
+		end
+	end
+end>>FAIL
+
+//assert test
+<<assert a is b>>OK
+
+<<assert assert>>FAIL
+
+<<break true>>OK
+
+<<assert loop
+	break
+end>>FAIL
+
 //should succeed
 <<a=b>>OK
 //Should fail, no NodeCode again!
@@ -291,6 +314,7 @@ end>>OK
 
 
 
+
 //Expression Unit Tests
 
 expression:
@@ -371,6 +395,42 @@ end>>OK
 end>>FAIL
 
 
+
+//cond-statements
+
+<<cond
+	a>b
+		jazz
+	end
+end>>OK
+
+<<cond
+	a is b
+		1+1
+	end
+	a is c
+		1+2
+	end
+end>>OK
+
+
+
+//SPECIAL ATOMS
+
+//list
+list:
+<<[a is b, c, d, [1,2]]>>OK
+<<[a,b,[c,d]>>FAIL
+
+//hash
+hashSet:
+//hash success
+<<{"jam" => 0b0110, "jar" => 0xAFFC2}>>OK
+//hash fail
+<<{=>}>>FAIL
+
+
+
 //Lexer Tests
 
 //Comment Tests
@@ -414,6 +474,14 @@ BYTE:
 <<0b010010110>>OK
 <<0b>>FAIL
 <<0b012>>FAIL
+
+//TEST string
+STRING:
+<<"WithotEscape codes babe">>OK
+<<"Dog\nDog on new line">>OK
+<<"DOG>>FAIL
+
+
 
 
 

@@ -149,11 +149,10 @@ pipeatom:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|hashSet|td_
 
 list	:	LBRACK (orExpression (COMMA orExpression)*)? RBRACK;
 
-hashSet	:	LBRACE (orExpression (hashInsides|setInsides))? RBRACE;
+hashSet	:	LBRACE (orExpression (hashInsides))? RBRACE;
 hashInsides
 	:	FATCOMMA orExpression (COMMA orExpression FATCOMMA orExpression)*;
-setInsides
-	:	(COMMA orExpression)*;//orExpression (COMMA orExpression)*;
+
 
 //Keywords
 td_from	:	FROM;
