@@ -304,6 +304,21 @@ expression:
 //should succeed: note that it is actually two pipelines (pipe has higher precedence than +)
 <<A|B+C|D>>OK
 
+
+//LoopTests
+loopType:
+
+//for-loop
+<<for item in list
+	stuff
+end>>OK
+
+<<for item in list in biggerList
+	makeithappen
+end>>FAIL
+
+
+
 //Lexer Tests
 
 //Comment Tests
@@ -346,7 +361,7 @@ HEX:
 BYTE:
 <<0b010010110>>OK
 <<0b>>FAIL
-<<0b012>>
+<<0b012>>FAIL
 
 
 
