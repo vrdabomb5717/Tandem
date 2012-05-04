@@ -304,12 +304,35 @@ expression:
 //should succeed: note that it is actually two pipelines (pipe has higher precedence than +)
 <<A|B+C|D>>OK
 
+//Lexer Tests
+
+//Comment Tests
+COMMENT :
+
+//success
+<<#this is a comment>>OK
+
+//success
+<<//This is also a comment>>OK
+
+<</This is not a comments>>FAIL
+
+//success
+<<//#//#//#?>>OK
 
 
+//Float stuff
+FLOAT:
+//success
+<<1.1e+99>>OK
 
+//fail due to improper exponent
+<<1.1e-9.9>>FAIL
 
+//float stuff
+<<.0978>>OK
 
-
-
+//float stuff
+<<.0E-0>>OK
 
 
