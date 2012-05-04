@@ -112,6 +112,10 @@ else
     exit  
 fi
 
+
+
+
+
 version=$(java org.antlr.Tool -version 2>&1 | awk -F ' ' '/ / {print $5}')
     
 echo version "$version"
