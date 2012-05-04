@@ -150,6 +150,122 @@ m	:
 //should succeed
 <<a=b>>OK
 
+//This should fail
+<<node node1(a, b)
+	cond
+		a>b
+			x=a+b
+			node2 x
+		end
+		b>a
+			y=b-a
+			node3 b
+		end
+		a==b
+			node4 a b    
+     
+			x=y=z=1
+
+		end
+	end
+	node node2(greaterA)
+		print "I am at node2"
+		greaterA-4
+	end
+	node node3(greaterB)
+		answer =greaterB-8
+		node4 answer greaterB | node2 
+		a|b|c|d|e|f
+	end
+	node node4(myA, myB)
+		a = myA *5
+		b = myB -5
+		node5 a b
+		node node5(g,h)
+			sum = "I am at node 5"
+			print sum
+		end
+	end
+end
+>>FAIL //expect failure
+<<node Node1(a, b)
+	cond
+		a>b
+			x=a+b
+			Node2 x
+		end
+		b>a
+			y=b-a
+			A b c| D e| F
+			Node3 b
+		end
+		a==b
+			Node4 a b    
+     
+			x=y=z=1
+
+		end
+	end
+	node Node2(greaterA)
+		print "I am at node2"
+		greaterA-4
+	end
+	node Node3(greaterB)
+		answer =greaterB-8
+		Node4 answer greaterB | Node2 
+		A|B|C|D|E|F
+	end
+	node Node4(myA, myB)
+		a = myA *5
+		b = myB -5
+		Node5 a b
+		node Node5(g,h)
+			sum = "I am at node 5"
+			Print sum
+		end
+	end
+end
+>> FAIL //expect failure
+
+//Should Succeed
+<<node Node1(a, b)
+	cond
+		a>b
+			x=a+b
+			Node2 x
+		end
+		b>a
+			y=b-a
+			A b c| D| F
+			Node3 b
+		end
+		a==b
+			Node4 a b    
+     
+			x=y=z=1
+
+		end
+	end
+	node Node2(greaterA)
+		Print "I am at node2"
+		greaterA-4
+	end
+	node Node3(greaterB)
+		answer =greaterB-8
+		Node4 answer greaterB | Node2 
+		A|B|C|D|E|F
+	end
+	node Node4(myA, myB)
+		a = myA *5
+		b = myB -5
+		Node5 a b
+		node Node5(g,h)
+			sum = "I am at node 5"
+			Print sum
+		end
+	end
+end>>OK
+
 
 
 
