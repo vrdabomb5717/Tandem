@@ -364,12 +364,22 @@ public class TreeWalker {
 							list2.push((CommonTree)t.getChild(i));
 						
 						}
-						else{
 							walk((CommonTree)t.getChild(i), out);
+							String param = "";
 							while(list2.isEmpty()==false){
-								out.write("(");
+								
+								while((list2.peek()).getType() != TanGParser.NODEID){
+									params = list2.pop() + params;
+									
+								} 
+								out.write("(");	
 								walk((CommonTree)list2.pop(), out);
+								if(!(param.equals(""))){
+									out.write(param);
+								}
+								param = "";
 								out.write(")");
+							
 							}
 						}
 						}
