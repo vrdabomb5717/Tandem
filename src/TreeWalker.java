@@ -326,13 +326,17 @@ public class TreeWalker {
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.PIPE:
-						for ( int i = t.getChildCount()-1; i > -1; i--) {
-						//	if (i==0){
-
-						//	walk((CommonTree)t.getChild(t.getChildCount()-1), out);
-						//	}
-						//						}
-
+					/**	LinkedList<CommonTree> list2 = new LinkedList<CommonTree>();
+						String s= "";
+						out.write(t.getChild(getChildCount()-1));
+						for ( int i = t.getChildCount()-2; i > -1; i--) {
+							if ((t.getChild(i).getType() == TanGParser.NODEID){
+								s += "(";
+								s += t.getText();
+								s += "()";
+								s += (")");						}
+							}
+							out.write(s);*/
 						break;
 					case TanGParser.PUBPRIV:
 						break;
