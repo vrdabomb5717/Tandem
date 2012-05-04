@@ -345,6 +345,23 @@ end>>OK
 end>>FAIL
 
 
+
+//condTypes
+condType:
+//if-statements
+
+<<if x is y
+	x is z
+else
+	x is a
+end>>OK
+
+<<if x is y
+	skipElse
+end>>FAIL
+
+
+
 //Lexer Tests
 
 //Comment Tests
