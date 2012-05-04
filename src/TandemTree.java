@@ -43,6 +43,7 @@ public class TandemTree{
 	 		                          	 out.close();
 	 		} catch (IOException e) {}		
 	 	} catch(Exception e) {
+			e.printStackTrace();
 	 		System.err.println("exception: "+e);
 	 	}
 	}	

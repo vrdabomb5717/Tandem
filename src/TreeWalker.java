@@ -123,15 +123,31 @@ public class TreeWalker {
 						{	
 							//for all the conditions, except the last, begin it with the keyword "when"
 							//begin the last condition with else
-							if(j ==  t.getChildCount()-3)
-							{
-								out.write("else ");
-								walk((CommonTree)t.getChild(j), out);
-							}
-							else if(j <  t.getChildCount()-3)
+							if(j <  t.getChildCount()-3)
 							{
 								out.write("when ");
 								walk((CommonTree)t.getChild(j), out);
+								int k=0;
+								while (!(((t.getChild(j).getChild(k)).getType())== (TanGParser.NEWLINE))){
+									k++;
+								}
+								while (k < t.getChild(j).getChildCount()){
+									walk((CommonTree)(t.getChild(j).getChild(k)), out);
+									k++;
+								}
+							}
+							else if(j ==  t.getChildCount()-3)
+							{
+								out.write("else ");
+								walk((CommonTree)t.getChild(j), out);
+								int k=0;
+								while (!(((t.getChild(j).getChild(k)).getType())==(TanGParser.NEWLINE))){
+									k++;
+								}
+								while (k < t.getChild(j).getChildCount()){
+									walk((CommonTree)(t.getChild(j).getChild(k)), out);
+									k++;
+								}
 							}else
 							{
 								walk((CommonTree)t.getChild(j), out);
@@ -151,7 +167,8 @@ public class TreeWalker {
 						out.write(t.getText() + " ");
 						break;
 					case TanGParser.END:
-						out.write(t.getText());
+						out.write(t.getText() + " ");
+						out.newLine();
 						break;					
 					case TanGParser.EOF:
 						out.write(t.getText());
@@ -160,12 +177,6 @@ public class TreeWalker {
 						walk((CommonTree)t.getChild(0), out);
 						out.write(t.getText() + " ");
 						walk((CommonTree)t.getChild(1), out);
-						//if the equality test has more than 2 child nodes, it is because it is involved in a cond
-						//in this case, just print out all the following children
-						for ( int i = 2; i < t.getChildCount()-1; i++ )
-					       	{
-							walk((CommonTree)t.getChild(i), out);
-						}
 						break;
 					case TanGParser.ESC_SEQ:
 						out.write(t.getText() + " ");
@@ -241,12 +252,6 @@ public class TreeWalker {
 						walk((CommonTree)t.getChild(0), out);
 						out.write(t.getText() + " ");
 						walk((CommonTree)t.getChild(1), out);
-						//if the magnitude comparison has more than 2 child nodes, it is because it is involved in a cond
-						//in this case, just print out all the following children
-						for ( int i = 2; i < t.getChildCount()-1; i++ )
-					       	{
-							walk((CommonTree)t.getChild(i), out);
-						}
 						break;					
 					case TanGParser.MOD:
 						walk((CommonTree)t.getChild(0), out);
@@ -284,17 +289,14 @@ public class TreeWalker {
 							walk((CommonTree)t.getChild(i), out);
 						}
 						out.newLine();
-						out.write("end");
+						out.write("end ");
+						out.newLine();
+						
 						break;
 					case TanGParser.NOT:
 						out.write(t.getText());
 						walk((CommonTree)t.getChild(0), out);
-						//if the not statement has more than 1 child nods, it is because it is involved in a cond
-						//in this case, just print out all the following children
-						for ( int i = 1; i < t.getChildCount()-1; i++ ) 
-						{
-							walk((CommonTree)t.getChild(i), out);
-						}
+					
 						break;	
 					case TanGParser.NONE:
 						out.write(t.getText()+ " ");
