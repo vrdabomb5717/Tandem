@@ -122,18 +122,14 @@ expExpression
 	:	pipelineExpr (EXP^ expExpression)?;
 
 pipelineExpr
-	:	indexable|((pipenode (pipeindexable)* (pipe pipenode2)*))
+	:	indexable|((pipenode (pipeindexable)* (pipe^ pipenode)*))
 	;
 
 pipe	:	PIPE;
 
 pipenode
-	:	NODEID (DOT^ NODEID)*;
+	:	NODEID (DOT^ (NODEID|ID))*;
 	
-pipenode2
-	:	NODEID (DOT^ NODEID)*;
-
-
 indexable
 	:	(ID^ (LBRACK indexable RBRACK)+)|attributable;
 
