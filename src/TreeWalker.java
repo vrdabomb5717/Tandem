@@ -13,6 +13,7 @@ public class TreeWalker {
 	{
 		try {
 		BufferedWriter out = new BufferedWriter(new FileWriter(filename + ".rb"));
+		out.write("require \"set\"");
 		walk((CommonTree) t, out);
 		//traverse all the child nodes of the root
 	//	for ( int i = 0; i < t.getChildCount(); i++ ) 
@@ -307,7 +308,20 @@ public class TreeWalker {
 						
 						break;
 					case TanGParser.NODEID:
-						out.write(t.getText() + " ");
+						//DO SET
+						//
+						if(t.getText().contains("Set")){
+							String temp = t.getText().replace("Set", "Set.new");
+							out.write(temp);
+						}else if(t.getText().equals("Println")){
+							out.write("puts");
+						}
+						else if(t.getText().equals("Print")){
+							out.write("print");
+						}
+						else{
+							out.write(t.getText() + " ");
+						}
 						break;
 					case TanGParser.NOT:
 						out.write(t.getText());
@@ -326,17 +340,40 @@ public class TreeWalker {
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.PIPE:
-					/**	LinkedList<CommonTree> list2 = new LinkedList<CommonTree>();
-						String s= "";
-						out.write(t.getChild(getChildCount()-1));
-						for ( int i = t.getChildCount()-2; i > -1; i--) {
-							if ((t.getChild(i).getType() == TanGParser.NODEID){
-								s += "(";
-								s += t.getText();
-								s += "()";
-								s += (")");						}
+						String params = "";
+						LinkedList<CommonTree> list2 = new LinkedList<CommonTree>();
+						for ( int i = 0; i < t.getChildCount(); i++ ) 
+						{
+						if ((t.getChild(i).getType() == TanGParser.NODEID && i != t.getChildCount()-1)){
+							
+					
+							list2.push((CommonTree)t.getChild(i));
+						
+						}
+						
+						else if(t.getChild(i).getType() != TanGParser.NODEID){
+					
+						
+							list2.push((CommonTree)t.getChild(i));
+						
+						}
+						//dont put parentheses around the whole call and around pipes
+						//else (i == t.getChildCount()-1){
+						else if(t.getChild(i).getType() == TanGParser.ID){
+					
+							list2.push((CommonTree)t.getChild(i));
+						
+						}
+						else{
+							walk((CommonTree)t.getChild(i), out);
+							while(list2.isEmpty()==false){
+								out.write("(");
+								walk((CommonTree)list2.pop(), out);
+								out.write(")");
 							}
-							out.write(s);*/
+						}
+						}
+				
 						break;
 					case TanGParser.PUBPRIV:
 						break;
