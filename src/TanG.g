@@ -129,7 +129,7 @@ pipelineExpr
 pipe	:	PIPE;
 
 pipenode
-	:	NODEID (DOT^ (NODEID|ID))*;
+	:	NODEID (DOT^ (NODEID|ID|FUNCID))*;
 	
 indexable
 	:	(ID^ (LBRACK indexable RBRACK)+)|attributable;
