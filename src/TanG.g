@@ -19,9 +19,9 @@ ASTLabelType=CommonTree;
 tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | m));
 
 //Import Statements
-i	:	td_imp filename (NEWLINE+ iprime)? -> filename td_imp (NEWLINE+ iprime)? ; 
+i	:	td_imp^ filename (NEWLINE+ iprime)?; 
  	
- iprime	:	td_imp filename (NEWLINE+ i)?;
+ iprime	:	td_imp^ filename (NEWLINE+ i)?;
 
 //Main body
 m	:	statement (NEWLINE+ mprime)?;
@@ -29,7 +29,7 @@ m	:	statement (NEWLINE+ mprime)?;
 mprime	:	statement (NEWLINE+ m)?;
 
 statement
-	:	td_node^ ID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
+	:	td_node^ NODEID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
 	|	expression
 	|	loopType
 	|	td_return orExpression
@@ -122,9 +122,11 @@ expExpression
 	:	pipelineExpr (EXP^ expExpression)?;
 
 pipelineExpr
-	:	(       pipenode (    ((pipeindexable)+  (PIPE^ pipenode)*)    |     ((PIPE^ pipenode)+)        )      )|indexable;
+	:	(pipenode (pipeindexable)* (PIPE^ pipenode)*) |indexable
+	;
+
 pipenode
-	:	ID (DOT^ ID)*;
+	:	NODEID (DOT^ NODEID)*;
 
 
 indexable
@@ -312,8 +314,9 @@ EXPONENT : ('e'|'E') ('+'|'-')? ('0'..'9')+ ;
 
 PUBPRIV	:	'public'|'private';
 
+NODEID	:	('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
 
-ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
+ID  :	('a'..'z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
 
 

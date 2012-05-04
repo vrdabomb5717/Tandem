@@ -20,7 +20,7 @@ equality_test = 1==1 #true
 inequality_test = 1!=2 #true
 1..10
 
-node N1 ()
+node n1 ()
 	loop 
 		break 3
 	end
