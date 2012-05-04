@@ -360,6 +360,15 @@ end>>OK
 	skipElse
 end>>FAIL
 
+//unless
+
+<<unless player is charlieParker
+	not listen
+end>>OK
+
+<<unless if true
+	wait
+end>>FAIL
 
 
 //Lexer Tests
