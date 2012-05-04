@@ -122,10 +122,15 @@ expExpression
 	:	pipelineExpr (EXP^ expExpression)?;
 
 pipelineExpr
-	:	(pipenode (pipeindexable)* (PIPE^ pipenode)*) |indexable
+	:	indexable|((pipenode (pipeindexable)* (pipe pipenode2)*)) -> pipeindexable* pipenode (pipe pipenode2)*
 	;
 
+pipe	:	PIPE;
+
 pipenode
+	:	NODEID (DOT^ NODEID)*;
+	
+pipenode2
 	:	NODEID (DOT^ NODEID)*;
 
 
