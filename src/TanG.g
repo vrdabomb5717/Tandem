@@ -328,9 +328,7 @@ fragment
 ESC_SEQ
     :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\');
 
-fragment
-CommentEnd
-	:	'*/';   
+
     
 INVALID
  :  . {
