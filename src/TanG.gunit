@@ -88,6 +88,11 @@ end
 
 //Should Succeed
 <<
+import "File.td"
+import "File2.td"
+
+import "StandardLib.td"
+
 node Node1(a, b)
 	cond
 		a>b
