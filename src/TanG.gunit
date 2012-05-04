@@ -268,6 +268,29 @@ end>>OK
 
 
 
+//Expression Unit Tests
+
+expression:
+
+//Should fail, no NodeCode in the PIPELINE!!
+<<A|B|(C+2)>>FAIL
+
+//Should succeed; proper pipeline
+<<A a b|B|C>>OK
+
+//should fail: no NodeCode in the pipeline
+<<A|B+2|C>>FAIL
+
+//should succeed: note that it is actually two pipelines (pipe has higher precedence than +)
+<<A|B+C|D>>OK
+
+
+
+
+
+
+
+
 
 
 
