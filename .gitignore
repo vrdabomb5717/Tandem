@@ -18,3 +18,5 @@ graph.txt
 lib/grammar/TanG_TG.java
 lib/grammar/TanG_TG.tokens
 bin/
+bin
+dist
