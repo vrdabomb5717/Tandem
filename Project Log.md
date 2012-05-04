@@ -1,5 +1,10 @@
 # Project Log
 
+## 5/3/12
+
+Now, only ID's can be indexable or attributable.  Literal lists cannot be pipeline parameters.  Nodes are now required to have capital names.
+
+
 ## 5/2/12
 
 Removed chain comparisons in order to be able to move on. Changed code generator to use nested classes instead of modules, and began to add public and private keywords to nodes. Removed multiline comments because we couldn't get them to work and recognize that the code was failing.
