@@ -137,10 +137,13 @@ pipenode
 	:	NODEID (DOT^ (NODEID|ID|FUNCID))*;
 	
 indexable
-	:	(ID^ (LBRACK indexable RBRACK)+)|attributable;
+	:	(nonAtomAttr^ (LBRACK indexable RBRACK)+)|attributable;
 
 pipeindexable
-	:	(ID^ (LBRACK pipeindexable RBRACK)+)|pipeattributable;
+	:	(nonAtomAttr^ (LBRACK pipeindexable RBRACK)+)|pipeattributable;
+	
+nonAtomAttr
+	:	ID (DOT^ ID)*;
 
 attributable
 	:	(ID (DOT^ ID)+)|atom;
