@@ -1,3 +1,6 @@
+<!-- build.xml -->
+<!-- Written by Varun Ravishankar -->
+
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="Tandem" default="compile" basedir=".">
   <description>
     build file for Tandem programming language.
@@ -38,7 +41,7 @@
   <!-- Path required to run the tests. Uses built-in JUnit,
   if one is installed, or the provided JUnit otherwise. -->
   <path id="test.classpath">
-    <fileset dir="${lib}">
+   <fileset dir="${lib}">
       <include name="*.jar"/>
     </fileset>
     <fileset dir="${lib}/test">
@@ -62,7 +65,7 @@
   <!-- Path required to build the grammar. Uses downloaded ANTLR,
   or the installed ANTLR otherwise. -->
   <path id="runtime.classpath">
-    <fileset dir="${lib}">
+   <fileset dir="${lib}">
       <include name="*.jar"/>
     </fileset>
     <fileset dir="${lib}/runtime">
