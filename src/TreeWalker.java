@@ -342,22 +342,22 @@ public class TreeWalker {
 						LinkedList<CommonTree> list2 = new LinkedList<CommonTree>();
 						for ( int i = 0; i < t.getChildCount(); i++ ) 
 						{
-						if ((t.getChild(i).getType() == TanGParser.NODEID && i != t.getChildCount()-1)){
+					//	if ((t.getChild(i).getType() == TanGParser.NODEID && i != t.getChildCount()-1)){
 							
 					
-							list2.push((CommonTree)t.getChild(i));
+					//		list2.push((CommonTree)t.getChild(i));
 						
-						}
-						
-						else if(t.getChild(i).getType() != TanGParser.NODEID){
+					//	}
+					//	
+					//	else if(t.getChild(i).getType() != TanGParser.NODEID){
 					
 						
-							list2.push((CommonTree)t.getChild(i));
+					//		list2.push((CommonTree)t.getChild(i));
 						
-						}
+					//	}
 						//dont put parentheses around the whole call and around pipes
 						//else (i == t.getChildCount()-1){
-						else if(t.getChild(i).getType() == TanGParser.ID){
+						if(t.getChild(i).getType() == TanGParser.ID){
 					
 							list2.push((CommonTree)t.getChild(i));
 						
@@ -368,17 +368,19 @@ public class TreeWalker {
 							while(list2.isEmpty()==false){
 								if (list2.peek().getType() == TanGParser.ID ){
 									params += list2.peek().getText() + ", " + params;
+									list2.pop();
 								}
 								
 								if (list2.peek().getType() != TanGParser.ID){
 									out.write("(");
 							
 									walk((CommonTree)list2.pop(), out);
-							
-									out.write(")");
-								}else{
-									list2.pop();
-								}
+								//	if(list2.isEmpty() ==false && list2.peek().getType() == TanGParser.NODEID){
+										out.write(")");
+								//	}
+								}//else{
+								//	list2.pop();
+								//}
 								
 							}
 						}
