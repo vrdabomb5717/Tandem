@@ -79,7 +79,12 @@ idTestExpr
 modExpr	:	assignment (td_mod^ assignment)*;
 
 assignment
-	:	rangeExpr (ASSN^ assignment)?;
+	:	assignable (ASSN^ assignment)|rangeExpr;
+	
+assignable
+	:	(assnAttr^ (LBRACK assnAttr RBRACK)*);
+	
+assnAttr:	(ID (DOT^ ID)*);
 
 rangeExpr
 	:	boolOrExpr (RANGE^ boolOrExpr)?|INTRANGE^;
