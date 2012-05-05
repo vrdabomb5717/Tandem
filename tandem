@@ -3,20 +3,24 @@
 EXPECTED_ARGS=1
 E_BADARGS=65
 
+#Check if a file is passed, if not fail
+
 if [ $# -ne $EXPECTED_ARGS ]
 then
   echo "Usage: `basename $0` {arg}"
+  echo "COMPILATION FAILED"
   exit $E_BADARGS
 fi
 
 FILE=$1
 
+#Check if the filename is valid .td
 
 if [[ "$FILE" == *.td ]]
 then
   echo "valid filename"
 else
-     echo "invalid filename"
+     echo "COMPILATION FAILED - invalid filename"
      exit
 fi
 
@@ -24,7 +28,7 @@ if [ -f "$FILE" ]
 then
     echo the file exists
 else
-    echo the file does not exist
+    echo "COMPILATION FAILED - the file does not exist"
     exit
 fi
 
@@ -39,7 +43,8 @@ elif [[ -n "$JAVA_HOME" ]] && [[ -x "$JAVA_HOME/bin/java" ]];  then
     echo found java executable in JAVA_HOME
     _java="$JAVA_HOME/bin/java"
 else
-    echo "no java"
+    echo "COMPILATION FAILED - no java"
+    exit
 fi
 
 if [[ "$_java" ]]; then
@@ -48,7 +53,7 @@ if [[ "$_java" ]]; then
     if [[ "$version" > "1.5" ]]; then
         echo version is more than 1.5
     else
-        echo version is less than 1.5
+        echo "COMPILATION FAILED - version is less than 1.5"
 	exit
     fi
 fi
@@ -62,7 +67,7 @@ elif [[ -x "usr/bin/env ant" ]];  then
     echo found ant executable in ENV_ANT
     _ant="usr/bin/env ant"
 else
-    echo "no ant"
+    echo "COMPILATION FAILED - no ant"
     exit
 fi
 
@@ -72,11 +77,14 @@ if [[ "$_ant" ]]; then
     if [[ "$version" > "1.8.0" ]]; then
         echo version is more than 1.8
     else
-        echo version is less than 1.8
+        echo "COMPILATION FAILED - version is less than 1.8"
 	exit
     fi
 fi
 
+#Make JRuby use Ruby 1.9
+
+JRUBY_OPTS=--1.9
 
 if type -p ruby; then
     echo found ruby executable in PATH
@@ -85,7 +93,7 @@ elif [[ -x "usr/bin/env ruby" ]];  then
     echo found ant executable in ENV_ANT
     _ruby="usr/bin/env ruby"
 else
-    echo "no ruby"
+    echo "COMPILATION FAILED - no ruby"
     exit
 fi
 
@@ -93,11 +101,12 @@ if [[ "$_ruby" ]]; then
     version=$("$_ruby" -v 2>&1 |grep -e "1\.9\.[2-9]" )
     echo $?
     if [[ "$?" > "0" ]]; then    
-    echo "fail"
+    echo " "
     else  	
     echo "good"
     fi
 fi
+
 
 
 echo ANTLR version greater than 3.4 &
