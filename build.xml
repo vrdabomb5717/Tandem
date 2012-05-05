@@ -31,19 +31,35 @@
   <property name="ivy.lib.dir" value="${lib}" />
 
   <path id="lib.path.id">
-    <fileset dir="${ivy.lib.dir}" />
-    <include name="*.jar"/>
+    <fileset dir="${ivy.lib.dir}" includes="*.jar"/>
   </path>
 
 
   <!-- Path required to run the tests. Uses built-in JUnit,
   if one is installed, or the provided JUnit otherwise. -->
   <path id="test.classpath">
-    <pathelement location="${java.class.path}" />
-    <pathelement location="${lib}/junit/junit-4.10.jar" />
-    <fileset dir="${lib}">
+    <fileset dir="${lib}/test">
       <include name="**/*.jar"/>
     </fileset>
+    <pathelement location="${java.class.path}" />
+  </path>
+
+  <!-- Path required to build the grammar. Uses downloaded ANTLR,
+  or the installed ANTLR otherwise. -->
+  <path id="build.classpath">
+    <fileset dir="${lib}/build">
+      <include name="**/*.jar"/>
+    </fileset>
+    <pathelement location="${java.class.path}" />
+  </path>
+
+  <!-- Path required to build the grammar. Uses downloaded ANTLR,
+  or the installed ANTLR otherwise. -->
+  <path id="runtime.classpath">
+    <fileset dir="${lib}/runtime">
+      <include name="**/*.jar"/>
+    </fileset>
+    <pathelement location="${java.class.path}" />
   </path>
 
 
@@ -78,7 +94,7 @@
         debug="@{debug}">
         <classpath>
           <pathelement location="${lib}/antlr3-task/ant-antlr3.jar"/>
-          <pathelement location="${java.class.path}"/>
+          <path refid="build.classpath"/>
         </classpath>
         <jvmarg value="-Xmx512M"/>
       </ant-antlr3>
@@ -86,31 +102,30 @@
   </macrodef>
 
   <target name="download-ivy" unless="offline">
-
     <mkdir dir="${ivy.jar.dir}"/>
     <!-- download Ivy from web site so that it can be used even without any special installation -->
     <get src="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
      dest="${ivy.jar.file}" usetimestamp="true"/>
   </target>
 
-  <target name="init-ivy" depends="download-ivy">
+  <target name="install-ivy" depends="download-ivy">
     <!-- try to load ivy here from ivy home, in case the user has not already dropped
         it into ant's lib dir (note that the latter copy will always take precedence).
         We will not fail as long as local lib dir exists (it may be empty) and
         ivy is in at least one of ant's lib dir or the local lib dir. -->
     <path id="ivy.lib.path">
       <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
-
     </path>
+
     <taskdef resource="org/apache/ivy/ant/antlib.xml"
      uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
    </target>
 
    <target name="resolve" depends="install-ivy" description="Resolve the dependencies">
-      <ivy:retrieve/>
+      <ivy:retrieve pattern="lib/[conf]/[artifact](-[classifier]).[ext]"/>
    </target>
 
-   <target name="init" depends"resolve">
+   <target name="init" depends="resolve">
     <!-- Create the time stamp -->
     <tstamp/>
     <!-- Create the build directory structure used by compile -->
@@ -131,28 +146,25 @@
     </fail>
   </target>
 
-  <target name="grammar" depends="init, antlr_classpath"
-    description="compile the grammar " >
+  <target name="grammar" depends="init" description="compile the grammar" >
     <!-- Compile the grammar from ${src} into ${build} -->
     <antlr3 grammar.name="${src}/${grammar}" outputdirectory="${lib}/grammar"/>
     <antlr3 grammar.name="${src}/${treeGrammar}" outputdirectory="${lib}/grammar"/>
   </target>
 
 
-  <target name="compile" depends="grammar"
-    description="compile the source " >
+  <target name="compile" depends="grammar" description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
     <!-- includeantruntime="false" -->
     <javac destdir="${build}" includeantruntime="false" verbose="false">
       <classpath>
-        <pathelement path="${java.class.path}"/>
+        <path refid="build.classpath"/>
       </classpath>
       <src path="${lib}/grammar" />
     </javac>
     <javac destdir="${build}" includeantruntime="false" verbose="false">
       <!-- <classpath path="${build}" /> -->
       <classpath>
-        <pathelement path="${java.class.path}"/>
         <path refid="test.classpath"/>
       </classpath>
       <src path="${src}" />
@@ -176,8 +188,7 @@
       <formatter type="plain" usefile="false" />
       <classpath>
         <pathelement path="${build}"/>
-        <pathelement path="${java.class.path}"/>
-        <path refid="test.classpath"/>
+          <path refid="test.classpath"/>
       </classpath>
     </junit>
   </target>
@@ -188,10 +199,10 @@
       <arg value="${build}/${gunit_test}"/>
       <classpath>
         <pathelement path="${build}"/>
-        <pathelement path="${java.class.path}"/>
+          <path refid="build.classpath"/>
+          <path refid="test.classpath"/>
       </classpath>
     </java>
-
   </target>
 
 
@@ -204,7 +215,7 @@
       <arg value="${file}"/>
       <classpath>
         <pathelement path="${build}"/>
-        <pathelement path="${java.class.path}"/>
+          <path refid="build.classpath"/>
       </classpath>
     </java>
   </target>
@@ -219,8 +230,14 @@
     <!-- =================================
           target: clean-ivy
          ================================= -->
-  <target name="clean-ivy" description="--> clean the ivy installation">
+  <target name="clean-ivy" depends="clean-downloads" description="--> clean the ivy installation">
     <delete dir="${ivy.jar.dir}"/>
+  </target>
+
+  <target name="clean-downloads" description="--> clean the downloaded jars">
+    <delete dir="${ivy.lib.dir}/build"/>
+    <delete dir="${ivy.lib.dir}/runtime"/>
+    <delete dir="${ivy.lib.dir}/test"/>
   </target>
 
     <!-- =================================
