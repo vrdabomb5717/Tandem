@@ -8,7 +8,7 @@
 ## Varun
 
 * Continue making test files for statements and other types of expressions.
-* Finish updating white paper.
+* Finish updating white paper. - DONE
 * Start updating tutorial.
 * Continue updating LRM.
 * Write project plan.
@@ -23,7 +23,7 @@
 
 ## Jenee
 
-* Finish pipeline in TreeWalker.
+* Finish pipeline in TreeWalker. - DONE
 * Add FUNCIDs.
 * Don't add .main to Ruby system functions.
 * Write Translator architecure.

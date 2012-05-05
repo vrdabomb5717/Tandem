@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Written by Donald Pomeroy
+
 EXPECTED_ARGS=1
 E_BADARGS=65
 
@@ -103,9 +105,9 @@ use_jruby=0
 if [[ "$_ruby" ]]; then
     version=$("$_ruby" -v 2>&1 |grep -e "1\.9\.[2-9]" )
     echo $?
-    if [[ "$?" > "0" ]]; then    
+    if [[ "$?" > "0" ]]; then
     use_jruby=1
-    else  	
+    else
     echo "good"
     fi
 fi
@@ -118,13 +120,13 @@ echo ANTLR version greater than 3.4 &
 
 ant walk -Dfile="$FILE" -q
 
-ruby_file=${FILE%.*} 
+ruby_file=${FILE%.*}
 
 #run a different version of ruby based on ant rubyexec
 
-if [[ "$_use_jruby" > 0 ]]; then	
-	java -jar lib/runtime/jruby-complete.jar "$ruby_file" 
-	else	
+if [[ "$_use_jruby" > 0 ]]; then
+	java -jar lib/runtime/jruby-complete.jar --1.9 "$ruby_file"
+	else
 	ruby "$ruby_file".rb
 fi
 

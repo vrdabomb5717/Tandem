@@ -1,5 +1,9 @@
 # Project Log
 
+## 5/4/12
+
+Added support for Ivy, which downloads dependencies and puts them in the lib folder to be used by code. Removed old dependencies. Allowed files to be run with JRuby. Finished basic pipeline support for nodes. Fixed traversing the tree. Finished Bash script to start compilation process and then call Ruby on the resulting Ruby file. Started putting project report together. Patrick and Donald finished writing their parts for the project report.
+
 ## 5/3/12
 
 Now, only ID's can be indexable or attributable.  Literal lists cannot be pipeline parameters.  Nodes are now required to have capital names.
