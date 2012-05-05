@@ -100,37 +100,6 @@ if [[ "$_ruby" ]]; then
 fi
 
 
-
-
-if java org.antlr.Tool; then
-    #echo found ANTLR executable in PATH
-    _antlr=$(java org.antlr.Tool)
-elif [[ -x "usr/bin/env ruby" ]];  then
-    #echo found ant executable in ENV_ANT
-    _antlr="usr/bin/env ruby"
-else
-    echo "no ANTLR"
-    exit
-fi
-
-
-
-
-
-version=$(java org.antlr.Tool -version 2>&1 | awk -F ' ' '/ / {print $5}')
-
-echo version "$version"
-
-
-
-case `echo "a=$version;b=3.4;r=-1;if(a==b)r=0;if(a>b)r=1;r"|bc` in
-           0)
-        ;; 1)
-        ;; *)
-	      echo "No ANTLR"
-	      exit
-        ;; esac
-
 echo ANTLR version greater than 3.4 &
 
 ant walk -Dfile="$FILE" -q
@@ -138,3 +107,5 @@ ant walk -Dfile="$FILE" -q
 ruby_file=${FILE%.*} 
 
 ruby "$ruby_file".rb
+
+
