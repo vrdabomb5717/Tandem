@@ -22,6 +22,7 @@
   <property name="grammar1" value="WateredDownTanG.g"/>
   <property name="gunit_test" value="TanG.gunit" />
   <property name="test.class.name" value="TandemTest" />
+  <property name="jruby_jar" value="jruby-complete.jar" />
 
   <!-- Properties required to download Ivy. -->
   <property name="ivy.install.version" value="2.3.0-rc1" />
@@ -224,6 +225,16 @@
 
   <target name="walk" depends="compile">
     <java classname="TandemTree">
+      <arg value="${file}"/>
+      <classpath>
+        <pathelement path="${build}"/>
+          <path refid="runtime.classpath"/>
+      </classpath>
+    </java>
+  </target>
+
+  <target name="rubyexec" depends="init">
+    <java jar="${lib}/runtime/${jruby_jar}" fork="true">
       <arg value="${file}"/>
       <classpath>
         <pathelement path="${build}"/>
