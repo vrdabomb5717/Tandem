@@ -1,3 +1,6 @@
+<!-- ivy.xml -->
+<!-- Written by Varun Ravishankar -->
+
 <ivy-module version="2.0">
     <info organisation="edu.columbia.comsw4115-spring2012.tandem" module="tandem-deps"/>
     <configurations>
@@ -7,7 +10,7 @@
 	</configurations>
     <dependencies>
 		<dependency org="org.antlr" name="antlr" rev="3.4" conf="build->default"/>
-		<dependency org="org.antlr" name="ST4" rev="4.0.4" conf="build->default"/>
+		<dependency org="org.antlr" name="ST4" rev="4.0.4"/>
 		<dependency org="org.antlr" name="gunit" rev="3.4" conf="build->default"/>
         <dependency org="junit" name="junit" rev="4.10" conf="test->default"/>
         <dependency org="org.jruby" name="jruby-complete" rev="1.6.7.1" conf="runtime->default"/>
