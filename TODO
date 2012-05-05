@@ -25,6 +25,9 @@
 
 * Finish pipeline in TreeWalker.
 * Add FUNCIDs.
+* Don't add .main to Ruby system functions.
+* Write Translator architecure.
+* Work on Section 9, lessons learned.
 
 ## Donald
 
