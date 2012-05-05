@@ -318,7 +318,7 @@ public class TreeWalker {
 							out.write("print");
 						}
 						else{
-							out.write(t.getText());
+							out.write(t.getText() + " ");
 						}
 						break;
 					case TanGParser.NOT:
@@ -339,56 +339,47 @@ public class TreeWalker {
 						break;
 					case TanGParser.PIPE:
 						String params = "";
+						String first = "";
 						LinkedList<CommonTree> list2 = new LinkedList<CommonTree>();
 						for ( int i = 0; i < t.getChildCount(); i++ ) 
 						{
-					//	if ((t.getChild(i).getType() == TanGParser.NODEID && i != t.getChildCount()-1)){
-							
-					
-					//		list2.push((CommonTree)t.getChild(i));
-						
-					//	}
-					//	
-					//	else if(t.getChild(i).getType() != TanGParser.NODEID){
-					
-						
-					//		list2.push((CommonTree)t.getChild(i));
-						
-					//	}
+						if ((t.getChild(i).getType() == TanGParser.NODEID && i != t.getChildCount()-1)){
+
+
+							list2.push((CommonTree)t.getChild(i));
+
+						}
+
+						else if(t.getChild(i).getType() == TanGParser.PIPE){
+
+
+							list2.push((CommonTree)t.getChild(i));
+
+						}
 						//dont put parentheses around the whole call and around pipes
 						//else (i == t.getChildCount()-1){
-						if(t.getChild(i).getType() == TanGParser.ID){
-					
-							list2.push((CommonTree)t.getChild(i));
-						
+						else if(t.getChild(i).getType() == TanGParser.ID){
+							first = list2.peek().getText();
+							params = params +  t.getChild(i) + ",";
+
 						}
 						else{
 							walk((CommonTree)t.getChild(i), out);
-							
 							while(list2.isEmpty()==false){
-								if (list2.peek().getType() == TanGParser.ID ){
-									params += list2.peek().getText() + ", " + params;
-									list2.pop();
-								}
-								
-								if (list2.peek().getType() != TanGParser.ID){
-									out.write("(");
-							
+								out.write("(");
+								if((list2.peek().getText()).equals(first)){
 									walk((CommonTree)list2.pop(), out);
-								//	if(list2.isEmpty() ==false && list2.peek().getType() == TanGParser.NODEID){
-										out.write(")");
-								//	}
-								}//else{
-								//	list2.pop();
-								//}
-								
+									out.write("(");
+									out.write(params.substring(0, params.length()-1));
+									out.write(")");
+								}else{
+									walk((CommonTree)list2.pop(), out);
+								}
+								out.write(")");
 							}
 						}
 						}
-						if (!(params.equals(""))){
-							out.write("(" + params.substring(0, params.length()-2) + ")");
-						}
-						break;
+						break;						
 					case TanGParser.PUBPRIV:
 						break;
 					case TanGParser.RANGE:
