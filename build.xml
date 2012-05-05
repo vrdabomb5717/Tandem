@@ -215,7 +215,7 @@
       <arg value="${file}"/>
       <classpath>
         <pathelement path="${build}"/>
-          <path refid="build.classpath"/>
+          <path refid="runtime.classpath"/>
       </classpath>
     </java>
   </target>
