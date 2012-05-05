@@ -86,6 +86,7 @@ fi
 
 JRUBY_OPTS=--1.9
 
+
 if type -p ruby; then
     echo found ruby executable in PATH
     _ruby=ruby
@@ -97,15 +98,19 @@ else
     exit
 fi
 
+use_jruby=0
+
 if [[ "$_ruby" ]]; then
     version=$("$_ruby" -v 2>&1 |grep -e "1\.9\.[2-9]" )
     echo $?
     if [[ "$?" > "0" ]]; then    
-    echo " "
+    use_jruby=1
     else  	
     echo "good"
     fi
 fi
+
+echo "$use_jruby"
 
 
 
@@ -115,6 +120,13 @@ ant walk -Dfile="$FILE" -q
 
 ruby_file=${FILE%.*} 
 
-ruby "$ruby_file".rb
+#run a different version of ruby based on ant rubyexec
+
+if [[ "$_use_jruby" > 0 ]]; then
+	ant rubyexec -Dfile="$ruby_file" 
+	else	
+	ruby "$ruby_file".rb
+fi
+
 
 
