@@ -16,12 +16,12 @@ public class TreeWalker {
 		out.write("require \"set\"\n");
 		walk((CommonTree) t, out);
 		//traverse all the child nodes of the root if root was empty
-		if(t.getText().equals("")){
+	//	if((t.getText()).equals("")){
 			for ( int i = 0; i < t.getChildCount(); i++ ) 
 			{
 				walk(((CommonTree)t.getChild(i)), out);
 			}
-		}
+	//	}
 		out.close();
 		}
 		catch (IOException e) {}
