@@ -1,3 +1,6 @@
+<!-- ivy.xml -->
+<!-- Written by Varun Ravishankar -->
+
 <ivy-module version="2.0">
     <info organisation="edu.columbia.comsw4115-spring2012.tandem" module="tandem-deps"/>
     <configurations>
