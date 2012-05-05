@@ -38,6 +38,9 @@
   <!-- Path required to run the tests. Uses built-in JUnit,
   if one is installed, or the provided JUnit otherwise. -->
   <path id="test.classpath">
+    <fileset dir="${lib}">
+      <include name="*.jar"/>
+    </fileset>
     <fileset dir="${lib}/test">
       <include name="**/*.jar"/>
     </fileset>
@@ -47,6 +50,9 @@
   <!-- Path required to build the grammar. Uses downloaded ANTLR,
   or the installed ANTLR otherwise. -->
   <path id="build.classpath">
+    <fileset dir="${lib}">
+      <include name="*.jar"/>
+    </fileset>
     <fileset dir="${lib}/build">
       <include name="**/*.jar"/>
     </fileset>
@@ -56,6 +62,9 @@
   <!-- Path required to build the grammar. Uses downloaded ANTLR,
   or the installed ANTLR otherwise. -->
   <path id="runtime.classpath">
+    <fileset dir="${lib}">
+      <include name="*.jar"/>
+    </fileset>
     <fileset dir="${lib}/runtime">
       <include name="**/*.jar"/>
     </fileset>
