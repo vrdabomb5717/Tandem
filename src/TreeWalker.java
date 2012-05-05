@@ -8,6 +8,7 @@ import org.antlr.runtime.*;
 import java.util.*;
 
 public class TreeWalker {	
+	LinkedList<CommonTree> printedAlready = new LinkedList<CommonTree>();
 
 	public void walkTree(CommonTree t, String filename) 
 	{
@@ -33,8 +34,10 @@ public class TreeWalker {
 	public void walk(CommonTree t, BufferedWriter out)
 	{
 		try{
+				
 		if ( t != null ) {			
 			//	every unary operator needs to be preceded by a open parenthesis and ended with a closed parenthesis
+			
 				switch(t.getType())
 				{
 					case TanGParser.ADDSUB:	
@@ -227,7 +230,12 @@ public class TreeWalker {
 						out.write(t.getText() + " ");
 						break;
 					case TanGParser.ID:
+						
+						if(printedAlready.contains((CommonTree)t)){
+							printedAlready.remove(t);
+						}else{
 						out.write("td_"+t.getText() + " ");
+							}
 						break;
 					case TanGParser.IF:
 						out.write(t.getText() + " ");
@@ -293,7 +301,7 @@ public class TreeWalker {
 							//walk((CommonTree)t.getChild(0), out);
 							out.write(t.getChild(0).getText());
 							out.newLine();
-							out.write("private");
+						//	out.write("private");
 						}
 						out.newLine();
 						//then each class will have a main method with the node definition code
@@ -317,19 +325,43 @@ public class TreeWalker {
 						
 						break;
 					case TanGParser.NODEID:
+						//TODO: create hash table for all node ids 
+
 						//transform Println to ruby's print
 						 if(t.getText().equals("Println")){
-							out.write("puts");
+							out.write("puts ");
 						}
 						//transform Print to ruby's print
 						else if(t.getText().equals("Print")){
-							out.write("print");
+							out.write("print ");
 						}
 						//if not, just print the id
 						else{
-							out.write(t.getText() + ".main");
-						//	out.write(t.getText());
+							if (t.getParent().getType() != 0 && !(t.getParent().getText().contains("|"))){
+							String param = "";
+							int w = (t.getParent()).getChildCount();
+							int i=0;
+						
+							while(!(t.getParent().getChild(i).getText().equals(t.getText())) && i<w){
+								i++;
+							}
+							i++;
+							while(!(t.getParent().getChild(i).getText().contains("\n")) && i<w){
+								param = param + "td_"+ t.getParent().getChild(i).getText() + ", ";
+								printedAlready.addLast((CommonTree)(t.getParent()).getChild(i));
+
+								i++;
+							}
+						
+							out.write(t.getText() + ".main(" + param.substring(0, param.length()-2) + ")");
+						}else
+						{
+						
+									out.write(t.getText());
+							
 						}
+						}
+						
 						break;
 					case TanGParser.NOT:
 						out.write(t.getText());
