@@ -9,12 +9,13 @@ import java.util.*;
 
 public class TreeWalker {	
 	LinkedList<CommonTree> printedAlready = new LinkedList<CommonTree>();
+	HashSet<String> nodes = new HashSet<String>();
 
 	public void walkTree(CommonTree t, String filename) 
 	{
 		try {
 		BufferedWriter out = new BufferedWriter(new FileWriter(filename + ".rb"));
-		out.write("require \"set\"\n");
+	//	out.write("require \"set\"\n");
 
 		if(!(t.getType() == 0)){
 			walk((CommonTree) t, out);
@@ -292,16 +293,15 @@ public class TreeWalker {
 						{
 							out.write("class ");
 							out.write(t.getChild(0).getText());
-						//	walk((CommonTree)t.getChild(0), out);
+							nodes.add(t.getChild(0).getText());
 						}
 						//if the class is private, add private after writing the constructor of the class
 						else
 						{
 							out.write("class ");
-							//walk((CommonTree)t.getChild(0), out);
 							out.write(t.getChild(0).getText());
+							nodes.add(t.getChild(0).getText());
 							out.newLine();
-						//	out.write("private");
 						}
 						out.newLine();
 						//then each class will have a main method with the node definition code
@@ -325,19 +325,12 @@ public class TreeWalker {
 						
 						break;
 					case TanGParser.NODEID:
-						//TODO: create hash table for all node ids 
+						//TODO: create hash table for all node ids, funkid 
 
-						//transform Println to ruby's print
-						 if(t.getText().equals("Println")){
-							out.write("puts ");
-						}
-						//transform Print to ruby's print
-						else if(t.getText().equals("Print")){
-							out.write("print ");
-						}
+					
 						//if not, just print the id
-						else{
-							if (t.getParent().getType() != 0 && !(t.getParent().getText().contains("|"))){
+						
+						if (t.getParent().getType() != 0 && !(t.getParent().getText().contains("|"))){
 							String param = "";
 							int w = (t.getParent()).getChildCount();
 							int i=0;
@@ -352,15 +345,20 @@ public class TreeWalker {
 
 								i++;
 							}
-						
-							out.write(t.getText() + ".main(" + param.substring(0, param.length()-2) + ")");
+							if(nodes.contains(t.getText())){
+								out.write(t.getText() + ".main(" + param.substring(0, param.length()-2) + ")");
+							}else{
+								out.write(t.getText() + "(" + param.substring(0, param.length()-2) + ")");
+							}	
 						}else
-						{
+						{	if(t.getText().equals("Print")){
+							out.write("print");
+						}else{
 						
 									out.write(t.getText());
-							
 						}
 						}
+						
 						
 						break;
 					case TanGParser.NOT:
@@ -436,6 +434,9 @@ public class TreeWalker {
 						break;
 					case TanGParser.RBRACK:
 						out.write(t.getText());
+						break;
+					case TanGParser.REQUIRE:
+						out.write(t.getText() + " ");
 						break;
 					case TanGParser.RETURN:
 						out.write(t.getText() + " ");
