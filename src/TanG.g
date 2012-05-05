@@ -1,4 +1,4 @@
-//TanG Grammar  Patrick DLG
+//TanG Grammar  Patrick De La Garza - Language Guru
  
  
 grammar TanG;

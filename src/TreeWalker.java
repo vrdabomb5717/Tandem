@@ -272,6 +272,7 @@ public class TreeWalker {
 						break;
 					case TanGParser.NODE:
 						LinkedList<CommonTree> list = new LinkedList<CommonTree>();
+						out.newLine();
 						//every node will be converted to a class with the name of the node as the class name
 						if (t.getText().equals("public node"))
 						{
@@ -308,19 +309,17 @@ public class TreeWalker {
 						
 						break;
 					case TanGParser.NODEID:
-						//DO SET
-						//
-						if(t.getText().contains("Set")){
-							String temp = t.getText().replace("Set", "Set.new");
-							out.write(temp);
-						}else if(t.getText().equals("Println")){
+						//transform Println to ruby's print
+						 if(t.getText().equals("Println")){
 							out.write("puts");
 						}
+						//transform Print to ruby's print
 						else if(t.getText().equals("Print")){
 							out.write("print");
 						}
+						//if not, just print the id
 						else{
-							out.write(t.getText());
+							out.write(t.getText() + " ");
 						}
 						break;
 					case TanGParser.NOT:
@@ -341,40 +340,51 @@ public class TreeWalker {
 						break;
 					case TanGParser.PIPE:
 						String params = "";
+						String first = "";
 						LinkedList<CommonTree> list2 = new LinkedList<CommonTree>();
 						for ( int i = 0; i < t.getChildCount(); i++ ) 
 						{
-						if ((t.getChild(i).getType() == TanGParser.NODEID && i != t.getChildCount()-1)){
-							
-					
-							list2.push((CommonTree)t.getChild(i));
-						
-						}
-						
-						else if(t.getChild(i).getType() != TanGParser.NODEID){
-					
-						
-							list2.push((CommonTree)t.getChild(i));
-						
-						}
-						//dont put parentheses around the whole call and around pipes
-						//else (i == t.getChildCount()-1){
-						else if(t.getChild(i).getType() == TanGParser.ID){
-					
-							list2.push((CommonTree)t.getChild(i));
-						
-						}
-						else{
-							walk((CommonTree)t.getChild(i), out);
-							while(list2.isEmpty()==false){
-								out.write("(");
-								walk((CommonTree)list2.pop(), out);
-								out.write(")");
+							//if child is a node, but not the last node, push it
+							if ((t.getChild(i).getType() == TanGParser.NODEID && i != t.getChildCount()-1))
+							{
+								list2.push((CommonTree)t.getChild(i));
+
+							}
+							//if next token is a pipe, push it
+							else if(t.getChild(i).getType() == TanGParser.PIPE)
+							{
+								list2.push((CommonTree)t.getChild(i));
+
+							}
+							//if next token is an id, it is a parameter so it is not pushed
+							//when we walk the node that has the parameters (the first node), we will print them
+							else if(t.getChild(i).getType() == TanGParser.ID)
+							{
+								first = list2.peek().getText();
+								params = params +  t.getChild(i) + ",";
+
+							}
+							else
+							{
+								//walk the tree if the child is the last node in the chain
+								walk((CommonTree)t.getChild(i), out);
+								while(list2.isEmpty()==false){
+									out.write("(");
+									if((list2.peek().getText()).equals(first))
+									{
+										walk((CommonTree)list2.pop(), out);
+										out.write("(");
+										out.write(params.substring(0, params.length()-1));
+										out.write(")");
+									}else
+									{
+										walk((CommonTree)list2.pop(), out);
+									}
+									out.write(")");
+								}
 							}
 						}
-						}
-				
-						break;
+						break;						
 					case TanGParser.PUBPRIV:
 						break;
 					case TanGParser.RANGE:
