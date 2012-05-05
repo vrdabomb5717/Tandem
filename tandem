@@ -122,8 +122,8 @@ ruby_file=${FILE%.*}
 
 #run a different version of ruby based on ant rubyexec
 
-if [[ "$_use_jruby" > 0 ]]; then
-	ant rubyexec -Dfile="$ruby_file" 
+if [[ "$_use_jruby" > 0 ]]; then	
+	java -jar lib/runtime/jruby-complete.jar "$ruby_file" 
 	else	
 	ruby "$ruby_file".rb
 fi
