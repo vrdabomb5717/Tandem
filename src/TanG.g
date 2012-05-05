@@ -137,7 +137,6 @@ indexable
 pipeindexable
 	:	(ID^ (LBRACK pipeindexable RBRACK)+)|pipeattributable;
 
-
 attributable
 	:	(ID (DOT^ ID)+)|atom;
 
