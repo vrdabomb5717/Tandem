@@ -14,15 +14,19 @@ public class TreeWalker {
 		try {
 		BufferedWriter out = new BufferedWriter(new FileWriter(filename + ".rb"));
 		out.write("require \"set\"\n");
-		walk((CommonTree) t, out);
+
+		if(!(t.getType() == 0)){
+			walk((CommonTree) t, out);
+		}
 		//traverse all the child nodes of the root if root was empty
-	//	if((t.getText()).equals("")){
+		else{
 			for ( int i = 0; i < t.getChildCount(); i++ ) 
 			{
 				walk(((CommonTree)t.getChild(i)), out);
 			}
-	//	}
+		}
 		out.close();
+		
 		}
 		catch (IOException e) {}
 	}
@@ -279,13 +283,15 @@ public class TreeWalker {
 						if (t.getText().equals("public node"))
 						{
 							out.write("class ");
-							walk((CommonTree)t.getChild(0), out);
+							out.write(t.getChild(0).getText());
+						//	walk((CommonTree)t.getChild(0), out);
 						}
 						//if the class is private, add private after writing the constructor of the class
 						else
 						{
 							out.write("class ");
-							walk((CommonTree)t.getChild(0), out);
+							//walk((CommonTree)t.getChild(0), out);
+							out.write(t.getChild(0).getText());
 							out.newLine();
 							out.write("private");
 						}
@@ -321,7 +327,8 @@ public class TreeWalker {
 						}
 						//if not, just print the id
 						else{
-							out.write(t.getText() + " ");
+							out.write(t.getText() + ".main");
+						//	out.write(t.getText());
 						}
 						break;
 					case TanGParser.NOT:

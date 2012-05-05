@@ -213,8 +213,9 @@ IMPORT
 	;
 REQUIRE	:	'require';
 NODE
-	:	'node'|'public node' |'private node'
+	:	'node'|'public node'
 	;
+TOKEN	:	'private';
 END
 	:	'end'
 	;
