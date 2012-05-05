@@ -13,7 +13,7 @@ public class TreeWalker {
 	{
 		try {
 		BufferedWriter out = new BufferedWriter(new FileWriter(filename + ".rb"));
-		out.write("require \"set\"");
+		out.write("require \"set\"\n");
 		walk((CommonTree) t, out);
 		//traverse all the child nodes of the root
 	//	for ( int i = 0; i < t.getChildCount(); i++ ) 
@@ -221,7 +221,7 @@ public class TreeWalker {
 						out.write(t.getText() + " ");
 						break;
 					case TanGParser.ID:
-						out.write(t.getText() + " ");
+						out.write("td_"+t.getText() + " ");
 						break;
 					case TanGParser.IF:
 						out.write(t.getText() + " ");
@@ -318,7 +318,7 @@ public class TreeWalker {
 							out.write("print");
 						}
 						else{
-							out.write(t.getText() + " ");
+							out.write(t.getText());
 						}
 						break;
 					case TanGParser.NOT:

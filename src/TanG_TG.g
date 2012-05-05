@@ -15,7 +15,48 @@ options
  	rewrite=true;
 }
 
+tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | m));
 
+//Import Statements
+i	:	td_imp filename (NEWLINE+ iprime)?; 
+ 	
+ iprime	:	td_imp filename (NEWLINE+ i)?;
+
+//Main body
+m	:	statement (NEWLINE+ mprime)?;
+
+mprime	:	statement (NEWLINE+ m)?;
+
+statement
+	:	td_node^ ID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
+	|	expression
+	|	loopType
+	|	td_return orExpression
+	|	td_assert orExpression
+	|	td_break (orExpression)?
+	|	td_continue;
+	
+params	:	(ID(COMMA ID)*)?;
+
+//Loops
+loopType	:	td_for ID td_in iterable NEWLINE+ (m NEWLINE+)? td_end
+	|	td_while orExpression NEWLINE+ (m NEWLINE+) td_end
+	|	td_loop NEWLINE+ (m NEWLINE+) td_end
+	|	td_until orExpression NEWLINE+ (m NEWLINE+)? td_end;
+//Things that can be iterated through
+iterable	:	ID;
+
+//Expressions
+expression
+	:	condType | orExpression;
+
+//conditionals
+condType	:	td_if orExpression NEWLINE+ (m NEWLINE+)? td_else NEWLINE+ (m NEWLINE+)? td_end
+	|	td_unless orExpression NEWLINE+ (m NEWLINE+)? td_end
+	|	td_cond^  NEWLINE+ (cstatement NEWLINE+)* td_end;
+	
+cstatement
+	:	orExpression^ NEWLINE+ (m NEWLINE+)? td_end;
 	
 
 orExpression
@@ -80,23 +121,19 @@ expExpression
 	:	pipelineExpr (EXP^ expExpression)?;
 
 
-//we could revert to about midnight thursday
-//pipelineExpr
-//	:	(       pipenode (    ((pipeindexable)+  (PIPE^ pipenode)*)    |     ((PIPE^ pipenode)+)        )      )|indexable;
-
-//pipelineExpr
-//	:	indexable (PIPE^ pipelineExpr)?; //pipeparamindexable*;
 
 pipelineExpr
-	:	pipenode ((PIPE^ pipelineExpr2)?) endproc;
+	:(       pipenode (    ((pipeindexable)+  (PIPE^ pipenode)*)    |     ((PIPE^ pipenode)+)        )      )|indexable;
+
+/*
+ pipenode ((PIPE^ pipelineExpr2)?) endproc;
 
 pipelineExpr2
 	:	pipenode ((PIPE^ pipelineExpr2)?);
 
 endproc 
-	:	pipeindexable*;  
+	:	pipeindexable*; */ 
 
-			
 pipenode
 	:	ID (DOT^ ID)*;
 			
