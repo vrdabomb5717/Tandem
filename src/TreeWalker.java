@@ -175,7 +175,9 @@ public class TreeWalker {
 						out.write(t.getText() + " ");
 						break;
 					case TanGParser.DOT:
-						out.write(t.getText());
+						walk((CommonTree)t.getChild(0), out);
+						out.write(t.getText() + " ");
+						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.ELSE:
 						out.write(t.getText() + " ");
@@ -224,6 +226,14 @@ public class TreeWalker {
 						break;
 					case TanGParser.FROM:
 						break;
+					case TanGParser.FUNCID:
+						if(printedAlready.contains((CommonTree)t)){
+							printedAlready.remove(t);
+						}else{
+						out.write("td_"+t.getText() + " ");
+							}
+						
+						break;	
 					case TanGParser.HEX:
 						out.write(t.getText()  + " ");
 						break;
@@ -325,11 +335,6 @@ public class TreeWalker {
 						
 						break;
 					case TanGParser.NODEID:
-						//TODO: create hash table for all node ids, funkid 
-
-					
-						//if not, just print the id
-						
 						if (t.getParent().getType() != 0 && !(t.getParent().getText().contains("|"))){
 							String param = "";
 							int w = (t.getParent()).getChildCount();
@@ -345,18 +350,19 @@ public class TreeWalker {
 
 								i++;
 							}
-							if(nodes.contains(t.getText())){
+							if(t.getText().equals("Print")){
+								out.write("print(" + param.substring(0, param.length()-2) + ")");
+							}
+							else if(nodes.contains(t.getText())){
 								out.write(t.getText() + ".main(" + param.substring(0, param.length()-2) + ")");
 							}else{
 								out.write(t.getText() + "(" + param.substring(0, param.length()-2) + ")");
 							}	
 						}else
-						{	if(t.getText().equals("Print")){
-							out.write("print");
-						}else{
+						{
 						
 									out.write(t.getText());
-						}
+						
 						}
 						
 						
@@ -370,7 +376,7 @@ public class TreeWalker {
 						out.write(t.getText()+ " ");
 						break;
 					case TanGParser.NULL:
-						out.write(t.getText()+ " ");
+						out.write("nil ");
 						break;				
 					case TanGParser.OR:
 						walk((CommonTree)t.getChild(0), out);
