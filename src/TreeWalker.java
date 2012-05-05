@@ -320,7 +320,7 @@ public class TreeWalker {
 							out.write("print");
 						}
 						else{
-							out.write(t.getText() + " ");
+							out.write(t.getText());
 						}
 						break;
 					case TanGParser.NOT:
