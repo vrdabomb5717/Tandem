@@ -23,7 +23,7 @@
 
 ## Jenee
 
-* Finish pipeline in TreeWalker.
+* Finish pipeline in TreeWalker. - DONE
 * Add FUNCIDs.
 * Don't add .main to Ruby system functions.
 * Write Translator architecure.
