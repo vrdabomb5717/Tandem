@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Written by Donald Pomeroy
+
 EXPECTED_ARGS=1
 E_BADARGS=65
 
