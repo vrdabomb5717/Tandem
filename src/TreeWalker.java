@@ -328,7 +328,7 @@ public class TreeWalker {
 						//if not, just print the id
 						else{
 						//	out.write(t.getText() + ".main(");
-							out.write(t.getText() + " ");
+							out.write(t.getText());
 						}
 						break;
 					case TanGParser.NOT:
