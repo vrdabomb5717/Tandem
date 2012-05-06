@@ -796,7 +796,7 @@ public class TreeWalker {
 				// this set checks if NodeID a system function or not. if not,
 				// .main is added
 				
-					if (pList.size() > 0) {
+				else	if (pList.size() > 0) {
 						out.write(t.getText() + ".new().main(");
 						while(!(pList.isEmpty())){
 						walk((CommonTree)pList.pop(), out);
@@ -823,22 +823,18 @@ public class TreeWalker {
 				} 
 			else if (t.getText().equals("Print")) {
 					 
-				 printedAlready.addLast((CommonTree)t);
 				out.write("Kernel.print");
 					
 			} else if (t.getText().equals("Println")) {
 					 
-				 printedAlready.addLast((CommonTree)t);
 				 out.write("Kernel.puts");
 					
 				}
 			else if (t.getParent().getType() == TanGParser.DOT) {
-				printedAlready.addLast((CommonTree)t);
 				out.write(t.getText());
 			
 			}
 			else {
-
 				out.write(t.getText() + ".new().main");
 			}
 	
