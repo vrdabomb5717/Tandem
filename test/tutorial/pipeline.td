@@ -5,15 +5,15 @@ public Node N()
 		x+1
 	end
 
+	node G(x)
+		x
+	end
+
 	cond
 		a > 0
 			F a | Recursive | Print
 		true
 			G a | Iterative | Print
 		end
-	end
-
-	node G(x)
-		x
 	end
 end

@@ -3,7 +3,7 @@ node Hello2()
 		return text
 	end
 
-	MyWords “Hello, World!” | print
+	MyWords "Hello, World!" | Print
 end
 
 Hello2
