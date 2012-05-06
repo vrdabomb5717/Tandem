@@ -217,9 +217,9 @@ public class TreeWalker {
 					if (printedAlready.contains((CommonTree) t)) {
 						printedAlready.remove(t);
 					} else
-						out.write(t.getText().substring(0,
+						out.write("\'" + t.getText().substring(1,
 								t.getText().length() - 4)
-								+ "\" ");
+								+ "\' ");
 					break;
 				case TanGParser.FLOAT:
 					if (printedAlready.contains((CommonTree) t)) {
@@ -498,10 +498,7 @@ public class TreeWalker {
 					for (int i = 0; i < t.getChildCount(); i++)
 						walk((CommonTree) t.getChild(i), out);
 					break;
-			//	case TanGParser.PIPETOKEN:
-			//		for (int i = 0; i < t.getChildCount(); i++)
-			//			walk((CommonTree) t.getChild(i), out);
-			//		break;
+		
 				case TanGParser.PUBPRIV:
 					break;
 				case TanGParser.RANGE:
