@@ -8,7 +8,7 @@ import org.antlr.runtime.*;
 import java.util.*;
 
 public class TreeWalker {	
-	LinkedList<CommonTree> printedAlready = new LinkedList<CommonTree>();
+		LinkedList<CommonTree> printedAlready = new LinkedList<CommonTree>();
 	HashSet<String> nodes = new HashSet<String>();
 	public void walkTree(CommonTree t, String filename) 
 	{
@@ -33,7 +33,7 @@ public class TreeWalker {
 	public void walk(CommonTree t, BufferedWriter out)
 	{
 		try{
-				
+		
 		if ( t != null ) {			
 			//	every unary operator needs to be preceded by a open parenthesis and ended with a closed parenthesis
 			
@@ -255,28 +255,34 @@ public class TreeWalker {
 						if(printedAlready.contains((CommonTree)t)){
 							printedAlready.remove(t);
 						}else{
-							if((t.getParent()).getType() == TanGParser.DOT){
+							if((t.getParent()).getType() == TanGParser.DOT && t.getChildIndex()!=0){
 							String param = "";
 							int w = (t.getParent().getParent()).getChildCount();
 							int i=0;
 						
-							while(!(t.getParent().getParent().getChild(i)==t.getParent()) && i<w){
-							
-								i++;
+							while(t.getParent().getParent().getChild(i)!=t.getParent() && i<w){
 								
+								i++;
 							}
 							i++;
-							while(!((t.getParent().getParent().getChild(i).getText()).contains("\n")) && i<w){
+							
+							while(t.getParent().getParent().getChild(i) != null && t.getParent().getParent().getChild(i).getType() != TanGParser.NEWLINE && i<w){
+									
 								if((t.getParent().getParent().getChild(i)).getType() ==TanGParser.ID || (t.getParent().getParent().getChild(i).getType()) ==TanGParser.FUNCID){
 									param = param + "td_"+ t.getParent().getParent().getChild(i).getText() + ", ";
 								}else{
 									param = param + t.getParent().getParent().getChild(i).getText() + ", ";
 								
 								}
-								printedAlready.addLast((CommonTree)(t.getParent().getParent().getChild(i)));
+								
+								
+								printedAlready.add((CommonTree) t.getParent().getParent().getChild(i));
+							
 
 								i++;
 							}
+							//	System.out.println(printedAlready);
+							
 							if(param.length()>0){							
 								out.write(t.getText() + "(" + param.substring(0, param.length()-2) + ")");
 							}else{
@@ -284,8 +290,17 @@ public class TreeWalker {
 							}
 							}
 							else{
-
+							
+							if(t.getType() == TanGParser.ID || t.getType() == TanGParser.FUNCID){
 								out.write("td_"+t.getText() + " ");
+							}
+							else{
+								if(t.getParent().getType() == TanGParser.DOT && t.getChildIndex()==0){
+									out.write(t.getText());
+								}else{
+									out.write(t.getText() + " ");
+								}
+							}
 							}
 						}
 						break;
@@ -575,7 +590,10 @@ private void doCheck(CommonTree t, BufferedWriter out){
 									out.write(t.getText() + "(" + param + ")");
 								}
 							}	
-						}else
+						}else if (t.getParent().getType() == TanGParser.DOT){
+									out.write(t.getText());
+						}
+						else
 						{
 						//	if(!(t.getText().equals("Kernel")))
 						//			out.write(t.getText() + ".new().main");
