@@ -43,17 +43,19 @@ statement
 	|	td_break (orExpression)?
 	|	td_continue;
 
+//valid node parameters
 params	:	(ID(COMMA ID)*)?;
 
-//Loops
+//All of the loop types
 loopType	:	td_for ID td_in iterable NEWLINE+ (m NEWLINE+)? td_end
 	|	td_while orExpression NEWLINE+ (m NEWLINE+) td_end
 	|	td_loop NEWLINE+ (m NEWLINE+) td_end
 	|	td_until orExpression NEWLINE+ (m NEWLINE+)? td_end;
+
 //Things that can be iterated through
 iterable	:	rangeExpr;
 
-//Expressions
+//Expressions, these consist of condition statements and expressions
 expression
 	:	condType | orExpression;
 
@@ -62,6 +64,7 @@ condType	:	td_if orExpression NEWLINE+ (m NEWLINE+)? td_else NEWLINE+ (m NEWLINE
 	|	td_unless orExpression NEWLINE+ (m NEWLINE+)? td_end
 	|	td_cond^  NEWLINE+ (cstatement NEWLINE+)* td_end;
 
+//Cases for cond statements
 cstatement
 	:	orExpression^ NEWLINE+ (m NEWLINE+)? td_end;
 
