@@ -12,6 +12,22 @@ node Square_area(side_len)
 	return side_len * side_len
 end
 
+node Circle_perimeter(radius)
+	return (2*PI*radius)
+end
+
+node Square_perimeter(side_len)
+	return (side_len*4)
+end
+
+node Rectangle_area(len,width)
+	return (len*width)
+end
+
+node Rectangle_perimeter(len,width)
+	return ((2*len)+(2*width))
+end
+
 node Cylinder_volume(radius, height)
 	return (Circle_area radius)*height
 end
