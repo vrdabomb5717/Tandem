@@ -130,14 +130,9 @@ expExpression
 	
 
 pipelineExpr
-	:	indexable|pipelineRoot
+	:	indexable|((pipenode (pipeindexable)* (pipe^ pipenode)*))
 	;
-
-pipelineRoot
-	:	pipelinePart -> ^(PIPEROOT["$"] pipelinePart);
 	
-pipelinePart
-	:	((pipenode (pipeindexable)* (pipe^ pipenode)*));
 
 pipe	:	PIPE;
 
