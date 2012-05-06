@@ -559,7 +559,7 @@ private void doCheck(CommonTree t, BufferedWriter out){
 								i++;
 							}
 							i++;
-							while(!(t.getParent().getChild(i).getText().contains("\n")) && i<w){
+							while(t.getParent().getChild(i) != null && !(t.getParent().getChild(i).getText().contains("\n")) && i<w){
 								if(t.getParent().getChild(i).getType() ==TanGParser.ID || t.getParent().getChild(i).getType() == TanGParser.FUNCID){
 									param = param + "td_"+ t.getParent().getChild(i).getText() + ", ";
 								}else{
@@ -568,7 +568,15 @@ private void doCheck(CommonTree t, BufferedWriter out){
 								printedAlready.addLast((CommonTree)(t.getParent()).getChild(i));
 								i++;
 							}
-							if(t.getText().equals("Print")){
+							if(t.getText().equals("E")){
+															
+									out.write("Math::E");
+							}
+							else if(t.getText().equals("PI")){
+														
+									out.write("Math::PI");
+							}
+							else if(t.getText().equals("Print")){
 								if(param.length()>0){							
 									out.write("print(" + param.substring(0, param.length()-2) + ")");
 							}else{
