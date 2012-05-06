@@ -126,14 +126,18 @@ unariesExpr
 bitNotExpr
 	:	(BITNOT^)* expExpression;
 expExpression
-	:	pipelineExpression (EXP^ expExpression)?;
+	:	pipelineExpr (EXP^ expExpression)?;
 	
-pipelineExpression
-	:	pipelineExpr->^(PIPEROOT["$"] pipelineExpr);
 
 pipelineExpr
-	:	indexable|((pipenode (pipeindexable)* (pipe^ pipenode)*))
+	:	indexable|pipelineRoot
 	;
+
+pipelineRoot
+	:	pipelinePart -> ^(PIPEROOT["$"] pipelinePart);
+	
+pipelinePart
+	:	((pipenode (pipeindexable)* (pipe^ pipenode)*));
 
 pipe	:	PIPE;
 
