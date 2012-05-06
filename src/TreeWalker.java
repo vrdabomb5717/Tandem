@@ -572,7 +572,7 @@ private void doCheck(CommonTree t, BufferedWriter out){
 						//	if(!(t.getText().equals("Kernel")))
 						//			out.write(t.getText() + ".new().main");
 						//	else
-									out.write(t.getText());
+									out.write(t.getText() + ".new().main" );
 						}	
 	}
 		catch (IOException e) {}}
