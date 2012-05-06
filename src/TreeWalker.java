@@ -234,8 +234,7 @@ public class TreeWalker {
 							printedAlready.remove(t);
 						}else{
 						out.write("td_"+t.getText() + " ");
-							}
-						
+						}	
 						break;	
 					case TanGParser.HEX:
 						if(printedAlready.contains((CommonTree)t)){
@@ -273,15 +272,9 @@ public class TreeWalker {
 									param = param + t.getParent().getParent().getChild(i).getText() + ", ";
 								
 								}
-								
-								
 								printedAlready.add((CommonTree) t.getParent().getParent().getChild(i));
-							
-
 								i++;
-							}
-							//	System.out.println(printedAlready);
-							
+							}							
 							if(param.length()>0){							
 								out.write(t.getText() + "(" + param.substring(0, param.length()-2) + ")");
 							}else{
