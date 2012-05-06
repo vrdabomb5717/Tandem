@@ -1,6 +1,6 @@
 #geometry_operations.td - returns numerical values
 #for the properties of common shapes such as area and volume
-
+#Donald Pomeroy
 
 node Hypotenuse_length(leg1, leg2)
 	temp1 = leg1**2 + leg1**2 

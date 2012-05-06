@@ -1,5 +1,5 @@
 import "geometry.td"
-
+#Donald Pomeroy
 #A length of wire is cut into several smaller pieces.
 #Each of the smaller pieces are bent into squares.
 #Each square has a side that measures 2 centimeters.

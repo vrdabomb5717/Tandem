@@ -7,7 +7,9 @@ import java.io.*;
 import org.antlr.runtime.*;
 import java.util.*;
 
-
+/**
+Donald Pomeroy
+**/
 public class TreeWalker {
 	LinkedList<CommonTree> printedAlready = new LinkedList<CommonTree>();
 	HashSet<String> nodes = new HashSet<String>();

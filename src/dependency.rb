@@ -1,5 +1,5 @@
 #! /usr/bin/env ruby
-
+#Donald Pomeroy
 require "set"
 require 'pathname'
 
