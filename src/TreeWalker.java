@@ -252,7 +252,7 @@ public class TreeWalker {
 						out.write(t.getText() + " ");
 					break;
 				case TanGParser.FOR:
-					out.write(t.getText());
+					out.write(t.getText() + " ");
 					break;
 				case TanGParser.FORK:
 					out.write(t.getText() + " ");
