@@ -57,7 +57,7 @@ node Trapezoid_area (base1,base2,height)
 end
 
 node Trapezoidal_prism_volume(base1,base2,baseHeight,height)
-	return height * Trapezoid_area(base1,base2,baseHeight)
+	return height * (Trapezoid_area base1 base2 baseHeight)
 end
 
 node Triangle_area(base, height)
