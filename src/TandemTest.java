@@ -26,6 +26,7 @@ public class TandemTest
     private final static String logicexp = "expression/logic";
     private final static String statement = "statement/";
     private final static String failure = "failure/";
+    private final static String tutorial = "tutorial/";
 
     public static void main(String args[])
     {
@@ -214,5 +215,12 @@ public class TandemTest
     {
         File file = new File(testPath + failure);
         run_failure(file);
+    }
+
+    @Test
+    public void test_tutorial()
+    {
+        File file = new File(testPath + tutorial);
+        run_success(file);
     }
 }
