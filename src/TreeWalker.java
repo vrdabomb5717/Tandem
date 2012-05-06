@@ -14,15 +14,12 @@ public class TreeWalker {
 	{
 		try {
 		BufferedWriter out = new BufferedWriter(new FileWriter(filename + ".rb"));
-	//	out.write("require \"set\"\n");
-
 		if(!(t.getType() == 0)){
 			
 			walk((CommonTree) t, out);
 		}
 		//traverse all the child nodes of the root if root was empty
 		else{
-		//	System.out.println("ERROR: ROOT IS NULL");
 			walk((CommonTree) t, out);
 		}
 		out.close();
@@ -76,7 +73,9 @@ public class TreeWalker {
 					case TanGParser.ASSN:
 						walk((CommonTree)t.getChild(0), out);
 						out.write( t.getText() + " ");
-						walk((CommonTree)t.getChild(1), out);
+						for(int i =1; i<t.getChildCount(); i++){
+							walk((CommonTree)t.getChild(i), out);
+						}
 						break;
 						//this operator and a few of the following operators are different in ruby so a translation was necessary
 					case TanGParser.BITAND:
@@ -235,8 +234,7 @@ public class TreeWalker {
 							printedAlready.remove(t);
 						}else{
 						out.write("td_"+t.getText() + " ");
-							}
-						
+						}	
 						break;	
 					case TanGParser.HEX:
 						if(printedAlready.contains((CommonTree)t)){
@@ -274,15 +272,9 @@ public class TreeWalker {
 									param = param + t.getParent().getParent().getChild(i).getText() + ", ";
 								
 								}
-								
-								
 								printedAlready.add((CommonTree) t.getParent().getParent().getChild(i));
-							
-
 								i++;
-							}
-							//	System.out.println(printedAlready);
-							
+							}							
 							if(param.length()>0){							
 								out.write(t.getText() + "(" + param.substring(0, param.length()-2) + ")");
 							}else{
@@ -570,11 +562,11 @@ private void doCheck(CommonTree t, BufferedWriter out){
 							}
 							if(t.getText().equals("E")){
 															
-									out.write("Math::E");
+									out.write("Math::E ");
 							}
 							else if(t.getText().equals("PI")){
 														
-									out.write("Math::PI");
+									out.write("Math::PI ");
 							}
 							else if(t.getText().equals("Print")){
 								if(param.length()>0){							
@@ -609,9 +601,7 @@ private void doCheck(CommonTree t, BufferedWriter out){
 						}
 						else
 						{
-						//	if(!(t.getText().equals("Kernel")))
-						//			out.write(t.getText() + ".new().main");
-						//	else
+						
 									out.write(t.getText() + ".new().main" );
 						}	
 	}
