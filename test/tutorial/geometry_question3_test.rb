@@ -1,4 +1,4 @@
-require_relative 'geometry_question1'
+require_relative 'geometry_question3'
 require "test/unit"
  
 class TestGeometryQuestion3 < Test::Unit::TestCase
