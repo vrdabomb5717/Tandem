@@ -88,7 +88,7 @@ assignable
 assnAttr:	(ID (DOT^ ID)*);
 
 rangeExpr
-	:	boolOrExpr (RANGE^ boolOrExpr)?|INTRANGE^;
+	:	boolOrExpr (RANGE^ boolOrExpr)?;
 
 boolOrExpr
 	:	boolAndExpr (BOOLOR^ boolAndExpr)*;
@@ -263,7 +263,6 @@ WITH	:	'with';
 TRY	:	'try';
 CATCH	:	'catch';
 FINALLY	:	'finally';
-INTRANGE	:	('0'..'9')+'..'('0'..'9')+;
 RANGE	:	'..';
 FATCOMMA	:	'=>';
 EQTEST	:	'=='|'!=';
@@ -302,15 +301,20 @@ LBRACE	:	'{';
 
 RBRACE	:	'}';
 //other stuff
+INT :	'0'..'9'+
+    ;
+
 FLOAT
-    :   ('0'..'9')+ DOT ('0'..'9')+ EXPONENT?
-    |   DOT ('0'..'9')+ EXPONENT?
+    :   ('0'..'9')+   (
+        {input.LA(2) != '.'}? => ('.' ('0'..'9')+ EXPONENT? {$type = FLOAT;})
+        |({$type = INT;})
+        
+    )
     |   ('0'..'9')+ EXPONENT
     ;
 
 
-INT :	'0'..'9'+
-    ;
+
 
 NEWLINE	:	('\r'? '\n')+
 		;

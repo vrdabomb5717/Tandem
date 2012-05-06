@@ -467,10 +467,13 @@ FLOAT:
 <<1.1e-9.9>>FAIL
 
 //float stuff
-<<.0978>>OK
+<<.0978>FAIL
 
 //float stuff
-<<.0E-0>>OK
+<<.0E-0>>FAIL
+
+//success
+<<99e-99>>
 
 
 //Test HEX

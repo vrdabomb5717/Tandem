@@ -1,7 +1,7 @@
 
 node Hypotenuse_length(leg1, leg2)
 	temp1 = leg1**2 + leg1**2 
-	return temp1**(.5)
+	return temp1**(0.5)
 end
 
 node Circle_area(radius)

@@ -10,7 +10,6 @@ import java.util.*;
 public class TreeWalker {	
 	LinkedList<CommonTree> printedAlready = new LinkedList<CommonTree>();
 	HashSet<String> nodes = new HashSet<String>();
-
 	public void walkTree(CommonTree t, String filename) 
 	{
 		try {
@@ -306,9 +305,7 @@ public class TreeWalker {
 						}else
 						out.write(t.getText() + " ");
 						break;
-					case TanGParser.INTRANGE:
-						out.write(t.getText());
-						break;
+				
 					case TanGParser.IS:
 						out.write("==");
 						break;
@@ -348,7 +345,7 @@ public class TreeWalker {
 						break;
 					case TanGParser.NODE:
 						LinkedList<CommonTree> list = new LinkedList<CommonTree>();
-						out.newLine();
+
 						//every node will be converted to a class with the name of the node as the class name
 						if (t.getText().equals("public node"))
 						{
@@ -369,19 +366,28 @@ public class TreeWalker {
 						out.write("def main");
 						for ( int i = 1; i < t.getChildCount(); i++ ) 
 						{
-							if (t.getChild(i).getType()==TanGParser.NODE){
-								list.addLast(((CommonTree)t.getChild(i)));
+							if (t.getChild(i).getType()==TanGParser.MAIN){
+								for(int k=0; k < t.getChild(i).getChildCount(); k++){
+									if (t.getChild(i).getChild(k).getType()==TanGParser.NODE){
+										list.addLast(((CommonTree)t.getChild(i).getChild(k)));
+									}else{
+										walk((CommonTree)t.getChild(i).getChild(k), out);
+									}
+								}
 							}
 							else{
 								walk((CommonTree)t.getChild(i), out);
 							}
 						}
+					
+						
 						while(list.isEmpty()==false){
 							walk((CommonTree)list.getFirst(), out);
 							list.remove();
 						}
 						out.newLine();
-						out.write("end ");
+						out.write("end\n");
+						
 						out.newLine();
 						
 						break;
@@ -571,12 +577,13 @@ private void doCheck(CommonTree t, BufferedWriter out){
 							}	
 						}else
 						{
-							if(!(t.getText().equals("Kernel")))
-									out.write(t.getText() + ".new().main");
-							else
-									out.write(t.getText());
+						//	if(!(t.getText().equals("Kernel")))
+						//			out.write(t.getText() + ".new().main");
+						//	else
+									out.write(t.getText() + ".new().main" );
 						}	
 	}
 		catch (IOException e) {}}
 
 }
+
