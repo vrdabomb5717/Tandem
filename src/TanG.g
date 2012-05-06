@@ -137,33 +137,37 @@ expExpression
 	
 
 pipelineExpr
-	:	indexable|((pipenode (pipeindexable)* (pipe^ pipenode)*))
+	:	atom|((pipestart (indexable)* (pipe^ pipenode)*))
 	;
 	
 
 pipe	:	PIPE;
 
-pipenode
-	:	NODEID (DOT^ (NODEID|ID|FUNCID))*;
-	
-indexable
-	:	(nonAtomAttr^ (LBRACK indexable RBRACK)+)|attributable;
+pipestart
+	:	attrStart^ (LBRACK (pipestart|pipeatom2) RBRACK)*;//(ID|NODEID) (DOT^ (NODEID|ID|FUNCID))*;
 
-pipeindexable
-	:	(nonAtomAttr^ (LBRACK pipeindexable RBRACK)+)|pipeattributable;
+pipenode
+	:	((NODEID) (DOT^ (NODEID|ID|FUNCID))*)|(ID (DOT^ ID)+);
+	
+
+indexable
+	:	(nonAtomAttr^ (LBRACK indexable RBRACK)+)|pipeattributable;
+	
+attrStart
+	:	(ID|NODEID) (DOT^ ID)*;
 	
 nonAtomAttr
 	:	ID (DOT^ ID)*;
 
-attributable
-	:	(ID (DOT^ ID)+)|atom;
 
 pipeattributable
 	:	(ID (DOT^ ID)+)|pipeatom;	
 
 //atom
-atom	:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|list|hashSet|td_truefalse|td_none|td_null|td_some|filename;
+atom	:	INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|list|hashSet|td_truefalse|td_none|td_null|td_some|filename;
 pipeatom:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|hashSet|td_truefalse|td_none|td_null|td_some|filename;
+pipeatom2
+	:	INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|hashSet|td_truefalse|td_none|td_null|td_some|filename;
 
 
 list	:	LBRACK (orExpression (COMMA orExpression)*)? RBRACK;
