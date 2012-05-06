@@ -34,7 +34,7 @@ public class TandemTree{
 			TreeWalker walk = new TreeWalker();
 			walk.walkTree(t, args[0].substring(0, args[0].length()-3));
 	 		TandemTree Tr = new TandemTree();
-	 		Tr.printTree(t, 2);
+	 	//	Tr.printTree(t, 2);
 	 		DOTTreeGenerator gen = new DOTTreeGenerator();
 	 		StringTemplate st = gen.toDOT(t);	
 	 		try {
