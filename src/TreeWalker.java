@@ -75,9 +75,10 @@ public class TreeWalker {
 				case TanGParser.ASSN:
 					walk((CommonTree) t.getChild(0), out);
 					out.write(t.getText() + " ");
-					for (int i = 1; i < t.getChildCount(); i++) {
-						walk((CommonTree) t.getChild(i), out);
-					}
+					walk((CommonTree) t.getChild(1), out);
+				//	for (int i = 1; i < t.getChildCount(); i++) {
+				//		walk((CommonTree) t.getChild(i), out);
+				//	}
 					break;
 				// this operator and a few of the following operators are
 				// different in ruby so a translation was necessary
@@ -240,6 +241,10 @@ public class TreeWalker {
 						out.write("td_" + t.getText() + " ");
 					}
 					break;
+				case TanGParser.HASHTOKEN:
+					for (int i = 0; i < t.getChildCount(); i++)
+						walk((CommonTree) t.getChild(i), out);
+					break;
 				case TanGParser.HEX:
 					if (printedAlready.contains((CommonTree) t)) {
 						printedAlready.remove(t);
@@ -344,6 +349,10 @@ public class TreeWalker {
 					break;
 				case TanGParser.LBRACK:
 					out.write(t.getText());
+					break;
+				case TanGParser.LISTTOKEN:
+					for (int i = 0; i < t.getChildCount(); i++)
+						walk((CommonTree) t.getChild(i), out);
 					break;
 				case TanGParser.LOOP:
 					out.write("while true ");
@@ -489,10 +498,10 @@ public class TreeWalker {
 					for (int i = 0; i < t.getChildCount(); i++)
 						walk((CommonTree) t.getChild(i), out);
 					break;
-				case TanGParser.PIPETOKEN:
-					for (int i = 0; i < t.getChildCount(); i++)
-						walk((CommonTree) t.getChild(i), out);
-					break;
+			//	case TanGParser.PIPETOKEN:
+			//		for (int i = 0; i < t.getChildCount(); i++)
+			//			walk((CommonTree) t.getChild(i), out);
+			//		break;
 				case TanGParser.PUBPRIV:
 					break;
 				case TanGParser.RANGE:
@@ -634,8 +643,12 @@ public class TreeWalker {
 					}
 				}
 			} else if (t.getParent().getType() == TanGParser.DOT) {
+				printedAlready.addLast((CommonTree)t);
 				out.write(t.getText());
-			} else {
+			}  else if (t.getParent().getType() == TanGParser.PIPE) {
+				printedAlready.addLast((CommonTree)t);
+				out.write(t.getText());
+			}else {
 
 				out.write(t.getText() + ".new().main");
 			}
