@@ -12,7 +12,8 @@
 * Start updating tutorial.
 * Continue updating LRM.
 * Write project plan.
-* Write Ant description for Patrick.
+* Write Ant description for Patrick. - DONE
+* Update README
 
 
 ## Patrick
@@ -23,7 +24,7 @@
 
 ## Jenee
 
-* Finish pipeline in TreeWalker. - DONE
+* Finish pipeline in TreeWalker.
 * Add FUNCIDs.
 * Don't add .main to Ruby system functions.
 * Write Translator architecure.
@@ -32,4 +33,5 @@
 ## Donald
 
 * Help Varun update LRM.
+* Help Varun update tutorial.
 * Generate Ruby test/unit cases to test Tandem files with valid outputs.
