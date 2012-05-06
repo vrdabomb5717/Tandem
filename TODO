@@ -9,8 +9,9 @@
 
 * Continue making test files for statements and other types of expressions.
 * Finish updating white paper. - DONE
-* Start updating tutorial.
+* Start updating tutorial with Donald's program.
 * Continue updating LRM.
+* Update with node definiion rules (no calling before defined)
 * Write project plan.
 * Write Ant description for Patrick. - DONE
 * Update README
