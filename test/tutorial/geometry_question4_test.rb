@@ -1,6 +1,6 @@
 require_relative 'geometry_question4'
 require "test/unit"
- 
+#Donald Pomeroy 
 class TestGeometryQuestion4 < Test::Unit::TestCase
  
   def test_simple
