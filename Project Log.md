@@ -2,7 +2,7 @@
 
 ## 5/5/12
 
-Fixed bugs in the pipeline. Updated language tutorial and LRM to reflect grammar changes.
+Fixed bugs in the pipeline. Updated language tutorial and LRM to reflect grammar changes. Continued debugging the pipeline in TreeWalker. Got rid of private nodes and appended nodes with a main function that is called in the pipeline. Added Ruby system classes. Only allow chained assignments to be assigned to variables. Added language evolution, development and runtime environment sections to project report, as well as lessons learned and on test methodology.
 
 ## 5/4/12
 
