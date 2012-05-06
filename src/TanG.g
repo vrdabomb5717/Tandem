@@ -17,7 +17,7 @@ ASTLabelType=CommonTree;
 
 
 
-tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ main (NEWLINE+ EOF)?)))? | (main)));
+tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | (m)));
 
 //Import Statements
 i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?; 
@@ -25,10 +25,7 @@ i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?;
  iprime	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ i)?;
 
 //Main body
-main	:	m-> MAIN;
-m	:	statement (NEWLINE+ mprime)?;
-
-mprime	:	statement (NEWLINE+ m)?;
+m	:	(statement (NEWLINE+ statement)*)->^(MAIN statement+);
 
 statement
 	:	td_node^ NODEID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
