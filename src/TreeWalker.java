@@ -489,7 +489,7 @@ public class TreeWalker {
 						out.write(t.getText());
 						break;
 					case TanGParser.REQUIRE:
-						out.write(t.getText() + " ");
+						out.write(t.getText() + " " + t.getChild(0));
 						break;
 					case TanGParser.RETURN:
 						out.write(t.getText() + " ");
