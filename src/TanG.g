@@ -47,7 +47,7 @@ loopType	:	td_for ID td_in iterable NEWLINE+ (m NEWLINE+)? td_end
 	|	td_loop NEWLINE+ (m NEWLINE+) td_end
 	|	td_until orExpression NEWLINE+ (m NEWLINE+)? td_end;
 //Things that can be iterated through
-iterable	:	ID|list|hashSet|STRING|INTRANGE|boolOrExpr ^RANGE boolOrExpr;
+iterable	:	rangeExpr;
 
 //Expressions
 expression
