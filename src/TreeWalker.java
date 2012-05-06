@@ -97,7 +97,7 @@ public class TreeWalker {
 					break;
 				case TanGParser.BITNOT:
 					out.write("(");
-					out.write(t.getText());
+					out.write(t.getText() + " ");
 					walk((CommonTree) t.getChild(0), out);
 					out.write(")");
 					break;
@@ -252,7 +252,7 @@ public class TreeWalker {
 						out.write(t.getText() + " ");
 					break;
 				case TanGParser.FOR:
-					out.write(t.getText());
+					out.write(t.getText() + " ");
 					break;
 				case TanGParser.FORK:
 					out.write(t.getText() + " ");
@@ -349,14 +349,18 @@ public class TreeWalker {
 								}
 							
 						}}
-					
+					int q=0;
+					while(t.getChild(q)!= null){
+						walk((CommonTree) t.getChild(q), out);
+						q++;
+					}
 					
 					break;
 				case TanGParser.IF:
 					out.write(t.getText() + " ");
 					break;
 				case TanGParser.IMPORT:
-					out.write("require_relative ");
+					out.write("require ");
 					walk((CommonTree) t.getChild(0), out);
 					int d=1;
 					while(t.getChild(d)!= null){
@@ -478,7 +482,7 @@ public class TreeWalker {
 
 					break;
 				case TanGParser.NOT:
-					out.write(t.getText());
+					out.write(t.getText() + " ");
 					walk((CommonTree) t.getChild(0), out);
 
 					break;
@@ -491,7 +495,7 @@ public class TreeWalker {
 				case TanGParser.OR:
 						out.write("(");
 					walk((CommonTree) t.getChild(0), out);
-					out.write(t.getText());
+					out.write(t.getText() + " ");
 					walk((CommonTree) t.getChild(1), out);
 						out.write(")");
 					break;
@@ -555,7 +559,10 @@ public class TreeWalker {
 					out.write(t.getText() + " ");					
 					break;
 				case TanGParser.RANGE:
-					out.write(t.getText() + " ");
+					walk((CommonTree) t.getChild(0), out);
+					out.write(t.getText());
+					walk((CommonTree) t.getChild(1), out);
+					
 					break;
 				case TanGParser.RBRACE:
 					out.write(t.getText());
@@ -564,7 +571,7 @@ public class TreeWalker {
 					out.write(t.getText());
 					break;
 				case TanGParser.REQUIRE:
-					out.write("require_relative " + t.getChild(0));
+					out.write("require " + t.getChild(0));
 					int e=1;
 					while(t.getChild(e)!= null){
 						walk((CommonTree) t.getChild(e), out);
