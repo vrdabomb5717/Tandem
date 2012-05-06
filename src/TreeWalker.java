@@ -451,7 +451,11 @@ public class TreeWalker {
 								}
 							}
 						}
-						break;						
+						break;	
+					case TanGParser.PIPEROOT:
+					for (int i =0; i<t.getChildCount(); i++)
+						walk((CommonTree)t.getChild(i), out);
+						break;					
 					case TanGParser.PUBPRIV:
 						break;
 					case TanGParser.RANGE:
@@ -538,7 +542,7 @@ private void doCheck(CommonTree t, BufferedWriter out){
 								if(t.getParent().getChild(i).getType() ==TanGParser.ID || t.getParent().getChild(i).getType() == TanGParser.FUNCID){
 									param = param + "td_"+ t.getParent().getChild(i).getText() + ", ";
 								}else{
-									param = param + t.getParent().getChild(i).getText() + ", ";						
+									param = param + t.getParent().getChild(i).getText() + ", ";			
 								}
 								printedAlready.addLast((CommonTree)(t.getParent()).getChild(i));
 								i++;
@@ -550,21 +554,26 @@ private void doCheck(CommonTree t, BufferedWriter out){
 								out.write("print(" + param + ")");
 							}
 							}
-							else if(nodes.contains(t.getText())){
-									if(param.length()>0){							
-								out.write(t.getText() + ".main(" + param.substring(0, param.length()-2) + ")");
-							}else{
-								out.write(t.getText() + ".main(" + param + ")");
-							}								
-							}else{
+							//this set checks if NodeID a system function or not. if not, .main is added
+							else if(nodes.contains(t.getText()) ){
 								if(param.length()>0){							
-								out.write(t.getText() + "(" + param.substring(0, param.length()-2) + ")");
+								out.write(t.getText() + ".new().main(" + param.substring(0, param.length()-2) + ")");
 								}else{
-								out.write(t.getText() + "(" + param + ")");
+								out.write(t.getText() + ".new().main(" + param + ")");
+								}									
+							}else{
+								//the function must be a system function, so no main
+								if(param.length()>0){							
+									out.write(t.getText() + "(" + param.substring(0, param.length()-2) + ")");
+								}else{
+									out.write(t.getText() + "(" + param + ")");
 								}
 							}	
 						}else
 						{
+							if(!(t.getText().equals("Kernel")))
+									out.write(t.getText() + ".new().main");
+							else
 									out.write(t.getText());
 						}	
 	}
