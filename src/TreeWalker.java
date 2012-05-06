@@ -578,7 +578,13 @@ private void doCheck(CommonTree t, BufferedWriter out){
 							}
 							else if(t.getText().equals("Print")){
 								if(param.length()>0){							
-									out.write("print(" + param.substring(0, param.length()-2) + ")");
+									out.write("Kernel.print(" + param.substring(0, param.length()-2) + ")");
+							}else{
+								out.write("print(" + param + ")");
+							}
+							}else if(t.getText().equals("Println")){
+								if(param.length()>0){							
+									out.write("Kernel.puts(" + param.substring(0, param.length()-2) + ")");
 							}else{
 								out.write("print(" + param + ")");
 							}
