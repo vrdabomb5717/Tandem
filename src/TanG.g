@@ -25,7 +25,7 @@ i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?;
  iprime	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ i)?;
 
 //Main body
-main	:	m->^(MAIN m);
+main	:	m-> MAIN;
 m	:	statement (NEWLINE+ mprime)?;
 
 mprime	:	statement (NEWLINE+ m)?;
