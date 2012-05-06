@@ -163,7 +163,7 @@
   <target name="grammar" depends="init" description="compile the grammar" >
     <!-- Compile the grammar from ${src} into ${build} -->
     <antlr3 grammar.name="${src}/${grammar}" outputdirectory="${lib}/grammar"/>
-    <antlr3 grammar.name="${src}/${treeGrammar}" outputdirectory="${lib}/grammar"/>
+    <!-- <antlr3 grammar.name="${src}/${treeGrammar}" outputdirectory="${lib}/grammar"/> -->
   </target>
 
 
