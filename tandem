@@ -124,8 +124,8 @@ do
 	ant walk -Dfile="$x" -q
 done
 
-echo ${#a[@]}
-exit
+
+
 
 ant walk -Dfile="$FILE" -q
 
