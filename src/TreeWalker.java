@@ -645,10 +645,11 @@ public class TreeWalker {
 			} else if (t.getParent().getType() == TanGParser.DOT) {
 				printedAlready.addLast((CommonTree)t);
 				out.write(t.getText());
-			}  else if (t.getParent().getType() == TanGParser.PIPE) {
-				printedAlready.addLast((CommonTree)t);
-				out.write(t.getText());
-			}else {
+		//	}  else if (t.getParent().getType() == TanGParser.PIPE) {
+		//		printedAlready.addLast((CommonTree)t);
+		//		out.write(t.getText());
+			}
+			else {
 
 				out.write(t.getText() + ".new().main");
 			}
