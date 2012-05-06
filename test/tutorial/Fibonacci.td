@@ -16,7 +16,7 @@ node Fibonacci(input)
 		if number < 2
 			return number
 		else
-			(Recursive number-1) + (Recursive number-2)
+			(Recursive (number-1)) + (Recursive (number-2))
 		end
 	end
 

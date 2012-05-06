@@ -1,3 +1,4 @@
+require "set"
 node DSLiterals()
 	node MakeList()
 		a = [1,3,5,7,9,9]
