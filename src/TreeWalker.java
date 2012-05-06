@@ -186,7 +186,6 @@ public class TreeWalker {
 					out.newLine();
 					break;
 				case TanGParser.EOF:
-					out.write(t.getText());
 					break;
 				case TanGParser.EQTEST:
 					walk((CommonTree) t.getChild(0), out);
@@ -326,6 +325,11 @@ public class TreeWalker {
 				case TanGParser.IMPORT:
 					out.write("require ");
 					walk((CommonTree) t.getChild(0), out);
+					int d=1;
+					while(t.getChild(d)!= null){
+						walk((CommonTree) t.getChild(d), out);
+						d++;
+					}
 					break;
 				case TanGParser.IN:
 					out.write(t.getText() + " ");
