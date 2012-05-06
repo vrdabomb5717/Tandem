@@ -304,18 +304,13 @@ public class TreeWalker {
 								out.write(t.getText() + "(" + param + ")");
 							}
 						} else {
-
-							if (t.getType() == TanGParser.ID
-									|| t.getType() == TanGParser.FUNCID) {
-								out.write("td_" + t.getText() + " ");
-							} else {
 								if (t.getParent().getType() == TanGParser.DOT
 										&& t.getChildIndex() == 0) {
-									out.write(t.getText());
+									out.write("td_" + t.getText());
 								} else {
-									out.write(t.getText() + " ");
+									out.write("td_" + t.getText() + " ");
 								}
-							}
+							
 						}
 					}
 					break;

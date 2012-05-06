@@ -137,8 +137,10 @@ expExpression
 	
 
 pipelineExpr
-	:	atom|((pipestart (indexable)* (pipe^ pipenode)*))
+	:	atom|(pipeline -> ^(PIPETOKEN pipeline))
 	;
+	
+pipeline:	((pipestart (indexable)* (pipe^ pipenode)*));
 	
 
 pipe	:	PIPE;
@@ -221,6 +223,8 @@ td_require
 //Operators
 ROOTNODE:	'@@';
 MAIN	:	'@';
+PIPETOKEN
+	:	'$$';
 PIPEROOT:	'$';
 FUNCID	:	('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*'?';  
 COMMENT
