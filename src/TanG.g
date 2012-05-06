@@ -15,9 +15,9 @@ ASTLabelType=CommonTree;
 
 
 
+tanG	:	prog->^(ROOTNODE['$'] prog);
 
-
-tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | (m)));
+prog	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | (m)));
 
 //Import Statements
 i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?; 
@@ -206,6 +206,7 @@ td_require
 //Lexer/Tokens
 
 //Operators
+ROOTNODE:	'$';
 MAIN	:	'@';
 FUNCID	:	('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*'?';  
 COMMENT
