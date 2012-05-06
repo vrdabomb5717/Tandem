@@ -171,7 +171,7 @@ pipeatom:	ID|INT|FLOAT|HEX|BYTE|STRING|paren|hashSet|td_truefalse|td_null|filena
 pipeatom2
 	:	INT|FLOAT|HEX|BYTE|STRING| paren|hashSet|td_truefalse|td_null|filename;
 	
-paren	:	LPAREN orExpression RPAREN ->^(PARENTOKEN[",,,,,,,"] orExpression);
+paren	:	LPAREN! orExpression RPAREN! //->^(PARENTOKEN[",,,,,,,"] orExpression);
 	
 list	:	list2->^(LISTTOKEN[",,,,,"] list2);
 
