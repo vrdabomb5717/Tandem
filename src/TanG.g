@@ -15,9 +15,9 @@ ASTLabelType=CommonTree;
 
 
 
+tanG	:	prog ->^(ROOTNODE["@@"] prog?);
 
-
-tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | m));
+prog	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | (m)));
 
 //Import Statements
 i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?; 
@@ -25,9 +25,10 @@ i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?;
  iprime	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ i)?;
 
 //Main body
-m	:	statement (NEWLINE+ mprime)?;
+m	:	(statementNL (NEWLINE+ statementNL)*)->^(MAIN["@"] statementNL+);
 
-mprime	:	statement (NEWLINE+ m)?;
+statementNL
+	:	statement->statement NEWLINE["\n"];
 
 statement
 	:	td_node^ NODEID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
@@ -79,7 +80,12 @@ idTestExpr
 modExpr	:	assignment (td_mod^ assignment)*;
 
 assignment
-	:	rangeExpr (ASSN^ assignment)?;
+	:	assignable (ASSN^ assignment)|rangeExpr;
+	
+assignable
+	:	(assnAttr^ (LBRACK assnAttr RBRACK)*);
+	
+assnAttr:	(ID (DOT^ ID)*);
 
 rangeExpr
 	:	boolOrExpr (RANGE^ boolOrExpr)?|INTRANGE^;
@@ -121,10 +127,12 @@ bitNotExpr
 	:	(BITNOT^)* expExpression;
 expExpression
 	:	pipelineExpr (EXP^ expExpression)?;
+	
 
 pipelineExpr
 	:	indexable|((pipenode (pipeindexable)* (pipe^ pipenode)*))
 	;
+	
 
 pipe	:	PIPE;
 
@@ -132,11 +140,13 @@ pipenode
 	:	NODEID (DOT^ (NODEID|ID|FUNCID))*;
 	
 indexable
-	:	(ID^ (LBRACK indexable RBRACK)+)|attributable;
+	:	(nonAtomAttr^ (LBRACK indexable RBRACK)+)|attributable;
 
 pipeindexable
-	:	(ID^ (LBRACK pipeindexable RBRACK)+)|pipeattributable;
-
+	:	(nonAtomAttr^ (LBRACK pipeindexable RBRACK)+)|pipeattributable;
+	
+nonAtomAttr
+	:	ID (DOT^ ID)*;
 
 attributable
 	:	(ID (DOT^ ID)+)|atom;
@@ -198,6 +208,9 @@ td_require
 //Lexer/Tokens
 
 //Operators
+ROOTNODE:	'@@';
+MAIN	:	'@';
+PIPEROOT:	'$';
 FUNCID	:	('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*'?';  
 COMMENT
     :   ('#' |'//') ~('\n'|'\r')*   {skip();}
