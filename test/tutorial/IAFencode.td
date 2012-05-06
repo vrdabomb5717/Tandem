@@ -11,16 +11,16 @@ node IAF_encode(signal,times,dt,bias,threshold)
 	y=y+[(dt*(signal[0]+bias))] #set the initial value of the integral
 
 	spikecount = 0 # will keep track of the number of spikes produced and
-	for index in 1..(times.size)
+	for index in 1..((times.size)-1)
 			j = index - 1
 			y[index] = y[j] + dt * (signal[index] + bias)
 			#Here we approximate the integral for each time step
 			time=index*dt
 
 			#if the threshold is passed, then we make a spike
-			if y[i] >= threshold
+			if y[index] >= threshold
 				spike[spikecount] = time  #store the spike data
-				y[i] -= threshold                 #reset the variable
+				y[index] -= threshold                 #reset the variable
 				spikecount += 1           #increment the spike index
 			else
 				continue
@@ -46,7 +46,7 @@ end
 bandwidth = 25
 #create bandlimited signal
 signal=[]
-for index in 0..(times.size)
+for index in 0..((times.size)-1)
 	c=2*bandwidth*times[index]
 	a=Math.sin c
 	signal[index] = 2 * bandwidth * a
@@ -54,7 +54,8 @@ end
 #########
 
 
-bias = signal.min.abs
+bias = signal.min
+bias=bias.abs
 
 #determined experimentally
 threshold = 0.007
