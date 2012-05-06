@@ -1,8 +1,12 @@
 # Project Log
 
+## 5/6/12
+
+Finished project report. Wrote script to manage dependencies without falling into an infinite loop. Continued testing and debugging tree walker, and made slight changes in the grammar to facilitate this.
+
 ## 5/5/12
 
-Fixed bugs in the pipeline. Updated language tutorial and LRM to reflect grammar changes.
+Fixed bugs in the pipeline. Updated language tutorial and LRM to reflect grammar changes. Continued debugging the pipeline in TreeWalker. Got rid of private nodes and appended nodes with a main function that is called in the pipeline. Added Ruby system classes. Only allow chained assignments to be assigned to variables. Added language evolution, development and runtime environment sections to project report, as well as lessons learned and on test methodology.
 
 ## 5/4/12
 
@@ -10,7 +14,7 @@ Added support for Ivy, which downloads dependencies and puts them in the lib fol
 
 ## 5/3/12
 
-Now, only ID's can be indexable or attributable.  Literal lists cannot be pipeline parameters.  Nodes are now required to have capital names.
+Now, only ID's can be indexable or attributable. Literal lists cannot be pipeline parameters.  Nodes are now required to have capital names.
 
 Added support for importing Ruby code. Can only call methods that are in the form of Class.method or Class.method?, but Ruby methods that end in other punctuation will not work. This takes care of the system libraries.
 

@@ -166,10 +166,12 @@ pipeattributable
 	:	(ID (DOT^ ID)+)|pipeatom;	
 
 //atom
-atom	:	INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|list|hashSet|td_truefalse|td_null|filename;
-pipeatom:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|hashSet|td_truefalse|td_null|filename;
+atom	:	INT|FLOAT|HEX|BYTE|STRING|paren|list|hashSet|td_truefalse|td_null|filename;
+pipeatom:	ID|INT|FLOAT|HEX|BYTE|STRING|paren|hashSet|td_truefalse|td_null|filename;
 pipeatom2
-	:	INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|hashSet|td_truefalse|td_null|filename;
+	:	INT|FLOAT|HEX|BYTE|STRING| paren|hashSet|td_truefalse|td_null|filename;
+	
+paren	:	LPAREN! orExpression RPAREN!; //->^(PARENTOKEN[",,,,,,,"] orExpression);
 	
 list	:	list2->^(LISTTOKEN[",,,,,"] list2);
 
@@ -225,6 +227,8 @@ td_require
 //Lexer/Tokens
 
 //Operators
+PARENTOKEN
+	:	',,,,,,,';
 HASHTOKEN
 	:	',,,,,,';
 LISTTOKEN	
