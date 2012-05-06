@@ -7,12 +7,12 @@
 
 ## Varun
 
-* Continue making test files for statements and other types of expressions.
+* Continue making test files for statements and other types of expressions.- DONE
 * Finish updating white paper. - DONE
 * Start updating tutorial with Donald's program. - DONE
 * Continue updating LRM and tutorial with calling Ruby code. - DONE
 * Update with node definiion rules (no calling before defined) - DONE
-* Write project plan.
+* Write project plan.- DONE
 * Write Ant description for Patrick. - DONE
 * Update README - DONE
 * types of testing done (unit, etc.) - DONE
@@ -22,19 +22,20 @@
 
 * Work on Section 8, gUnit description. - DONE
 * Work on Section 9, lessons learned. - DONE
-* Generate legitimate Tandem files with some output.
+* Generate legitimate Tandem files with some output.- DONE
 
 ## Jenee
 
-* Finish pipeline in TreeWalker.
+* Finish pipeline in TreeWalker.- DONE
 * Add FUNCIDs. - DONE
 * Don't add .main to Ruby system functions. - DONE
 * Write Translator architecure. - DONE
 * Work on Section 9, lessons learned.
 * Do Math.PI and Math.E - DONE
+* Finish id.id
 
 ## Donald
 
 * Help Varun update LRM. - DONE
 * Help Varun update tutorial. - DONE
-* Generate Ruby test/unit cases to test Tandem files with valid outputs.
+* Generate Ruby test/unit cases to test Tandem files with valid outputs.- DONE
