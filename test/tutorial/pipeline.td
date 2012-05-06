@@ -1,6 +1,6 @@
 import "Fibonacci.td"
 
-public Node N()
+public node N()
 	node F(x)
 		x+1
 	end
