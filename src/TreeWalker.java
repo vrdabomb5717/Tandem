@@ -97,7 +97,7 @@ public class TreeWalker {
 					break;
 				case TanGParser.BITNOT:
 					out.write("(");
-					out.write(t.getText());
+					out.write(t.getText() + " ");
 					walk((CommonTree) t.getChild(0), out);
 					out.write(")");
 					break;
@@ -478,7 +478,7 @@ public class TreeWalker {
 
 					break;
 				case TanGParser.NOT:
-					out.write(t.getText());
+					out.write(t.getText() + " ");
 					walk((CommonTree) t.getChild(0), out);
 
 					break;
@@ -491,7 +491,7 @@ public class TreeWalker {
 				case TanGParser.OR:
 						out.write("(");
 					walk((CommonTree) t.getChild(0), out);
-					out.write(t.getText());
+					out.write(t.getText() + " ");
 					walk((CommonTree) t.getChild(1), out);
 						out.write(")");
 					break;
@@ -555,7 +555,7 @@ public class TreeWalker {
 					out.write(t.getText() + " ");					
 					break;
 				case TanGParser.RANGE:
-					out.write(t.getText() + " ");
+					out.write(t.getText());
 					break;
 				case TanGParser.RBRACE:
 					out.write(t.getText());
