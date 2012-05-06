@@ -58,7 +58,12 @@ bias = signal.min
 bias=bias.abs
 
 #determined experimentally
-threshold = 0.007
+threshold = 1.4
 
-#print the spiketimes that represent the signal
-IAF_encode signal times dt bias threshold | Println
+#Get the spiketimes that represent the signal and print the firing rate
+spiketimes = IAF_encode signal times dt bias threshold
+Print "Neuron firing rate:"
+numspikes = spiketimes.size
+rate=numspikes*4
+Print rate
+Println "HZ"
