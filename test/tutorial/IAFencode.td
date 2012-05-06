@@ -60,8 +60,14 @@ bias=bias.abs
 #determined experimentally
 threshold = 1.4
 
-#Get the spiketimes that represent the signal and print the firing rate
+#Get the spiketimes that represent the signal
 spiketimes = IAF_encode signal times dt bias threshold
+
+#Print the spiketimes to a file
+f = File.open "spiketimes.dat" "w"
+f.write spiketimes
+
+#Print the Neuron's estimated firing rate over the interval
 Print "Neuron firing rate:"
 numspikes = spiketimes.size
 rate=numspikes*4
