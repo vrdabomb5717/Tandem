@@ -3,6 +3,6 @@ node N()
 			age = 21
 		end
 
-	MyAge | Print
+	MyAge | Println
 	# prints the output of MyAge
 end
