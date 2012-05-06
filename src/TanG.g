@@ -126,7 +126,10 @@ unariesExpr
 bitNotExpr
 	:	(BITNOT^)* expExpression;
 expExpression
-	:	pipelineExpr (EXP^ expExpression)?;
+	:	pipelineExpression (EXP^ expExpression)?;
+	
+pipelineExpression
+	:	pipelineExpr->^(PIPEROOT pipelineExpr);
 
 pipelineExpr
 	:	indexable|((pipenode (pipeindexable)* (pipe^ pipenode)*))
@@ -208,6 +211,7 @@ td_require
 //Operators
 ROOTNODE:	'@@';
 MAIN	:	'@';
+PIPEROOT:	'$';
 FUNCID	:	('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*'?';  
 COMMENT
     :   ('#' |'//') ~('\n'|'\r')*   {skip();}
