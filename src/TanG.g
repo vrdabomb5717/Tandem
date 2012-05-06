@@ -15,7 +15,7 @@ ASTLabelType=CommonTree;
 
 
 
-tanG	:	prog->^(ROOTNODE['$'] prog);
+tanG	:	prog ->^(ROOTNODE["@@"] prog?);
 
 prog	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | (m)));
 
@@ -206,7 +206,7 @@ td_require
 //Lexer/Tokens
 
 //Operators
-ROOTNODE:	'$';
+ROOTNODE:	'@@';
 MAIN	:	'@';
 FUNCID	:	('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*'?';  
 COMMENT
