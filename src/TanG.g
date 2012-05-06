@@ -15,8 +15,10 @@ ASTLabelType=CommonTree;
 
 
 
+//Start: rewritten so that start Token is not null
 tanG	:	prog ->^(ROOTNODE["@@"] prog?);
 
+//Describes the program layout
 prog	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | (m)));
 
 //Import Statements
@@ -24,12 +26,14 @@ i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?;
  	
  iprime	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ i)?;
 
-//Main body
+//Main body: this is composed of any number of valid statements
 m	:	(statementNL (NEWLINE+ statementNL)*)->^(MAIN["@"] statementNL+);
 
+//This production is used to rewrite statements so that we minimize changes to the original code generator
 statementNL
 	:	statement->statement NEWLINE["\n"];
 
+//This is the list of valid statement types, starting with a node definition
 statement
 	:	td_node^ NODEID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
 	|	expression
@@ -39,17 +43,19 @@ statement
 	|	td_break (orExpression)?
 	|	td_continue;
 
+//valid node parameters
 params	:	(ID(COMMA ID)*)?;
 
-//Loops
+//All of the loop types
 loopType	:	td_for ID td_in iterable NEWLINE+ (m NEWLINE+)? td_end
 	|	td_while orExpression NEWLINE+ (m NEWLINE+) td_end
 	|	td_loop NEWLINE+ (m NEWLINE+) td_end
 	|	td_until orExpression NEWLINE+ (m NEWLINE+)? td_end;
+
 //Things that can be iterated through
 iterable	:	rangeExpr;
 
-//Expressions
+//Expressions, these consist of condition statements and expressions
 expression
 	:	condType | orExpression;
 
@@ -58,6 +64,7 @@ condType	:	td_if orExpression NEWLINE+ (m NEWLINE+)? td_else NEWLINE+ (m NEWLINE
 	|	td_unless orExpression NEWLINE+ (m NEWLINE+)? td_end
 	|	td_cond^  NEWLINE+ (cstatement NEWLINE+)* td_end;
 
+//Cases for cond statements
 cstatement
 	:	orExpression^ NEWLINE+ (m NEWLINE+)? td_end;
 
@@ -117,7 +124,7 @@ bitShiftExpr
 addSubExpr
 	:	multExpr (ADDSUB^ multExpr)*;
 
-multExpr:		unariesExpr ((MULT^| STAR^) unariesExpr)*;	
+multExpr:	unariesExpr ((MULT^| STAR^) unariesExpr)*;	
 
 
 unariesExpr
@@ -264,7 +271,8 @@ TRY	:	'try';
 CATCH	:	'catch';
 FINALLY	:	'finally';
 RANGE	:	'..';
-FATCOMMA	:	'=>';
+FATCOMMA	
+	:	'=>';
 EQTEST	:	'=='|'!=';
 ASSN	:	'='|'+='|'-='|'*='|'/='|'%='|'**='|'>>='|'<<='|'^='
 	|	'/\\='|'\\/='|'&&='|'||=';
