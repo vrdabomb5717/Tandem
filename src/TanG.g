@@ -17,7 +17,7 @@ ASTLabelType=CommonTree;
 
 
 
-tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | m));
+tanG	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ main (NEWLINE+ EOF)?)))? | (main)));
 
 //Import Statements
 i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?; 
@@ -25,6 +25,7 @@ i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?;
  iprime	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ i)?;
 
 //Main body
+main	:	m->^(MAIN m);
 m	:	statement (NEWLINE+ mprime)?;
 
 mprime	:	statement (NEWLINE+ m)?;
@@ -205,6 +206,7 @@ td_require
 //Lexer/Tokens
 
 //Operators
+MAIN	:	'@';
 FUNCID	:	('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*'?';  
 COMMENT
     :   ('#' |'//') ~('\n'|'\r')*   {skip();}
