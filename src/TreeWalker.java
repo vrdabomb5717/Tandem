@@ -27,9 +27,9 @@ public class TreeWalker {
 			CommonTree root = new CommonTree(tok);
 			 copyTreeRecursive(root,t);
 			walk((CommonTree) root, out);	*/
-			for(int i=0; i<t.getChildCount(); i++){
-				walk((CommonTree)t.getChild(i), out);
-			}
+		//	for(int i=0; i<t.getChildCount(); i++){
+		//		walk((CommonTree)t.getChild(i), out);
+		//	}
 		}
 		out.close();
 		
@@ -332,7 +332,11 @@ public class TreeWalker {
 						walk((CommonTree)t.getChild(0), out);
 						out.write(t.getText() + " ");
 						walk((CommonTree)t.getChild(1), out);
-						break;					
+						break;
+					case TanGParser.MAIN:
+						for (int i =0; i<t.getChildCount(); i++)
+							walk((CommonTree)t.getChild(i), out);
+						break;				
 					case TanGParser.MOD:
 						walk((CommonTree)t.getChild(0), out);
 						out.write(t.getText());
@@ -344,7 +348,7 @@ public class TreeWalker {
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.NEWLINE:
-						out.write(t.getText());
+						out.write("\n");
 						break;
 					case TanGParser.NODE:
 						LinkedList<CommonTree> list = new LinkedList<CommonTree>();
@@ -509,7 +513,8 @@ public class TreeWalker {
 						walk((CommonTree)t.getChild(0), out);
 						out.write(t.getText()  + " ");
 						walk((CommonTree)t.getChild(1), out);
-						break;						
+						break;	
+										
 				}						
 		
 	}	}
@@ -519,8 +524,8 @@ public class TreeWalker {
 
 private void doCheck(CommonTree t, BufferedWriter out){
 	try{
-	
-	if (t.getParent().getType() != 0 &&  t.getParent().getType() != TanGParser.PIPE && t.getParent().getType() != TanGParser.DOT){
+
+	if (t.getParent().getType() != 0 && t.getParent().getType() != TanGParser.PIPE && t.getParent().getType() != TanGParser.DOT){
 					String param = "";
 							int w = (t.getParent()).getChildCount();
 							int i=0;						
@@ -567,40 +572,5 @@ private void doCheck(CommonTree t, BufferedWriter out){
 						
 	}
 		catch (IOException e) {}}
-
-private static void copyTreeRecursive(CommonTree copy, CommonTree original) {
-  if(original.getChildren() != null) {
-    for(Object o : original.getChildren()) {
-
-      CommonTree originalChild = (CommonTree)o;
-
-      // get the token from the original child node
-      CommonToken oTok = (CommonToken)originalChild.getToken();
-
-      // create a new token with the same type & text as 'oTok' 
-      CommonToken cTok = new CommonToken(oTok.getType(), oTok.getText());
-
-      // copy all attributes from 'oTok' to 'cTok'  
-      cTok.setLine(oTok.getLine());
-      cTok.setCharPositionInLine(oTok.getCharPositionInLine());
-      cTok.setChannel(oTok.getChannel());
-      cTok.setStartIndex(oTok.getStartIndex());
-      cTok.setStopIndex(oTok.getStopIndex());
-      cTok.setTokenIndex(oTok.getTokenIndex());
-
-      // create a new tree node with the 'cTok' as token
-      CommonTree copyChild = new CommonTree(cTok);
-
-      // set the parent node of the child node
-      copyChild.setParent(copy);
-
-      // add the child to the parent node
-      copy.addChild(copyChild);
-
-      // make a recursive call to copy deeper
-      copyTreeRecursive(copyChild, originalChild);
-    }
-  }
-}
 
 }
