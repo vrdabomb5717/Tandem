@@ -1,1 +1,1 @@
-Print "Hello, World!"
+Println "Hello, World!"

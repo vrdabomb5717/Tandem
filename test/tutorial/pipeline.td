@@ -11,9 +11,9 @@ public node N()
 
 	cond
 		a > 0
-			F a | Recursive | Print
+			F a | Recursive | Println
 		true
-			G a | Iterative | Print
+			G a | Iterative | Println
 		end
 	end
 end

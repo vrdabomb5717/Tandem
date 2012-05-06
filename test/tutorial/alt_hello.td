@@ -1,5 +1,5 @@
 node Hello()
-	Print "Hello, World!"
+	Println "Hello, World!"
 end
 
 Hell
