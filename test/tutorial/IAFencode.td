@@ -47,7 +47,9 @@ bandwidth = 25
 #create bandlimited signal
 signal=[]
 for index in 0..(times.size)
-	signal[index] = 2 * bandwidth * (Math.sin (2 * bandwidth * times[index]))
+	c=2*bandwidth*times[index]
+	a=Math.sin c
+	signal[index] = 2 * bandwidth * a
 end
 #########
 
