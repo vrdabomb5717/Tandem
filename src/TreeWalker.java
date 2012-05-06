@@ -258,7 +258,7 @@ public class TreeWalker {
 						out.write(t.getText() + " ");
 					break;
 				case TanGParser.ID:
-
+				
 					if (printedAlready.contains((CommonTree) t)) {
 						printedAlready.remove(t);
 					} else {
@@ -279,7 +279,7 @@ public class TreeWalker {
 									&& t.getParent().getParent().getChild(i)
 											.getType() != TanGParser.NEWLINE
 									&& i < w) {
-
+								if (printedAlready.contains((CommonTree)  t.getParent().getParent().getChild(i))==false) {
 								if ((t.getParent().getParent().getChild(i))
 										.getType() == TanGParser.ID
 										|| (t.getParent().getParent()
@@ -289,17 +289,23 @@ public class TreeWalker {
 											+ t.getParent().getParent()
 													.getChild(i).getText()
 											+ ", ";
-								} else {
+								}else{ 
 									param = param
 											+ t.getParent().getParent()
 													.getChild(i).getText()
-											+ ", ";
+											+ ", ";}
+							
 
-								}
-								printedAlready.add((CommonTree) t.getParent()
-										.getParent().getChild(i));
+									
+								printedAlready.add((CommonTree) t.getParent().getParent().getChild(i));
+									}else{
+									
+									printedAlready.remove(t.getParent().getParent().getChild(i));
+									
+									}
 								i++;
 							}
+							
 							if (param.length() > 0) {
 								out.write(t.getText()
 										+ "("
@@ -316,8 +322,9 @@ public class TreeWalker {
 									out.write("td_" + t.getText() + " ");
 								}
 							
-						}
-					}
+						}}
+					
+					
 					break;
 				case TanGParser.IF:
 					out.write(t.getText() + " ");
@@ -512,6 +519,11 @@ public class TreeWalker {
 					break;
 				case TanGParser.REQUIRE:
 					out.write("require_relative " + t.getChild(0));
+					int e=1;
+					while(t.getChild(e)!= null){
+						walk((CommonTree) t.getChild(e), out);
+						e++;
+					}
 					break;
 				case TanGParser.RETURN:
 					out.write(t.getText() + " ");
@@ -574,6 +586,7 @@ public class TreeWalker {
 
 	private void doCheck(CommonTree t, BufferedWriter out) {
 		try {
+			if(printedAlready.contains(t) ==false){
 
 			if (t.getParent().getType() != 0
 					&& t.getParent().getType() != TanGParser.PIPE
@@ -639,31 +652,34 @@ public class TreeWalker {
 						out.write(t.getText() + "(" + param + ")");
 					}
 				}
-			} else if (t.getParent().getType() == TanGParser.DOT) {
-				printedAlready.addLast((CommonTree)t);
-				out.write(t.getText());
-			
 			}
-			else if (t.getText().equals("E")) {
+			else if (t.getText().equals("E")) 
+			{
 					out.write("Math::E ");
 				} else if (t.getText().equals("PI")) {
 
 					out.write("Math::PI ");
 				} else if (t.getText().equals("Print")) {
-					 {
+					 
 						 printedAlready.addLast((CommonTree)t);
-						out.write("print");
-					}
+						out.write("Kernel.print");
+					
 				} else if (t.getText().equals("Println")) {
 
-					 {
+					 
 						 printedAlready.addLast((CommonTree)t);
-						out.write("print");
-					}
+						out.write("Kernel.puts");
+					
 				}
+			 else if (t.getParent().getType() == TanGParser.DOT) {
+				printedAlready.addLast((CommonTree)t);
+				out.write(t.getText());
+			
+			}
 			else {
 
 				out.write(t.getText() + ".new().main");
+			}
 			}
 		} catch (IOException e) {
 		}
