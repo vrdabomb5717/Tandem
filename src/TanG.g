@@ -15,8 +15,10 @@ ASTLabelType=CommonTree;
 
 
 
+//Start: rewritten so that start Token is not null
 tanG	:	prog ->^(ROOTNODE["@@"] prog?);
 
+//Describes the program layout
 prog	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | (m)));
 
 //Import Statements
@@ -264,7 +266,8 @@ TRY	:	'try';
 CATCH	:	'catch';
 FINALLY	:	'finally';
 RANGE	:	'..';
-FATCOMMA	:	'=>';
+FATCOMMA	
+	:	'=>';
 EQTEST	:	'=='|'!=';
 ASSN	:	'='|'+='|'-='|'*='|'/='|'%='|'**='|'>>='|'<<='|'^='
 	|	'/\\='|'\\/='|'&&='|'||=';
