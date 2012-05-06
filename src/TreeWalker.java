@@ -489,6 +489,10 @@ public class TreeWalker {
 					for (int i = 0; i < t.getChildCount(); i++)
 						walk((CommonTree) t.getChild(i), out);
 					break;
+				case TanGParser.PIPETOKEN:
+					for (int i = 0; i < t.getChildCount(); i++)
+						walk((CommonTree) t.getChild(i), out);
+					break;
 				case TanGParser.PUBPRIV:
 					break;
 				case TanGParser.RANGE:
