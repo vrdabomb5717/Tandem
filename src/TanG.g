@@ -26,12 +26,14 @@ i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?;
  	
  iprime	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ i)?;
 
-//Main body
+//Main body: this is composed of any number of valid statements
 m	:	(statementNL (NEWLINE+ statementNL)*)->^(MAIN["@"] statementNL+);
 
+//This production is used to rewrite statements so that we minimize changes to the original code generator
 statementNL
 	:	statement->statement NEWLINE["\n"];
 
+//This is the list of valid statement types, starting with a node definition
 statement
 	:	td_node^ NODEID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
 	|	expression
@@ -119,7 +121,7 @@ bitShiftExpr
 addSubExpr
 	:	multExpr (ADDSUB^ multExpr)*;
 
-multExpr:		unariesExpr ((MULT^| STAR^) unariesExpr)*;	
+multExpr:	unariesExpr ((MULT^| STAR^) unariesExpr)*;	
 
 
 unariesExpr
