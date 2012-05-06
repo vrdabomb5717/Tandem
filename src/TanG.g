@@ -16,7 +16,7 @@ ASTLabelType=CommonTree;
 
 
 //Start: rewritten so that start Token is not null
-tanG	:	prog ->^(ROOTNODE["@@"] prog?);
+tanG	:	prog ->^(ROOTNODE[",,,,"] prog?);
 
 //Describes the program layout
 prog	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | (m)));
@@ -27,7 +27,7 @@ i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?;
  iprime	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ i)?;
 
 //Main body: this is composed of any number of valid statements
-m	:	(statementNL (NEWLINE+ statementNL)*)->^(MAIN["@"] statementNL+);
+m	:	(statementNL (NEWLINE+ statementNL)*)->^(MAIN[",,,"] statementNL+);
 
 //This production is used to rewrite statements so that we minimize changes to the original code generator
 statementNL
@@ -137,7 +137,7 @@ expExpression
 	
 
 pipelineExpr
-	:	atom|(pipeline -> ^(PIPETOKEN["$$"] pipeline))
+	:	atom|(pipeline -> ^(PIPEROOT[",,"] pipeline))
 	;
 	
 pipeline:	((pipestart (indexable)* (pipe^ pipenode)*));
@@ -170,11 +170,15 @@ atom	:	INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|list|hashSet|td_t
 pipeatom:	ID|INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|hashSet|td_truefalse|td_none|td_null|td_some|filename;
 pipeatom2
 	:	INT|FLOAT|HEX|BYTE|STRING| LPAREN! orExpression RPAREN!|hashSet|td_truefalse|td_none|td_null|td_some|filename;
+	
+list	:	list2->^(LISTTOKEN[",,,,,"] list2);
 
+list2	:	LBRACK (orExpression (COMMA orExpression)*)? RBRACK;
 
-list	:	LBRACK (orExpression (COMMA orExpression)*)? RBRACK;
+hashSet	:	hashSet2->^(HASHTOKEN[",,,,,,"] hashSet2);
 
-hashSet	:	LBRACE (orExpression (hashInsides))? RBRACE;
+hashSet2
+	:	LBRACE (orExpression (hashInsides))? RBRACE;
 hashInsides
 	:	FATCOMMA orExpression (COMMA orExpression FATCOMMA orExpression)*;
 
@@ -221,11 +225,14 @@ td_require
 //Lexer/Tokens
 
 //Operators
-ROOTNODE:	'@@';
-MAIN	:	'@';
-PIPETOKEN
-	:	'$$';
-PIPEROOT:	'$';
+HASHTOKEN
+	:	',,,,,,';
+LISTTOKEN	
+	:	',,,,,';
+ROOTNODE:	',,,,';
+MAIN	:	',,,';
+PIPEROOT
+	:	',,';
 FUNCID	:	('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*'?';  
 COMMENT
     :   ('#' |'//') ~('\n'|'\r')*   {skip();}
