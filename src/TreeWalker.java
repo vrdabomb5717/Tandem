@@ -235,7 +235,7 @@ public class TreeWalker {
 					out.write(")");
 					break;
 				case TanGParser.FATCOMMA:
-					out.write(t.getText());
+					out.write(t.getText() + " ");
 					break;
 				case TanGParser.FILENAME:
 					if (printedAlready.contains((CommonTree) t)) {
@@ -255,8 +255,10 @@ public class TreeWalker {
 					out.write(t.getText());
 					break;
 				case TanGParser.FORK:
+					out.write(t.getText() + " ");
 					break;
 				case TanGParser.FROM:
+					out.write(t.getText() + " ");
 					break;
 				case TanGParser.FUNCID:
 					if (printedAlready.contains((CommonTree) t)) {
@@ -373,7 +375,11 @@ public class TreeWalker {
 					break;
 
 				case TanGParser.IS:
-					out.write("==");
+					out.write("(");
+					walk((CommonTree) t.getChild(0), out);
+					out.write("== ");
+					walk((CommonTree) t.getChild(1), out);
+						out.write(")");
 					break;
 				case TanGParser.LBRACE:
 					out.write(t.getText());
@@ -546,6 +552,7 @@ public class TreeWalker {
 					break;
 		
 				case TanGParser.PUBPRIV:
+					out.write(t.getText() + " ");					
 					break;
 				case TanGParser.RANGE:
 					out.write(t.getText() + " ");
@@ -612,7 +619,7 @@ public class TreeWalker {
 				case TanGParser.XOR:
 						out.write("(");
 					walk((CommonTree) t.getChild(0), out);
-					out.write(t.getText() + " ");
+					out.write("^ ");
 					walk((CommonTree) t.getChild(1), out);
 						out.write(")");
 					break;
