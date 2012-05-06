@@ -19,8 +19,8 @@
 
 ## Patrick
 
-* Work on Section 8, gUnit description.
-* Work on Section 9, lessons learned.
+* Work on Section 8, gUnit description. - DONE
+* Work on Section 9, lessons learned. - DONE
 * Generate legitimate Tandem files with some output.
 
 ## Jenee
@@ -34,6 +34,6 @@
 
 ## Donald
 
-* Help Varun update LRM.
-* Help Varun update tutorial.
+* Help Varun update LRM. - DONE
+* Help Varun update tutorial. - DONE
 * Generate Ruby test/unit cases to test Tandem files with valid outputs.
