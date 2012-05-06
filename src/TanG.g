@@ -25,10 +25,10 @@ i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?;
  iprime	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ i)?;
 
 //Main body
-m	:	(statementNL (NEWLINE+ statementNL)*)->^(MAIN statementNL+);
+m	:	(statementNL (NEWLINE+ statementNL)*)->^(MAIN["@"] statementNL+);
 
 statementNL
-	:	statement->statement NEWLINE;
+	:	statement->statement NEWLINE["\n"];
 
 statement
 	:	td_node^ NODEID LPAREN params RPAREN NEWLINE+ (m NEWLINE+)? td_end
