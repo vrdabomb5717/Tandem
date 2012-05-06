@@ -7,6 +7,7 @@ import java.io.*;
 import org.antlr.runtime.*;
 import java.util.*;
 
+
 public class TreeWalker {
 	LinkedList<CommonTree> printedAlready = new LinkedList<CommonTree>();
 	HashSet<String> nodes = new HashSet<String>();
@@ -499,7 +500,13 @@ public class TreeWalker {
 					walk((CommonTree) t.getChild(1), out);
 						out.write(")");
 					break;
+				case TanGParser.PARENTOKEN:
+					for (int i = 0; i < t.getChildCount(); i++)
+						walk((CommonTree) t.getChild(i), out);
+					break;
 				case TanGParser.PIPE:
+					LinkedList<CommonTree> paramOps = new LinkedList<CommonTree>();
+
 					String params = "";
 					CommonTree first = (CommonTree) t.getChild(0);
 					LinkedList<CommonTree> list2 = new LinkedList<CommonTree>();
@@ -510,13 +517,20 @@ public class TreeWalker {
 							list2.push((CommonTree) t.getChild(i));
 
 						}else if (t.getChild(i).getType() == TanGParser.ID) {
-							
-							params = params + "td_" + t.getChild(i) + ",";
+							paramOps.add((CommonTree) t.getChild(i));
+						//params = params + "td_" + t.getChild(i) + ",";
 
-						}else if (t.getChild(i).getType() != TanGParser.NODEID) {
-							
-							params = params + t.getChild(i) + ",";
-
+						}else if (t.getChild(i).getType() != TanGParser.NODEID
+								//t.getChild(i).getType() == TanGParser.BYTE 
+							//	|| t.getChild(i).getType() == TanGParser.INT
+						//	|| t.getChild(i).getType() == TanGParser.FLOAT
+						 //      || t.getChild(i).getType() == TanGParser.HEX
+					   //    || t.getChild(i).getType() == TanGParser.BYTE
+			//	|| t.getChild(i).getType() == TanGParser.STRING && t.getChild(i).getType() == TanGParser.TF
+			//	|| t.getChild(i).getType() == TanGParser.NULL || t.getChild(i).getType() == TanGParser.FILENAME) {
+							){
+						//	params = params + t.getChild(i) + ",";
+							paramOps.add((CommonTree) t.getChild(i));
 						}
 						// if next token is a pipe, push it
 						else if (t.getChild(i).getType() != TanGParser.NODEID && (t.getChild(i).getType() != TanGParser.ID)) {
@@ -527,26 +541,36 @@ public class TreeWalker {
 						// not pushed
 						// when we walk the node that has the parameters (the
 						// first node), we will print them
-						 else {
+						 else if (i == t.getChildCount() - 1){
 							// walk the tree if the child is the last node in
 							// the chain
 							walk((CommonTree) t.getChild(i), out);
 							while (list2.isEmpty() == false) {
 								out.write("(");
+								System.out.println(paramOps);
+								System.out.println(list2);
+								System.out.println(first);
 								if ((list2.peek()) == first) {
 									walk((CommonTree) list2.pop(), out);
-									if(params.length()>0){
-									out.write("(");
-									
-									out.write(params.substring(0,
-											params.length() - 1));
-									
+									if(paramOps.size()>0){
+										out.write("(");
+									while(paramOps.isEmpty()==false){
+										walk((CommonTree)paramOps.pop(),out);
+										if(!(paramOps.isEmpty()))
+											out.write(", ");
+										
+									}
+							
 									out.write(")");}
 								} else {
 									walk((CommonTree) list2.pop(), out);
 								}
 								out.write(")");
 							}
+						}
+						else  {
+							paramOps.add((CommonTree) t.getChild(i));
+
 						}
 					}
 					break;
