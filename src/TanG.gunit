@@ -473,10 +473,10 @@ FLOAT:
 <<.0E-0>>FAIL
 
 //success
-<<99e-99>>
+<<99e-99>>OK
 
 
-//Test HEX
+//Test hex
 HEX:
 <<0x09aAFff>>OK
 
