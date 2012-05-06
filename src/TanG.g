@@ -149,14 +149,14 @@ pipestart
 	:	attrStart^ (LBRACK (pipestart|pipeatom2) RBRACK)*;//(ID|NODEID) (DOT^ (NODEID|ID|FUNCID))*;
 
 pipenode
-	:	((NODEID) (DOT^ (NODEID|ID|FUNCID))*)|(ID (DOT^ ID)+);
+	:	((NODEID) (DOT^ (NODEID|ID|FUNCID))*)|(ID (DOT^ (ID|NODEID|FUNCID))+);
 	
 
 indexable
 	:	(nonAtomAttr^ (LBRACK indexable RBRACK)+)|pipeattributable;
 	
 attrStart
-	:	(ID|NODEID) (DOT^ ID)*;
+	:	(ID|NODEID) (DOT^ (ID|NODEID|FUNCID))*;
 	
 nonAtomAttr
 	:	ID (DOT^ ID)*;
