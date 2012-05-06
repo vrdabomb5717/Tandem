@@ -9,8 +9,8 @@
 
 * Continue making test files for statements and other types of expressions.
 * Finish updating white paper. - DONE
-* Start updating tutorial with Donald's program.
-* Continue updating LRM.
+* Start updating tutorial with Donald's program. - DONE
+* Continue updating LRM and tutorial with calling Ruby code.
 * Update with node definiion rules (no calling before defined) - DONE
 * Write project plan.
 * Write Ant description for Patrick. - DONE
@@ -26,9 +26,9 @@
 ## Jenee
 
 * Finish pipeline in TreeWalker.
-* Add FUNCIDs.
-* Don't add .main to Ruby system functions.
-* Write Translator architecure.
+* Add FUNCIDs. - DONE
+* Don't add .main to Ruby system functions. - DONE
+* Write Translator architecure. - DONE
 * Work on Section 9, lessons learned.
 * Do Math.PI and Math.E - DONE
 
