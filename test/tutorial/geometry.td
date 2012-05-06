@@ -1,3 +1,6 @@
+#geometry_operations.td - returns numerical values
+#for the properties of common shapes such as area and volume
+
 
 node Hypotenuse_length(leg1, leg2)
 	temp1 = leg1**2 + leg1**2 
@@ -6,10 +9,6 @@ end
 
 node Circle_area(radius)
 	return (PI * (radius**2))
-end
-
-node Square_area(side_len)
-	return side_len * side_len
 end
 
 node Circle_perimeter(radius)
@@ -28,6 +27,10 @@ node Rectangle_perimeter(len,width)
 	return ((2*len)+(2*width))
 end
 
+node Square_area(side_len)
+	return side_len * side_len
+end
+
 node Cylinder_volume(radius, height)
 	return (Circle_area radius)*height
 end
@@ -37,7 +40,7 @@ node Cube_Volume(side_len)
 end
 
 node Cone_Volume(radius, height)
-	return (1/3)*(Circle_area radius)*height
+	return (1.0/3.0)*(Circle_area radius)*height
 end
 
 node Cube_surface_area(side_len)
@@ -53,7 +56,7 @@ node Sphere_surface_area(radius)
 end
 
 node Sphere_volume(radius)
-	return (4/3)*(Circle_area radius)*(radius)
+	return (4.0/3.0)*(Circle_area radius)*(radius)
 end
 
 node Cone_surface_area(height,radius)
@@ -69,7 +72,7 @@ node Rectangular_prism_surface_area(length,width,height)
 end
 
 node Trapezoid_area (base1,base2,height)
-	return (1/2)*(base1 + base2)*height
+	return (1.0/2.0)*(base1 + base2)*height
 end
 
 node Trapezoidal_prism_volume(base1,base2,baseHeight,height)
@@ -77,7 +80,7 @@ node Trapezoidal_prism_volume(base1,base2,baseHeight,height)
 end
 
 node Triangle_area(base, height)
-	return (1/2)*(base*height)
+	return (1.0/2.0)*(base*height)
 end
 
 node Regular_pentagon_area(side_length)
@@ -109,9 +112,12 @@ node Torus_surface_area(minorRadius,majorRadius)
 end
 
 node Regular_tetrahedron_volume(side_length)
-	return (2**(1/2))*(1/12)*(side_length**3)
+	return (2**(1.0/2.0))*(1.0/12.0)*(side_length**3)
 end
 
 node Regular_tetrahedron_surface_area(side_length)
-	return (3**(1/2))*(side_length**2)
+	return (3**(1.0/2.0))*(side_length**2)
 end 
+
+
+
