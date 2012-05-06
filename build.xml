@@ -16,6 +16,7 @@
   <property name="build" location="bin"/>
   <property name="dist"  location="dist"/>
   <property name="test" location="test"/>
+  <property name="tutorial" location="tutorial"/>
   <property name="lib" location="lib"/>
   <property name="grammar" value="TanG.g"/>
   <property name ="treeGrammar" value="TanG_TG.g"/>
@@ -239,6 +240,37 @@
       <classpath>
         <pathelement path="${build}"/>
           <path refid="runtime.classpath"/>
+      </classpath>
+    </java>
+  </target>
+
+  <target name="rubytest" depends="compile">
+    <java jar="${lib}/runtime/${jruby_jar}" fork="true">
+      <arg value="test/tutorial/geometry_question1_test.rb"/>
+      <classpath>
+        <pathelement path="${build}"/>
+          <path refid="runtime.classpath"/>
+      </classpath>
+    </java>
+    <java jar="${lib}/runtime/${jruby_jar}" fork="true">
+      <arg value="test/tutorial/geometry_question2_test.rb"/>
+      <classpath>
+        <pathelement path="${build}"/>
+        <path refid="runtime.classpath"/>
+      </classpath>
+    </java>
+    <java jar="${lib}/runtime/${jruby_jar}" fork="true">
+      <arg value="test/tutorial/geometry_question2_test.rb"/>
+      <classpath>
+        <pathelement path="${build}"/>
+        <path refid="runtime.classpath"/>
+      </classpath>
+    </java>
+    <java jar="${lib}/runtime/${jruby_jar}" fork="true">
+      <arg value="test/tutorial/geometry_question2_test.rb"/>
+      <classpath>
+        <pathelement path="${build}"/>
+        <path refid="runtime.classpath"/>
       </classpath>
     </java>
   </target>

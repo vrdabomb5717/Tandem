@@ -28,7 +28,7 @@ fi
 
 if [ -f "$FILE" ]
 then
-    echo the file exists
+    echo "the file exists"
 else
     echo "COMPILATION FAILED - the file does not exist"
     exit
@@ -39,10 +39,10 @@ fi
 #check ruby 1.9.2
 
 if type -p java; then
-    echo found java executable in PATH
+    echo "found java executable in PATH"
     _java=java
 elif [[ -n "$JAVA_HOME" ]] && [[ -x "$JAVA_HOME/bin/java" ]];  then
-    echo found java executable in JAVA_HOME
+    echo "found java executable in JAVA_HOME"
     _java="$JAVA_HOME/bin/java"
 else
     echo "COMPILATION FAILED - no java"
@@ -51,9 +51,9 @@ fi
 
 if [[ "$_java" ]]; then
     version=$("$_java" -version 2>&1 | awk -F '"' '/version/ {print $2}')
-    echo version "$version"
+    #echo version "$version"
     if [[ "$version" > "1.5" ]]; then
-        echo version is more than 1.5
+        echo "version is more than 1.5"
     else
         echo "COMPILATION FAILED - version is less than 1.5"
 	exit
@@ -66,7 +66,7 @@ if type -p ant; then
     echo found ant executable in PATH
     _ant=ant
 elif [[ -x "usr/bin/env ant" ]];  then
-    echo found ant executable in ENV_ANT
+    echo "found ant executable in ENV_ANT"
     _ant="usr/bin/env ant"
 else
     echo "COMPILATION FAILED - no ant"
@@ -77,7 +77,7 @@ if [[ "$_ant" ]]; then
     version=$("$_ant" -v 2>&1 | awk -F ' ' '/ / {print $4}')
     echo version "$version"
     if [[ "$version" > "1.8.0" ]]; then
-        echo version is more than 1.8
+        echo "version is more than 1.8"
     else
         echo "COMPILATION FAILED - version is less than 1.8"
 	exit
@@ -90,10 +90,10 @@ JRUBY_OPTS=--1.9
 
 
 if type -p ruby; then
-    echo found ruby executable in PATH
+    echo "found ruby executable in PATH"
     _ruby=ruby
 elif [[ -x "usr/bin/env ruby" ]];  then
-    echo found ant executable in ENV_ANT
+    echo "found ruby executable in ENV"
     _ruby="usr/bin/env ruby"
 else
     echo "COMPILATION FAILED - no ruby"
@@ -104,19 +104,28 @@ use_jruby=0
 
 if [[ "$_ruby" ]]; then
     version=$("$_ruby" -v 2>&1 |grep -e "1\.9\.[2-9]" )
-    echo $?
+   # echo $?
     if [[ "$?" > "0" ]]; then
     use_jruby=1
     else
-    echo "good"
+    echo "Passed Ruby Check"
     fi
 fi
 
-echo "$use_jruby"
+
+DIR=$(pwd)
+
+#$(echo $IN | tr ";" "\n")
+
+a=$(ruby src/dependency.rb "$FILE" | tr " " "\n")
+
+for x in $a
+do
+	ant walk -Dfile="$x" -q
+done
 
 
 
-echo ANTLR version greater than 3.4 &
 
 ant walk -Dfile="$FILE" -q
 
