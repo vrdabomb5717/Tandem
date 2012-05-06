@@ -23,13 +23,8 @@ public class TreeWalker {
 		}
 		//traverse all the child nodes of the root if root was empty
 		else{
-		/**	CommonToken tok = new CommonToken(TanGParser.WS);
-			CommonTree root = new CommonTree(tok);
-			 copyTreeRecursive(root,t);
-			walk((CommonTree) root, out);	*/
-		//	for(int i=0; i<t.getChildCount(); i++){
-		//		walk((CommonTree)t.getChild(i), out);
-		//	}
+		//	System.out.println("ERROR: ROOT IS NULL");
+			walk((CommonTree) t, out);
 		}
 		out.close();
 		
@@ -221,7 +216,7 @@ public class TreeWalker {
 						if(printedAlready.contains((CommonTree)t)){
 							printedAlready.remove(t);
 						}else
-						out.write(t.getText() + " ");
+						out.write(t.getText().substring(0, t.getText().length()-4) + "\" ");
 						break;
 					case TanGParser.FLOAT:
 						if(printedAlready.contains((CommonTree)t)){
@@ -300,6 +295,7 @@ public class TreeWalker {
 						break;
 					case TanGParser.IMPORT:
 						out.write("require ");
+						walk((CommonTree)t.getChild(0), out);
 						break;
 					case TanGParser.IN:
 						out.write(t.getText() + " ");
@@ -476,6 +472,10 @@ public class TreeWalker {
 					case TanGParser.RPAREN:
 						out.write(t.getText());
 						break;
+					case TanGParser.ROOTNODE:	
+						for (int i =0; i<t.getChildCount(); i++)
+							walk((CommonTree)t.getChild(i), out);
+						break;
 					case TanGParser.SOME:
 						out.write(t.getText()+ " ");
 						break;
@@ -514,14 +514,15 @@ public class TreeWalker {
 						out.write(t.getText()  + " ");
 						walk((CommonTree)t.getChild(1), out);
 						break;	
-										
+					case 0:
+							for (int i =0; i<t.getChildCount(); i++)
+							walk((CommonTree)t.getChild(i), out);
+						break;						
 				}						
 		
 	}	}
 		catch (IOException e) {}
-		
 }
-
 private void doCheck(CommonTree t, BufferedWriter out){
 	try{
 
@@ -564,12 +565,8 @@ private void doCheck(CommonTree t, BufferedWriter out){
 							}	
 						}else
 						{
-						
 									out.write(t.getText());
-						
-						}
-						
-						
+						}	
 	}
 		catch (IOException e) {}}
 
