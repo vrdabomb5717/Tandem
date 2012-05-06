@@ -570,11 +570,11 @@ private void doCheck(CommonTree t, BufferedWriter out){
 							}
 							if(t.getText().equals("E")){
 															
-									out.write("Math::E");
+									out.write("Math::E ");
 							}
 							else if(t.getText().equals("PI")){
 														
-									out.write("Math::PI");
+									out.write("Math::PI ");
 							}
 							else if(t.getText().equals("Print")){
 								if(param.length()>0){							
@@ -609,9 +609,7 @@ private void doCheck(CommonTree t, BufferedWriter out){
 						}
 						else
 						{
-						//	if(!(t.getText().equals("Kernel")))
-						//			out.write(t.getText() + ".new().main");
-						//	else
+						
 									out.write(t.getText() + ".new().main" );
 						}	
 	}
