@@ -9,4 +9,4 @@ node Solve_question2(area)
 	return Circle_area radius
 end
 
-Solve_question2 400
+Solve_question2 400 | Print
