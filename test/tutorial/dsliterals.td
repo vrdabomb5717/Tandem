@@ -12,3 +12,5 @@ node DSLiterals()
 
 	finished = true
 end
+
+DSLiterals

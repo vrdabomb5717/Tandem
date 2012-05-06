@@ -46,4 +46,4 @@ node Bit3(d)
 	end
 end
 
-Bit0 1 | Bit1 | Bit2 | Bit3
+Bit0 1 | Bit1 | Bit2 | Bit3 | Println
