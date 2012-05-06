@@ -1,3 +1,5 @@
+#Patrick De La Garza
+
 #This function encodes an analog signal as an integrate and fire neuron would
 #The signal is a list of values of the same length as the list of times.
 #dt specifies the distance between each time, bias is used to make the
