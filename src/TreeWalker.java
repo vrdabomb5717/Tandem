@@ -460,9 +460,13 @@ public class TreeWalker {
 								.getChildCount() - 1)) {
 							list2.push((CommonTree) t.getChild(i));
 
+						}else if (t.getChild(i).getType() == TanGParser.ID) {
+							first = list2.peek().getText();
+							params = params + "td_" + t.getChild(i) + ",";
+
 						}
 						// if next token is a pipe, push it
-						else if (t.getChild(i).getType() == TanGParser.PIPE) {
+						else if (t.getChild(i).getType() != TanGParser.NODEID && (t.getChild(i).getType() != TanGParser.ID)) {
 							list2.push((CommonTree) t.getChild(i));
 
 						}
@@ -470,11 +474,7 @@ public class TreeWalker {
 						// not pushed
 						// when we walk the node that has the parameters (the
 						// first node), we will print them
-						else if (t.getChild(i).getType() == TanGParser.ID) {
-							first = list2.peek().getText();
-							params = params + "td_" + t.getChild(i) + ",";
-
-						} else {
+						 else {
 							// walk the tree if the child is the last node in
 							// the chain
 							walk((CommonTree) t.getChild(i), out);
@@ -642,10 +642,22 @@ public class TreeWalker {
 			} else if (t.getParent().getType() == TanGParser.DOT) {
 				printedAlready.addLast((CommonTree)t);
 				out.write(t.getText());
-		//	}  else if (t.getParent().getType() == TanGParser.PIPE) {
-		//		printedAlready.addLast((CommonTree)t);
-		//		out.write(t.getText());
+			
 			}
+			else if (t.getText().equals("E")) {
+					out.write("Math::E ");
+				} else if (t.getText().equals("PI")) {
+
+					out.write("Math::PI ");
+				} else if (t.getText().equals("Print")) {
+					 {
+						out.write("print");
+					}
+				} else if (t.getText().equals("Println")) {
+					 {
+						out.write("print");
+					}
+				}
 			else {
 
 				out.write(t.getText() + ".new().main");
