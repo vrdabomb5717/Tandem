@@ -129,7 +129,7 @@ expExpression
 	:	pipelineExpression (EXP^ expExpression)?;
 	
 pipelineExpression
-	:	pipelineExpr->^(PIPEROOT pipelineExpr);
+	:	pipelineExpr->^(PIPEROOT["$"] pipelineExpr);
 
 pipelineExpr
 	:	indexable|((pipenode (pipeindexable)* (pipe^ pipenode)*))
