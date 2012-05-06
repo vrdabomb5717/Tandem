@@ -323,7 +323,7 @@ public class TreeWalker {
 					out.write(t.getText() + " ");
 					break;
 				case TanGParser.IMPORT:
-					out.write("require ");
+					out.write("require_relative ");
 					walk((CommonTree) t.getChild(0), out);
 					int d=1;
 					while(t.getChild(d)!= null){
@@ -511,7 +511,7 @@ public class TreeWalker {
 					out.write(t.getText());
 					break;
 				case TanGParser.REQUIRE:
-					out.write(t.getText() + " " + t.getChild(0));
+					out.write("require_relative " + t.getChild(0));
 					break;
 				case TanGParser.RETURN:
 					out.write(t.getText() + " ");
@@ -651,10 +651,13 @@ public class TreeWalker {
 					out.write("Math::PI ");
 				} else if (t.getText().equals("Print")) {
 					 {
+						 printedAlready.addLast((CommonTree)t);
 						out.write("print");
 					}
 				} else if (t.getText().equals("Println")) {
+
 					 {
+						 printedAlready.addLast((CommonTree)t);
 						out.write("print");
 					}
 				}
