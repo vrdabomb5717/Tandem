@@ -555,7 +555,10 @@ public class TreeWalker {
 					out.write(t.getText() + " ");					
 					break;
 				case TanGParser.RANGE:
+					walk((CommonTree) t.getChild(0), out);
 					out.write(t.getText());
+					walk((CommonTree) t.getChild(1), out);
+					
 					break;
 				case TanGParser.RBRACE:
 					out.write(t.getText());
