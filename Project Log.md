@@ -2,7 +2,7 @@
 
 ## 5/6/12
 
-Finished project report. Wrote script to manage dependencies without falling into an infinite loop. Continued testing and debugging tree walker, and made slight changes in the grammar to facilitate this.
+Finished project report. Wrote script to manage dependencies without falling into an infinite loop. Continued testing and debugging tree walker, and made slight changes in the grammar to facilitate this. ./tandem must be called with absolute path to file.
 
 ## 5/5/12
 
