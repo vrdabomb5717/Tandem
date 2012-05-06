@@ -18,14 +18,18 @@ public class TreeWalker {
 	//	out.write("require \"set\"\n");
 
 		if(!(t.getType() == 0)){
+			
 			walk((CommonTree) t, out);
 		}
 		//traverse all the child nodes of the root if root was empty
 		else{
-			for ( int i = 0; i < t.getChildCount(); i++ ) 
-			{
-				walk(((CommonTree)t.getChild(i)), out);
-			}
+		/**	CommonToken tok = new CommonToken(TanGParser.WS);
+			CommonTree root = new CommonTree(tok);
+			 copyTreeRecursive(root,t);
+			walk((CommonTree) root, out);	*/
+		//	for(int i=0; i<t.getChildCount(); i++){
+		//		walk((CommonTree)t.getChild(i), out);
+		//	}
 		}
 		out.close();
 		
@@ -328,7 +332,11 @@ public class TreeWalker {
 						walk((CommonTree)t.getChild(0), out);
 						out.write(t.getText() + " ");
 						walk((CommonTree)t.getChild(1), out);
-						break;					
+						break;
+					case TanGParser.MAIN:
+						for (int i =0; i<t.getChildCount(); i++)
+							walk((CommonTree)t.getChild(i), out);
+						break;				
 					case TanGParser.MOD:
 						walk((CommonTree)t.getChild(0), out);
 						out.write(t.getText());
@@ -340,7 +348,7 @@ public class TreeWalker {
 						walk((CommonTree)t.getChild(1), out);
 						break;
 					case TanGParser.NEWLINE:
-						out.write(t.getText());
+						out.write("\n");
 						break;
 					case TanGParser.NODE:
 						LinkedList<CommonTree> list = new LinkedList<CommonTree>();
@@ -382,56 +390,8 @@ public class TreeWalker {
 						
 						break;
 					case TanGParser.NODEID:
-						if (t.getParent().getType() != 0 && !(t.getParent().getText().contains("|")) && t.getParent().getType() != TanGParser.DOT){
-							String param = "";
-							int w = (t.getParent()).getChildCount();
-							int i=0;
-						
-							while(!(t.getParent().getChild(i).toStringTree().equals(t.toStringTree())) && i<w){
-								i++;
-							}
-							i++;
-							while(!(t.getParent().getChild(i).getText().contains("\n")) && i<w){
-								if(t.getParent().getChild(i).getType() ==TanGParser.ID || t.getParent().getParent().getChild(i).getType() == TanGParser.FUNCID){
-									param = param + "td_"+ t.getParent().getChild(i).getText() + ", ";
-								}else{
-									param = param + t.getParent().getChild(i).getText() + ", ";
-								
-								}
-								printedAlready.addLast((CommonTree)(t.getParent()).getChild(i));
-
-								i++;
-							}
-							if(t.getText().equals("Print")){
-								if(param.length()>0){							
-									out.write("print(" + param.substring(0, param.length()-2) + ")");
-							}else{
-								out.write("print(" + param + ")");
-							}
-								
-							}
-							else if(nodes.contains(t.getText())){
-									if(param.length()>0){							
-								out.write(t.getText() + ".main(" + param.substring(0, param.length()-2) + ")");
-							}else{
-								out.write(t.getText() + ".main(" + param + ")");
-							}
-								
-							}else{
-								if(param.length()>0){							
-								out.write(t.getText() + "(" + param.substring(0, param.length()-2) + ")");
-								}else{
-								out.write(t.getText() + "(" + param + ")");
-								}
-							}	
-						}else
-						{
-						
-									out.write(t.getText());
-						
-						}
-						
-						
+						doCheck(t, out);
+					
 						break;
 					case TanGParser.NOT:
 						out.write(t.getText());
@@ -546,17 +506,71 @@ public class TreeWalker {
 						out.write(t.getText() + " ");
 						break;
 					case TanGParser.WS:
-						out.write(t.getText());
+						for (int i =0; i<t.getChildCount(); i++)
+							walk((CommonTree)t.getChild(i), out);
 						break;
 					case TanGParser.XOR:
 						walk((CommonTree)t.getChild(0), out);
 						out.write(t.getText()  + " ");
 						walk((CommonTree)t.getChild(1), out);
-						break;						
+						break;	
+										
 				}						
 		
 	}	}
 		catch (IOException e) {}
 		
 }
+
+private void doCheck(CommonTree t, BufferedWriter out){
+	try{
+
+	if (t.getParent().getType() != 0 && t.getParent().getType() != TanGParser.PIPE && t.getParent().getType() != TanGParser.DOT){
+					String param = "";
+							int w = (t.getParent()).getChildCount();
+							int i=0;						
+							while(!(t.getParent().getChild(i).toStringTree().equals(t.toStringTree())) && i<w){
+								i++;
+							}
+							i++;
+							while(!(t.getParent().getChild(i).getText().contains("\n")) && i<w){
+								if(t.getParent().getChild(i).getType() ==TanGParser.ID || t.getParent().getChild(i).getType() == TanGParser.FUNCID){
+									param = param + "td_"+ t.getParent().getChild(i).getText() + ", ";
+								}else{
+									param = param + t.getParent().getChild(i).getText() + ", ";						
+								}
+								printedAlready.addLast((CommonTree)(t.getParent()).getChild(i));
+								i++;
+							}
+							if(t.getText().equals("Print")){
+								if(param.length()>0){							
+									out.write("print(" + param.substring(0, param.length()-2) + ")");
+							}else{
+								out.write("print(" + param + ")");
+							}
+							}
+							else if(nodes.contains(t.getText())){
+									if(param.length()>0){							
+								out.write(t.getText() + ".main(" + param.substring(0, param.length()-2) + ")");
+							}else{
+								out.write(t.getText() + ".main(" + param + ")");
+							}								
+							}else{
+								if(param.length()>0){							
+								out.write(t.getText() + "(" + param.substring(0, param.length()-2) + ")");
+								}else{
+								out.write(t.getText() + "(" + param + ")");
+								}
+							}	
+						}else
+						{
+						
+									out.write(t.getText());
+						
+						}
+						
+						
+	}
+		catch (IOException e) {}}
+
 }
