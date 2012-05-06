@@ -137,7 +137,7 @@ expExpression
 	
 
 pipelineExpr
-	:	atom|(pipeline -> ^(PIPETOKEN pipeline))
+	:	atom|(pipeline -> ^(PIPETOKEN["$$"] pipeline))
 	;
 	
 pipeline:	((pipestart (indexable)* (pipe^ pipenode)*));
