@@ -24,10 +24,13 @@ display_version()
 display_usage()
 {
     echo "Usage: `basename $0` [options] [filename]
+    -b --ruby     Attempt to use system Ruby.
     -c --compile  Only compile Tandem file.
     -h --help     List Tandem usage.
+    -j --jruby    Use downloaded JRuby.
     -r --run      Assume compiled file exists and try running file.
-    -v --version  Print Tandem version."
+    -v --version  Print Tandem version.
+    -w --whole    Compile and run Tandem file."
 }
 
 walk_test()
@@ -128,6 +131,11 @@ then
   run_file $1
 fi
 
+# check whether user had supplied -w or --whole . If yes continue on
+if [[ ( $1 == "--whole") ||  $1 == "-w" ]]
+then
+  shift
+fi
 
 FILE=$1
 
