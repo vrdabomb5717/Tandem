@@ -3,7 +3,14 @@
 # Written by Donald Pomeroy
 
 EXPECTED_ARGS=1
-E_BADARGS=65
+E_BADARGS=22
+
+error_exit()
+{
+  echo "$1" >&2
+  exit 1
+}
+
 
 #Check if a file is passed, if not fail
 
