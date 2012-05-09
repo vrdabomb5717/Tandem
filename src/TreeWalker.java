@@ -653,11 +653,20 @@ public class TreeWalker {
 							break;
 						case TanGParser.REQUIRE:
 							printedAlready.add(t);
-							out.write("require_relative " + t.getChild(0));
+							out.write("require " + t.getChild(0));
 							int e=1;
 							while(t.getChild(e)!= null){
 								walk((CommonTree) t.getChild(e), out);
 								e++;
+							}
+							break;
+						case TanGParser.REQUIRE_RELATIVE:
+							printedAlready.add(t);
+							out.write("require_relative " + t.getChild(0));
+							int f=1;
+							while(t.getChild(f)!= null){
+								walk((CommonTree) t.getChild(f), out);
+								f++;
 							}
 							break;
 						case TanGParser.RETURN:

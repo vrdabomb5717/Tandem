@@ -22,9 +22,9 @@ tanG	:	prog ->^(ROOTNODE[",,,,"] prog?);
 prog	:	(NEWLINE* ((i ((NEWLINE+  EOF)?|(NEWLINE+ m (NEWLINE+ EOF)?)))? | (m)));
 
 //Import Statements
-i	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ iprime)?; 
+i	:	((td_imp^ filename)|(td_require^ STRING)| (td_require_relative^ STRING)) (NEWLINE+ iprime)?; 
  	
- iprime	:	((td_imp^ filename)|td_require^ STRING) (NEWLINE+ i)?;
+ iprime	:	((td_imp^ filename)|(td_require^ STRING)|(td_require_relative^ STRING)) (NEWLINE+ i)?;
 
 //Main body: this is composed of any number of valid statements
 m	:	(statementNL (NEWLINE+ statementNL)*)->^(MAIN[",,,"] statementNL+);
@@ -223,6 +223,8 @@ td_null	:	NULL;
 td_some	:	SOME;
 td_require
 	:	REQUIRE;
+td_require_relative
+	:	REQUIRE_RELATIVE;
 	
 //Lexer/Tokens
 
@@ -250,6 +252,8 @@ FILENAME	:	(('"')('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')* '.td'
 IMPORT
 	:	'import'
 	;
+REQUIRE_RELATIVE
+	:	'require_relative';
 REQUIRE	:	'require';
 NODE
 	:	'node'|'public node'
