@@ -22,7 +22,6 @@ walk_test() {
 
     if [[ ${#ant_out1} == "0" ]]; then
     : #echo "GOOD"
-    echo
     else
     echo "$ant_out"
     echo "ERROR"
@@ -176,6 +175,3 @@ if [[ "$_use_jruby" > 0 ]]; then
 	else
 	ruby "$ruby_file".rb
 fi
-
-
-
