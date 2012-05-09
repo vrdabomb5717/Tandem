@@ -59,7 +59,7 @@ walk_test()
 
 run_file()
 {
-  ruby_file=${1%.*}.rb
+  ruby_file=${@%.*}.rb
 
   #run a different version of ruby based on ant rubyexec
 
