@@ -266,8 +266,10 @@ DIR=$(pwd)
 
 # Begin compilation process
 
-echo "compiling..." >&2
+echo "resolving dependencies..." >&2
+init=$(ant init)
 
+echo "compiling..." >&2
 a=$($_ruby src/dependency.rb "$FILE" | sed 's/DELIM/\'$'\n/g' | sed 's/^ *//g')
 
 OIFS="$IFS"

@@ -34,3 +34,4 @@ test/tutorial/geometry.rb
 test/misc/loop3.rb
 test/misc/loop4.rb
 test/tutorial/Fibonacci.rb
+test/tutorial/hello.rb
