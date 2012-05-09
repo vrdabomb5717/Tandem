@@ -21,6 +21,7 @@ display_usage()
     echo "Usage: `basename $0` [options] [filename]
     -c --compile  Only compile Tandem file.
     -h --help     List Tandem usage.
+    -r --run      Assume compiled file exists and try running file.
     -v --version  Print Tandem version."
 }
 
@@ -40,6 +41,20 @@ walk_test()
       echo "ERROR" >&2
       exit
     fi
+}
+
+run_file()
+{
+  ruby_file=${1%.*}.rb
+
+  #run a different version of ruby based on ant rubyexec
+
+  if [[ "$_use_jruby" > 0 ]]; then
+    java -jar lib/runtime/jruby-complete.jar --1.9 "$ruby_file"
+  else
+    ruby "$ruby_file"
+  fi
+  exit
 }
 
 
@@ -74,6 +89,14 @@ if [[ ( $1 == "--compile") ||  $1 == "-c" ]]
 then
   compile_only=1
   shift
+fi
+
+# check whether user had supplied -r or --run . If yes set to run only mode
+if [[ ( $1 == "--run") ||  $1 == "-r" ]]
+then
+  shift
+  run_only=1
+  run_file $1
 fi
 
 
@@ -198,12 +221,4 @@ if [ $compile_only = 1 ]; then
   exit
 fi
 
-ruby_file=${FILE%.*}
-
-#run a different version of ruby based on ant rubyexec
-
-if [[ "$_use_jruby" > 0 ]]; then
-	java -jar lib/runtime/jruby-complete.jar --1.9 "$ruby_file"
-else
-	ruby "$ruby_file".rb
-fi
+run_file $FILE
