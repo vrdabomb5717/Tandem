@@ -32,9 +32,9 @@ display_help()
     options:
       -b --ruby     Attempt to use system Ruby. If not valid, use JRuby.
       -c --compile  Only compile Tandem file.
-      -h --help     List Tandem usage.
+      -h --help     List Tandem usage and options.
       -j --jruby    Use downloaded JRuby.
-      -r --run      Assume compiled file exists and try running file.
+      -r --run      Assume compiled Ruby file exists and try running file.
       -v --version  Print Tandem version.
       -w --whole    Compile and run Tandem file."
 }
