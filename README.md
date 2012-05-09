@@ -1,6 +1,6 @@
 # Introduction to Tandem
 
-Tandem is a node-based, general purpose programming language. It's useful for writing simulations, hardware descriptions, and other programs that are best expressed as state-machines that involve transitions between functions.
+Tandem is a node-baseds scripting language used for performing simulations. It's useful for writing simulations, hardware descriptions, and other programs that are best expressed as state-machines that involve transitions between functions.
 
 # Dependencies
 
@@ -11,6 +11,7 @@ Tandem is a node-based, general purpose programming language. It's useful for wr
 * [Ruby 1.9.2+](http://www.ruby-lang.org/en/) (you can also use JRuby)
 * [Bash](http://www.gnu.org/software/bash/)
 * Awk
+* sed
 
 Except for Java, Ant, Bash, and Awk, all the other dependencies will be downloaded for you if you use Ant, thanks to Apache Ivy. If you are using a modern Linux distribution or are using Mac OS X, you will have Bash and awk already.
 
