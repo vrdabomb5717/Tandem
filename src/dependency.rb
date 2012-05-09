@@ -43,7 +43,10 @@ dep_helper(dependency_q, dependency_set,file)
 
 while(dependency_q.size != 0) do
 	#puts Dir.getwd
-	puts  dependency_q.last
+	t = `pwd`
+	t = t.chomp
+	puts "#{t}/#{dependency_q.last} DELIM"
+	#puts dependency_q.last
 	path = Pathname.new(dependency_q.last)
 	#puts path
 	#puts " flag 4 "+ File.absolute_path(dependency_q.last)
