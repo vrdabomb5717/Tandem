@@ -21,3 +21,6 @@ bin/
 bin
 dist
 test/statement/node.rb
+test/tutorial/hello2.rb
+test/tutorial/IAFencode.rb
+spiketimes.dat
