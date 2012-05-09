@@ -23,14 +23,20 @@ display_version()
 
 display_usage()
 {
+    echo "Usage: `basename $0` [options] [filename]"
+}
+
+display_help()
+{
     echo "Usage: `basename $0` [options] [filename]
-    -b --ruby     Attempt to use system Ruby.
-    -c --compile  Only compile Tandem file.
-    -h --help     List Tandem usage.
-    -j --jruby    Use downloaded JRuby.
-    -r --run      Assume compiled file exists and try running file.
-    -v --version  Print Tandem version.
-    -w --whole    Compile and run Tandem file."
+    options:
+      -b --ruby     Attempt to use system Ruby. If not valid, use JRuby.
+      -c --compile  Only compile Tandem file.
+      -h --help     List Tandem usage.
+      -j --jruby    Use downloaded JRuby.
+      -r --run      Assume compiled file exists and try running file.
+      -v --version  Print Tandem version.
+      -w --whole    Compile and run Tandem file."
 }
 
 walk_test()
@@ -63,6 +69,11 @@ run_file()
 
 check_ruby()
 {
+  if [[ "$use_jruby" > 0 ]]; then
+    _ruby="java -jar lib/runtime/jruby-complete.jar --1.9"
+    return
+  fi
+
   if type -p ruby &>/dev/null; then
    : # echo "found ruby executable in PATH"
    _ruby=ruby
@@ -84,10 +95,15 @@ check_ruby()
       fi
   fi
 
-  if [[ "$_use_jruby" > 0 ]]; then
+  if [[ "$use_jruby" > 0 ]]; then
     _ruby="java -jar lib/runtime/jruby-complete.jar --1.9"
   fi
 }
+
+
+################################################################
+
+# Check for options
 
 
 #Check if a file is passed, if not fail
@@ -103,7 +119,7 @@ fi
 # check whether user had supplied -h or --help . If yes display usage
 if [[ ( $1 == "--help") ||  $1 == "-h" ]]
 then
-  display_usage
+  display_help
   exit 0
 fi
 
@@ -137,6 +153,30 @@ then
   shift
 fi
 
+# check whether user had supplied -b or --ruby . If yes continue on
+if [[ ( $1 == "--ruby") ||  $1 == "-b" ]]
+then
+  shift
+fi
+
+# check whether user had supplied -b or --ruby . If yes continue on
+if [[ ( $1 == "--ruby") ||  $1 == "-b" ]]
+then
+  shift
+fi
+
+# check whether user had supplied -j or --jruby . If yes set jruby mode
+if [[ ( $1 == "--jruby") ||  $1 == "-j" ]]
+then
+  use_jruby=1
+  shift
+fi
+
+###################################################################
+
+# Check for invalid arguments
+
+
 FILE=$1
 
 #Check if the filename is valid .td
@@ -156,6 +196,10 @@ else
     echo "COMPILATION FAILED - the file does not exist" >&2
     exit $E_NOFILE
 fi
+
+###################################################################
+
+# Check for dependencies
 
 #check java
 #check ant 1.8
@@ -182,7 +226,6 @@ if [[ "$_java" ]]; then
 	      exit $E_BADVERSION
     fi
 fi
-
 
 
 if type -p ant&>/dev/null; then
@@ -217,9 +260,15 @@ DIR=$(pwd)
 
 #$(echo $IN | tr ";" "\n")
 
+
+
+###################################################################
+
+# Begin compilation process
+
 echo "compiling..." >&2
 
-a=$("$_ruby" src/dependency.rb "$FILE" | sed 's/DELIM/\'$'\n/g' | sed 's/^ *//g')
+a=$($_ruby src/dependency.rb "$FILE" | sed 's/DELIM/\'$'\n/g' | sed 's/^ *//g')
 
 OIFS="$IFS"
 IFS=$'\n'
