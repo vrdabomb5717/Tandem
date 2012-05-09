@@ -11,6 +11,11 @@ E_BADVERSION=75
 
 TANDEM_VERSION=0.1
 
+use_jruby=0
+compile_only=0
+run_only=0
+_ruby=""
+
 display_version()
 {
     echo "Tandem $TANDEM_VERSION"
@@ -49,12 +54,36 @@ run_file()
 
   #run a different version of ruby based on ant rubyexec
 
-  if [[ "$_use_jruby" > 0 ]]; then
-    java -jar lib/runtime/jruby-complete.jar --1.9 "$ruby_file"
-  else
-    ruby "$ruby_file"
-  fi
+  $_ruby "$ruby_file"
   exit
+}
+
+check_ruby()
+{
+  if type -p ruby &>/dev/null; then
+   : # echo "found ruby executable in PATH"
+   _ruby=ruby
+  elif [[ "/usr/bin/env ruby" ]];  then
+     : #echo "found ruby executable in ENV"
+     _ruby="/usr/bin/env ruby"
+  else
+    use_jruby=1
+  fi
+
+  if [[ "$_ruby" ]]; then
+    version=$("$_ruby" -v 2>&1 |grep -e "1\.9\.[2-9]" )
+
+      # if version if less than 1.9.2, use JRuby
+      if [[ "$?" > "0" ]]; then
+        use_jruby=1
+      else
+        : #echo "Passed Ruby Check"
+      fi
+  fi
+
+  if [[ "$_use_jruby" > 0 ]]; then
+    _ruby="java -jar lib/runtime/jruby-complete.jar --1.9"
+  fi
 }
 
 
@@ -82,7 +111,6 @@ then
   exit 0
 fi
 
-compile_only=0
 
 # check whether user had supplied -c or --compile . If yes set to compile only mode
 if [[ ( $1 == "--compile") ||  $1 == "-c" ]]
@@ -96,6 +124,7 @@ if [[ ( $1 == "--run") ||  $1 == "-r" ]]
 then
   shift
   run_only=1
+  check_ruby
   run_file $1
 fi
 
@@ -174,29 +203,7 @@ fi
 
 JRUBY_OPTS=--1.9
 
-use_jruby=0
-
-if type -p ruby &>/dev/null; then
-   : # echo "found ruby executable in PATH"
-    _ruby=ruby
-elif [[ "/usr/bin/env ruby" ]];  then
-   : #echo "found ruby executable in ENV"
-    _ruby="/usr/bin/env ruby"
-else
-    use_jruby=1
-fi
-
-if [[ "$_ruby" ]]; then
-    version=$("$_ruby" -v 2>&1 |grep -e "1\.9\.[2-9]" )
-
-    # if version if less than 1.9.2, use JRuby
-    if [[ "$?" > "0" ]]; then
-      use_jruby=1
-    else
-      : #echo "Passed Ruby Check"
-    fi
-fi
-
+check_ruby
 
 DIR=$(pwd)
 
@@ -204,7 +211,7 @@ DIR=$(pwd)
 
 echo "compiling..." >&2
 
-a=$(ruby src/dependency.rb "$FILE" | sed 's/DELIM/\'$'\n/g' | sed 's/^ *//g')
+a=$("$_ruby" src/dependency.rb "$FILE" | sed 's/DELIM/\'$'\n/g' | sed 's/^ *//g')
 
 OIFS="$IFS"
 IFS=$'\n'
