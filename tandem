@@ -26,7 +26,7 @@ walk_test() {
     : #echo "GOOD"
     else
       echo "$ant_out"
-      echo "ERROR"
+      echo "ERROR" >&2
       exit
     fi
 }
@@ -36,8 +36,8 @@ walk_test() {
 
 if [ $# -ne $EXPECTED_ARGS ]
 then
-  echo "Usage: `basename $0` filename"
-  echo "COMPILATION FAILED - filename expected"
+  echo "Usage: `basename $0` filename" >&2
+  echo "COMPILATION FAILED - filename expected" >&2
   error_exit $E_BADARGS
 fi
 
@@ -49,7 +49,7 @@ if [[ "$FILE" == *.td ]]
 then
   : # echo "valid filename"
 else
-     echo "COMPILATION FAILED - invalid filename"
+     echo "COMPILATION FAILED - invalid filename" >&2
      exit $E_WRONGFILETYPE
 fi
 
@@ -57,7 +57,7 @@ if [ -f "$FILE" ]
 then
      : #echo "the file exists"
 else
-    echo "COMPILATION FAILED - the file does not exist"
+    echo "COMPILATION FAILED - the file does not exist" >&2
     exit $E_NOFILE
 fi
 
@@ -72,7 +72,7 @@ elif [[ -n "$JAVA_HOME" ]] && [[ "$JAVA_HOME/bin/java" ]];  then
      : # echo "found java executable in JAVA_HOME"
     _java="$JAVA_HOME/bin/java"
 else
-    echo "COMPILATION FAILED - no java"
+    echo "COMPILATION FAILED - no java" >&2
     exit $E_MISSINGCMD
 fi
 
@@ -82,7 +82,7 @@ if [[ "$_java" ]]; then
     if [[ "$version" > "1.5" ]]; then
       : #  echo "version is more than 1.5"
     else
-        echo "COMPILATION FAILED - version is less than 1.5"
+        echo "COMPILATION FAILED - version is less than 1.5" >&2
 	      exit $E_BADVERSION
     fi
 fi
@@ -96,7 +96,7 @@ elif [[ "/usr/bin/env ant" ]];  then
     : #echo "found ant executable in ENV_ANT"
     _ant="usr/bin/env ant"
 else
-    echo "COMPILATION FAILED - no ant"
+    echo "COMPILATION FAILED - no ant" >&2
     exit $E_MISSINGCMD
 fi
 
@@ -106,7 +106,7 @@ if [[ "$_ant" ]]; then
     if [[ "$?" == "0" ]]; then
         : #echo "version is more than 1.8"
     else
-        echo "COMPILATION FAILED - version is less than 1.8"
+        echo "COMPILATION FAILED - version is less than 1.8" >&2
         exit $E_BADVERSION
     fi
 fi
@@ -130,6 +130,7 @@ fi
 if [[ "$_ruby" ]]; then
     version=$("$_ruby" -v 2>&1 |grep -e "1\.9\.[2-9]" )
 
+    # if version if less than 1.9.2, use JRuby
     if [[ "$?" > "0" ]]; then
       use_jruby=1
     else
@@ -142,7 +143,7 @@ DIR=$(pwd)
 
 #$(echo $IN | tr ";" "\n")
 
-echo "compiling..."
+echo "compiling..." >&2
 
 a=$(ruby src/dependency.rb "$FILE" | sed 's/DELIM/\'$'\n/g' | sed 's/^ *//g')
 
@@ -164,6 +165,6 @@ ruby_file=${FILE%.*}
 
 if [[ "$_use_jruby" > 0 ]]; then
 	java -jar lib/runtime/jruby-complete.jar --1.9 "$ruby_file"
-	else
+else
 	ruby "$ruby_file".rb
 fi
