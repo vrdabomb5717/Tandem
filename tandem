@@ -4,11 +4,14 @@
 
 EXPECTED_ARGS=1
 E_BADARGS=22
+E_NOFILE=2
+E_WRONGFILETYPE=79
+E_MISSINGCMD=1
+E_BADVERSION=75
 
 error_exit()
 {
-  echo "$1" >&2
-  exit 1
+  exit $1
 }
 
 walk_test() {
@@ -22,9 +25,9 @@ walk_test() {
     if [[ ${#ant_out1} == "0" ]]; then
     : #echo "GOOD"
     else
-    echo "$ant_out"
-    echo "ERROR"
-    exit
+      echo "$ant_out"
+      echo "ERROR"
+      exit
     fi
 }
 
@@ -33,9 +36,9 @@ walk_test() {
 
 if [ $# -ne $EXPECTED_ARGS ]
 then
-  echo "Usage: `basename $0` {arg}"
-  echo "COMPILATION FAILED"
-  exit $E_BADARGS
+  echo "Usage: `basename $0` filename"
+  echo "COMPILATION FAILED - filename expected"
+  error_exit $E_BADARGS
 fi
 
 FILE=$1
@@ -47,7 +50,7 @@ then
   : # echo "valid filename"
 else
      echo "COMPILATION FAILED - invalid filename"
-     exit
+     exit $E_WRONGFILETYPE
 fi
 
 if [ -f "$FILE" ]
@@ -55,7 +58,7 @@ then
      : #echo "the file exists"
 else
     echo "COMPILATION FAILED - the file does not exist"
-    exit
+    exit $E_NOFILE
 fi
 
 #check java
@@ -70,7 +73,7 @@ elif [[ -n "$JAVA_HOME" ]] && [[ "$JAVA_HOME/bin/java" ]];  then
     _java="$JAVA_HOME/bin/java"
 else
     echo "COMPILATION FAILED - no java"
-    exit
+    exit $E_MISSINGCMD
 fi
 
 if [[ "$_java" ]]; then
@@ -80,7 +83,7 @@ if [[ "$_java" ]]; then
       : #  echo "version is more than 1.5"
     else
         echo "COMPILATION FAILED - version is less than 1.5"
-	exit
+	      exit $E_BADVERSION
     fi
 fi
 
@@ -94,7 +97,7 @@ elif [[ "/usr/bin/env ant" ]];  then
     _ant="usr/bin/env ant"
 else
     echo "COMPILATION FAILED - no ant"
-    exit
+    exit $E_MISSINGCMD
 fi
 
 if [[ "$_ant" ]]; then
@@ -104,7 +107,7 @@ if [[ "$_ant" ]]; then
         : #echo "version is more than 1.8"
     else
         echo "COMPILATION FAILED - version is less than 1.8"
-	exit
+        exit $E_BADVERSION
     fi
 fi
 
@@ -112,6 +115,7 @@ fi
 
 JRUBY_OPTS=--1.9
 
+use_jruby=0
 
 if type -p ruby &>/dev/null; then
    : # echo "found ruby executable in PATH"
@@ -120,19 +124,16 @@ elif [[ "/usr/bin/env ruby" ]];  then
    : #echo "found ruby executable in ENV"
     _ruby="/usr/bin/env ruby"
 else
-    echo "COMPILATION FAILED - no ruby"
-    exit
+    use_jruby=1
 fi
-
-use_jruby=0
 
 if [[ "$_ruby" ]]; then
     version=$("$_ruby" -v 2>&1 |grep -e "1\.9\.[2-9]" )
 
     if [[ "$?" > "0" ]]; then
-    use_jruby=1
+      use_jruby=1
     else
-    : #echo "Passed Ruby Check"
+      : #echo "Passed Ruby Check"
     fi
 fi
 
