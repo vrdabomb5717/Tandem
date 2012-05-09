@@ -7,6 +7,6 @@ node Solve_question1(side_len)
 	return (Cube_Volume side_len) - ((side_len-2)**3)
 end
 
-Solve_question1 10 | Print
+Solve_question1 10 | Println
 
 
