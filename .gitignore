@@ -26,3 +26,11 @@ test/tutorial/IAFencode.rb
 spiketimes.dat
 test/failure/expression.rb
 test/failure/unclosed_comment.rb
+test/failure/node.rb
+test/tutorial/geometry_question1.rb
+test/misc/loop1.rb
+test/misc/loop2.rb
+test/tutorial/geometry.rb
+test/misc/loop3.rb
+test/misc/loop4.rb
+test/tutorial/Fibonacci.rb
