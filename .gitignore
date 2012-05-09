@@ -24,3 +24,5 @@ test/statement/node.rb
 test/tutorial/hello2.rb
 test/tutorial/IAFencode.rb
 spiketimes.dat
+test/failure/expression.rb
+test/failure/unclosed_comment.rb
