@@ -32,6 +32,7 @@ display_help()
     options:
       -b --ruby     Attempt to use system Ruby. If not valid, use JRuby.
       -c --compile  Only compile Tandem file.
+      -d --deps     Resolve dependencies and download needed files.
       -h --help     List Tandem usage and options.
       -j --jruby    Use downloaded JRuby.
       -r --run      Assume compiled Ruby file exists and try running file.
@@ -100,6 +101,12 @@ check_ruby()
   fi
 }
 
+resolve_deps()
+{
+  echo "resolving dependencies..." >&2
+  init=$(ant init)
+}
+
 
 ################################################################
 
@@ -127,6 +134,13 @@ fi
 if [[ ( $1 == "--version") ||  $1 == "-v" ]]
 then
   display_version
+  exit 0
+fi
+
+# check whether user had supplied -d or --deps . If yes download all deps and exit
+if [[ ( $1 == "--deps") ||  $1 == "-d" ]]
+then
+  resolve_deps
   exit 0
 fi
 
@@ -266,8 +280,7 @@ DIR=$(pwd)
 
 # Begin compilation process
 
-echo "resolving dependencies..." >&2
-init=$(ant init)
+resolve_deps
 
 echo "compiling..." >&2
 a=$($_ruby src/dependency.rb "$FILE" | sed 's/DELIM/\'$'\n/g' | sed 's/^ *//g')
