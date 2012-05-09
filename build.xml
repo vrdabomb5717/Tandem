@@ -236,6 +236,7 @@
 
   <target name="rubyexec" depends="init">
     <java jar="${lib}/runtime/${jruby_jar}" fork="true">
+      <arg value="--1.9"/>
       <arg value="${file}"/>
       <classpath>
         <pathelement path="${build}"/>
@@ -246,6 +247,7 @@
 
   <target name="rubytest" depends="compile">
     <java jar="${lib}/runtime/${jruby_jar}" fork="true">
+      <arg value="--1.9"/>
       <arg value="test/tutorial/geometry_question1_test.rb"/>
       <classpath>
         <pathelement path="${build}"/>
