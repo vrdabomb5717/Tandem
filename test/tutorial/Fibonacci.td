@@ -1,4 +1,6 @@
+
 node Fibonacci(input)
+
 	node Iterative(number)
 		prev1 = 0
 		prev2 = 1
@@ -13,13 +15,19 @@ node Fibonacci(input)
 	end
 
 	node Recursive(number)
-		if number < 2
+		if number <=2
 			return number
 		else
 			(Recursive (number-1)) + (Recursive (number-2))
 		end
 	end
+	
+	Iterative input | Println
+	Recursive input | Println
 
-	Iterative input
-	Recursive input
+	
 end
+Print "This is the Fibonacci program. Please enter a number."
+a = Kernel.gets 
+a = a.to_i
+Fibonacci a 
