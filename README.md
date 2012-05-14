@@ -1,28 +1,64 @@
 # Introduction to Tandem
 
-Tandem is a node-baseds scripting language used for performing simulations. It's useful for writing simulations, hardware descriptions, and other programs that are best expressed as state-machines that involve transitions between functions.
+Tandem is a node-based scripting language used for performing simulations. It's useful for writing simulations, hardware descriptions, and other programs that are best expressed as state-machines that involve transitions between functions. Tandem's a general-purpose language though, so you can use it for anything else, and you can import any Ruby class and use it in your code too!
 
 # Dependencies
 
 * Java 1.5 or greater
-* [ANTLR3](http://www.antlr.org) (if you want to compile the grammar)
-* [Apache Ant](http://ant.apache.org/)
-* [JUnit](http://www.junit.org/) (for running the compiler tests)
-* [Ruby 1.9.2+](http://www.ruby-lang.org/en/) (you can also use JRuby)
+* [Apache Ant](http://ant.apache.org/) 1.8 or above
 * [Bash](http://www.gnu.org/software/bash/)
-* Awk
+* AWK
 * sed
 
-Except for Java, Ant, Bash, and Awk, all the other dependencies will be downloaded for you if you use Ant, thanks to Apache Ivy. If you are using a modern Linux distribution or are using Mac OS X, you will have Bash and awk already.
+# Downloaded Dependencies
 
-Support for Windows is limited to Ant. Note that you will need to compile all imported files yourself if you are on Windows. On Unix systems, the tandem compiler will take care of this for you.
+* [Apache Ivy](http://ant.apache.org/ivy/index.html)
+* [ANTLR3](http://www.antlr.org) (if you want to compile the grammar)
+* [JUnit](http://www.junit.org/) (for running the compiler tests)
+* [Ruby 1.9.2+](http://www.ruby-lang.org/en/) (Tandem uses JRuby by default)
+
+Except for Java, Ant, Bash, and Awk, all the other dependencies will be downloaded for you if you use Ant, thanks to Apache Ivy. If you are using a modern Linux distribution or are using Mac OS X, you should have or will be able to download all of these dependencies easily.
+
+If you want to use a more recent version of any of these dependencies, download the corresponding JAR file and place it in the `lib` directory. Tandem will also prefer any system Ruby you have installed over the downloaded JRuby.
+
+Support for Windows is limited to Ant. Note that you will need to compile all imported files yourself if you are on Windows. See further instructions below. On Unix systems, the Tandem compiler will take care of this for you.
 
 
 To install ANTLR manually, first download the [JAR file](http://www.antlr.org/download.html). Make sure that you add the path to the JAR file to your classpath.
 
-# Compilation and Installation using Ant
+# Installation and Compilation
 
-The easiest way to use Tandem is to use Ant, a tool similar to `make`.
+First, clone the repository with git, or download a zipped version of the current repository and extract it to some directory you'll remember.
+
+	$ git clone git://github.com/vrdabomb5717/Tandem.git
+	$ cd Tandem
+
+Next, explore the Tandem compiler options or create a Tandem file.
+
+	$ ./tandem --help
+	Usage: tandem [options] [filename]
+		options:
+	      -b --ruby     Attempt to use system Ruby. If not valid, use JRuby.
+	      -c --compile  Only compile Tandem file.
+	      -d --deps     Resolve dependencies and download needed files.
+	      -h --help     List Tandem usage and options.
+	      -j --jruby    Use downloaded JRuby.
+	      -r --run      Assume compiled Ruby file exists and try running file.
+	      -v --version  Print Tandem version.
+	      -w --whole    Compile and run Tandem file.
+
+	$ touch example.td
+	$ echo 'Println "Hello World!"' >> example.td
+	$ ./tandem example.td
+	resolving dependencies...
+	compiling...
+	Hello World!
+
+For more information on the Tandem programming language, or a tutorial, see the latest version of the Tandem Project Report.
+
+# Using Tandem on Windows
+
+The easiest way to use Tandem is to use Ant, a tool similar to `make`. First, clone the Tandem git repository, or if you do not have git installed, download a zip file and extract that folder to some location you'll remember.
 
 	$ git clone git://github.com/vrdabomb5717/Tandem.git
 	$ cd Tandem
@@ -43,21 +79,23 @@ Running `ant test` will create the needed directories, compile the grammar, comp
 
 For more specific tests, `ant gunit_test` will run the grammar tests and `ant parse_test` will run the parser tests that require JUnit.
 
-to traverse the tree, run `ant walk` with a filename provided as an argument.
+To compile a `.td` file, run `ant walk` with a filename provided as an argument.
 
-For example, try traversing the tree with expression.td:
+For example, try compiling the file expression.td:
 
 	$ ant walk -Dfile=test/expression/expression.td
 
+Again, note that if you choose to import any `.td` files, you will need to compile all the imported files before you are able to compile and run your file.
 
-# Cleaning up and Uninstallation
+
+# Cleaning up and Uninstalling Tandem
 
 To clean up without deleting your entire Tandem installation, run `ant clean`. To clean up the dependencies that you have downloaded as well, run `ant clean-ivy`.
 
 If you would like to remove the entire Tandem installation, just delete the entire Tandem directory.
 
 
-# Compilation and Installation without using Ant
+# Compilation without using Ant
 
 To compile the grammar file, assuming that ANTLR is on your classpath, run:
 
