@@ -18,13 +18,13 @@ split_arr.pop
 
 path_to_dir=""
 
-split_arr.each do|n|
+split_arr.each do |n|
    path_to_dir += n+"/"
 end
 
 #puts "flag 5" + path_to_dir
 
-Dir.chdir(path_to_dir)
+Dir.chdir(path_to_dir) unless path_to_dir.empty?
 
 def dep_helper(d_q,d_set, d_file)
 	d_file1 = File.expand_path(File.basename(d_file))
