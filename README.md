@@ -13,7 +13,7 @@ Tandem is a node-based scripting language used for performing simulations. It's 
 # Downloaded Dependencies
 
 * [Apache Ivy](http://ant.apache.org/ivy/index.html)
-* [ANTLR3](http://www.antlr.org) (if you want to compile the grammar)
+* [ANTLR3](http://www.antlr.org) (for compiling the grammar)
 * [JUnit](http://www.junit.org/) (for running the compiler tests)
 * [Ruby 1.9.2+](http://www.ruby-lang.org/en/) (Tandem uses JRuby by default)
 
@@ -54,6 +54,8 @@ Next, explore the Tandem compiler options or create a Tandem file.
 	compiling...
 	Hello World!
 
+By default, the Tandem compiler will compile and run your file. Compiled files are just Ruby files, so you can re-run them by using `./tandem -r` or by just running `ruby` on the compiled file. This compiled Ruby file is located in the same directory as the corresponding Tandem file.
+
 For more information on the Tandem programming language, or a tutorial, see the latest version of the Tandem Project Report.
 
 # Using Tandem on Windows
@@ -87,6 +89,9 @@ For example, try compiling the file expression.td:
 
 Again, note that if you choose to import any `.td` files, you will need to compile all the imported files before you are able to compile and run your file.
 
+Now, run the compiled `.rb` file.
+
+	$ ruby test/expression/expression.rb
 
 # Cleaning up and Uninstalling Tandem
 
