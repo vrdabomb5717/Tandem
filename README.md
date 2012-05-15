@@ -114,3 +114,7 @@ More instructions will come at a later date!
 
 * You cannot currently chain method calls when using imported Ruby code.
 * If you do not use the main Tandem compiler, you will need to compile all imported Tandem files, recursively, before you compile the specified .td file.
+
+# License
+
+All source code is licensed under the Simplified BSD license (2-clause BSD). All documentation is licensed under the FreeBSD Documentation License.
