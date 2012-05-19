@@ -118,3 +118,12 @@ More instructions will come at a later date!
 # License
 
 All source code is licensed under the Simplified BSD license (2-clause BSD). All documentation is licensed under the FreeBSD Documentation License.
+
+# Contributors
+
+All code in this repository was written by:
+
+* [Varun Ravishankar](https://github.com/vrdabomb5717)
+* [Patrick de la Garza](https://github.com/Patrickdlg)
+* [Jeneé Benjamin](https://github.com/JLBenj)
+* [Donald Pomeroy](https://github.com/donald-e-pomeroy)
